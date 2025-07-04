@@ -1,20 +1,27 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useDeStock } from '@/lib/hooks/useDeStock';
-import { useDSTK } from '@/lib/hooks/useDSTK';
-import { useAccount } from 'wagmi';
-import { ShoppingCartIcon, DollarSignIcon, TrendingUpIcon, TrendingDownIcon, AlertCircleIcon } from 'lucide-react';
-import { AnimatedCounter } from './AnimatedCounter';
-import { LoadingSpinner } from './LoadingSpinner';
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { motion, AnimatePresence } from "framer-motion";
+import { useDeStock } from "@/lib/hooks/useDeStock";
+import { useDSTK } from "@/lib/hooks/useDSTK";
+import { useAccount } from "wagmi";
+import {
+  ShoppingCartIcon,
+  DollarSignIcon,
+  TrendingUpIcon,
+  TrendingDownIcon,
+  AlertCircleIcon,
+} from "lucide-react";
+import { AnimatedCounter } from "./AnimatedCounter";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { getContractAddress, DESTOCK_ABI } from "@/lib/contracts";
 
 const schema = z.object({
-  companyId: z.string().min(1, 'Please select a company'),
-  amount: z.string().min(1, 'Amount is required'),
+  companyId: z.string().min(1, "Please select a company"),
+  amount: z.string().min(1, "Amount is required"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -27,12 +34,20 @@ interface Company {
 
 export function TradeView() {
   const { isConnected } = useAccount();
-  const { buyShares, sellShares, getSharePrice, getShareBalance, nextCompanyId, isPending, isConfirming, isConfirmed, error } = useDeStock();
+  const {
+    buyShares,
+    sellShares,
+    getSharePrice,
+    getShareBalance,
+    nextCompanyId,
+    isPending,
+    error,
+  } = useDeStock();
   const { balance } = useDSTK();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
-  const [tradeType, setTradeType] = useState<'buy' | 'sell'>('buy');
-  const [userShares, setUserShares] = useState<string>('0');
+  const [tradeType, setTradeType] = useState<"buy" | "sell">("buy");
+  const [userShares, setUserShares] = useState<string>("0");
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -52,8 +67,8 @@ export function TradeView() {
     resolver: zodResolver(schema),
   });
 
-  const watchedCompanyId = watch('companyId');
-  const watchedAmount = watch('amount');
+  const watchedCompanyId = watch("companyId");
+  const watchedAmount = watch("amount");
 
   useEffect(() => {
     if (isConnected && nextCompanyId > 0) {
@@ -63,7 +78,9 @@ export function TradeView() {
 
   useEffect(() => {
     if (watchedCompanyId) {
-      const company = companies.find(c => c.id.toString() === watchedCompanyId);
+      const company = companies.find(
+        (c) => c.id.toString() === watchedCompanyId
+      );
       if (company) {
         setSelectedCompany(company);
         loadUserShares(company.id);
@@ -79,28 +96,30 @@ export function TradeView() {
         companiesData.push({
           id: i,
           name: `Company ${i + 1}`,
-          price: '12.5',
+          price: "12.5",
         });
       }
       setCompanies(companiesData);
     } catch (error) {
-      console.error('Failed to load companies:', error);
+      console.error("Failed to load companies:", error);
     }
   };
 
   const loadUserShares = async (companyId: number) => {
     try {
       // Placeholder implementation - would need real contract calls
-      setUserShares('100');
+      setUserShares("100");
     } catch (error) {
-      console.error('Failed to load user shares:', error);
-      setUserShares('0');
+      console.error("Failed to load user shares:", error);
+      setUserShares("0");
     }
   };
 
   const calculateCost = () => {
-    if (!selectedCompany || !watchedAmount) return '0';
-    return (parseFloat(selectedCompany.price) * parseFloat(watchedAmount)).toFixed(2);
+    if (!selectedCompany || !watchedAmount) return "0";
+    return (
+      parseFloat(selectedCompany.price) * parseFloat(watchedAmount)
+    ).toFixed(2);
   };
 
   const onSubmit = async (data: FormData) => {
@@ -108,14 +127,25 @@ export function TradeView() {
 
     setLoading(true);
     try {
-      if (tradeType === 'buy') {
-        await buyShares(selectedCompany.id, data.amount);
+      const destockAddress = getContractAddress("DESTOCK", 31337); // or use chainId if available
+      if (tradeType === "buy") {
+        await buyShares({
+          abi: DESTOCK_ABI,
+          address: destockAddress,
+          functionName: "buyShares",
+          args: [BigInt(selectedCompany.id), BigInt(data.amount)],
+        });
       } else {
-        await sellShares(selectedCompany.id, data.amount);
+        await sellShares({
+          abi: DESTOCK_ABI,
+          address: destockAddress,
+          functionName: "sellShares",
+          args: [BigInt(selectedCompany.id), BigInt(data.amount)],
+        });
       }
       reset();
     } catch (error) {
-      console.error('Trade failed:', error);
+      console.error("Trade failed:", error);
     } finally {
       setLoading(false);
     }
@@ -123,11 +153,11 @@ export function TradeView() {
 
   const canTrade = () => {
     if (!selectedCompany || !watchedAmount) return false;
-    
+
     const amount = parseFloat(watchedAmount);
     if (amount <= 0) return false;
 
-    if (tradeType === 'buy') {
+    if (tradeType === "buy") {
       const cost = parseFloat(calculateCost());
       return parseFloat(balance) >= cost;
     } else {
@@ -165,7 +195,7 @@ export function TradeView() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       className="glass-card p-6"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -174,7 +204,7 @@ export function TradeView() {
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <motion.h3 
+        <motion.h3
           className="text-lg font-semibold text-gray-900 dark:text-gray-100"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -182,20 +212,20 @@ export function TradeView() {
         >
           Trade Shares
         </motion.h3>
-        
+
         {/* Buy/Sell Toggle */}
-        <motion.div 
+        <motion.div
           className="flex glass-button rounded-lg p-1"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
         >
           <motion.button
-            onClick={() => setTradeType('buy')}
+            onClick={() => setTradeType("buy")}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
-              tradeType === 'buy'
-                ? 'bg-success text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+              tradeType === "buy"
+                ? "bg-success text-white shadow-sm"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
             }`}
             whileTap={{ scale: 0.95 }}
           >
@@ -205,11 +235,11 @@ export function TradeView() {
             </div>
           </motion.button>
           <motion.button
-            onClick={() => setTradeType('sell')}
+            onClick={() => setTradeType("sell")}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
-              tradeType === 'sell'
-                ? 'bg-danger text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+              tradeType === "sell"
+                ? "bg-danger text-white shadow-sm"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
             }`}
             whileTap={{ scale: 0.95 }}
           >
@@ -221,8 +251,8 @@ export function TradeView() {
         </motion.div>
       </div>
 
-      <motion.form 
-        onSubmit={handleSubmit(onSubmit)} 
+      <motion.form
+        onSubmit={handleSubmit(onSubmit)}
         className="space-y-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -238,7 +268,7 @@ export function TradeView() {
             Select Company
           </label>
           <select
-            {...register('companyId')}
+            {...register("companyId")}
             id="companyId"
             className="destock-input"
           >
@@ -251,7 +281,7 @@ export function TradeView() {
           </select>
           <AnimatePresence>
             {errors.companyId && (
-              <motion.p 
+              <motion.p
                 className="mt-1 text-sm text-danger flex items-center space-x-1"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -267,26 +297,26 @@ export function TradeView() {
         {/* Company Info Card */}
         <AnimatePresence>
           {selectedCompany && (
-            <motion.div 
+            <motion.div
               className="glass-card p-4"
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                   {selectedCompany.name}
                 </span>
-                <motion.span 
+                <motion.span
                   className="text-lg font-bold text-destock-primary"
                   key={selectedCompany.price} // Trigger animation on price change
-                  initial={{ scale: 1.2, color: '#10B981' }}
-                  animate={{ scale: 1, color: '#3B82F6' }}
+                  initial={{ scale: 1.2, color: "#10B981" }}
+                  animate={{ scale: 1, color: "#3B82F6" }}
                   transition={{ duration: 0.3 }}
                 >
-                  <AnimatedCounter 
-                    value={parseFloat(selectedCompany.price)} 
+                  <AnimatedCounter
+                    value={parseFloat(selectedCompany.price)}
                     suffix=" DSTK"
                     decimals={2}
                   />
@@ -294,8 +324,8 @@ export function TradeView() {
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center justify-between">
                 <span>Your Holdings:</span>
-                <AnimatedCounter 
-                  value={parseFloat(userShares)} 
+                <AnimatedCounter
+                  value={parseFloat(userShares)}
                   suffix=" shares"
                   decimals={0}
                   className="font-medium"
@@ -315,7 +345,7 @@ export function TradeView() {
             Amount
           </label>
           <input
-            {...register('amount')}
+            {...register("amount")}
             type="number"
             step="1"
             min="1"
@@ -325,7 +355,7 @@ export function TradeView() {
           />
           <AnimatePresence>
             {errors.amount && (
-              <motion.p 
+              <motion.p
                 className="mt-1 text-sm text-danger flex items-center space-x-1"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -341,12 +371,12 @@ export function TradeView() {
         {/* Transaction Summary */}
         <AnimatePresence>
           {selectedCompany && watchedAmount && (
-            <motion.div 
+            <motion.div
               className="glass-card p-4"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
             >
               <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center space-x-2">
                 <DollarSignIcon className="w-4 h-4" />
@@ -359,23 +389,29 @@ export function TradeView() {
                 </div>
                 <div className="flex justify-between">
                   <span>Price per share:</span>
-                  <span className="font-medium">{selectedCompany.price} DSTK</span>
+                  <span className="font-medium">
+                    {selectedCompany.price} DSTK
+                  </span>
                 </div>
                 <div className="flex justify-between font-semibold border-t border-white/10 dark:border-black/10 pt-2 text-gray-900 dark:text-gray-100">
-                  <span>Total {tradeType === 'buy' ? 'Cost' : 'Proceeds'}:</span>
-                  <AnimatedCounter 
-                    value={parseFloat(calculateCost())} 
+                  <span>
+                    Total {tradeType === "buy" ? "Cost" : "Proceeds"}:
+                  </span>
+                  <AnimatedCounter
+                    value={parseFloat(calculateCost())}
                     suffix=" DSTK"
                     decimals={2}
-                    className={tradeType === 'buy' ? 'text-danger' : 'text-success'}
+                    className={
+                      tradeType === "buy" ? "text-danger" : "text-success"
+                    }
                   />
                 </div>
               </div>
-              {tradeType === 'buy' && (
+              {tradeType === "buy" && (
                 <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between">
                   <span>Your DSTK Balance:</span>
-                  <AnimatedCounter 
-                    value={parseFloat(balance || '0')} 
+                  <AnimatedCounter
+                    value={parseFloat(balance || "0")}
                     suffix=" DSTK"
                     decimals={2}
                     className="font-medium"
@@ -389,7 +425,7 @@ export function TradeView() {
         {/* Error Display */}
         <AnimatePresence>
           {error && (
-            <motion.div 
+            <motion.div
               className="glass-card p-4 border border-danger/30 bg-danger/10"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -406,11 +442,11 @@ export function TradeView() {
         {/* Submit Button */}
         <motion.button
           type="submit"
-          disabled={!canTrade() || isPending || isConfirming || loading}
+          disabled={!canTrade() || isPending || loading}
           className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-md font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
-            tradeType === 'buy'
-              ? 'bg-success hover:bg-success/80 text-white shadow-lg'
-              : 'bg-danger hover:bg-danger/80 text-white shadow-lg'
+            tradeType === "buy"
+              ? "bg-success hover:bg-success/80 text-white shadow-lg"
+              : "bg-danger hover:bg-danger/80 text-white shadow-lg"
           }`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -418,37 +454,36 @@ export function TradeView() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          {(isPending || isConfirming || loading) ? (
+          {isPending || loading ? (
             <LoadingSpinner size="small" />
-          ) : tradeType === 'buy' ? (
+          ) : tradeType === "buy" ? (
             <TrendingUpIcon className="w-5 h-5" />
           ) : (
             <TrendingDownIcon className="w-5 h-5" />
           )}
           <span>
-            {isPending || isConfirming || loading
-              ? 'Processing...'
+            {isPending || loading
+              ? "Processing..."
               : !canTrade()
-              ? tradeType === 'buy' 
-                ? 'Insufficient Balance' 
-                : 'Insufficient Shares'
-              : `${tradeType === 'buy' ? 'Buy' : 'Sell'} Shares`}
+                ? tradeType === "buy"
+                  ? "Insufficient Balance"
+                  : "Insufficient Shares"
+                : `${tradeType === "buy" ? "Buy" : "Sell"} Shares`}
           </span>
         </motion.button>
 
         {/* Success Display */}
         <AnimatePresence>
-          {isConfirmed && (
-            <motion.div 
-              className="glass-card p-4 border border-success/30 bg-success/10"
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          {error && (
+            <motion.div
+              className="glass-card p-4 border border-danger/30 bg-danger/10"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
             >
-              <p className="text-sm text-success flex items-center space-x-2">
-                <TrendingUpIcon className="w-4 h-4" />
-                <span>Transaction completed successfully! 🎉</span>
+              <p className="text-sm text-danger flex items-center space-x-2">
+                <AlertCircleIcon className="w-4 h-4" />
+                <span>Transaction failed: {error.message}</span>
               </p>
             </motion.div>
           )}

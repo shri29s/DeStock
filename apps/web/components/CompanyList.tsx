@@ -1,16 +1,23 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useDeStock } from '@/lib/hooks/useDeStock';
-import { useAccount } from 'wagmi';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { TrendingUpIcon, TrendingDownIcon, BuildingIcon, SearchIcon, SortAscIcon, FilterIcon } from 'lucide-react';
-import { AnimatedCounter } from './AnimatedCounter';
-import { LoadingSpinner } from './LoadingSpinner';
-import { SkeletonLoader } from './SkeletonLoader';
-import { formatUnits } from 'viem';
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useDeStock } from "@/lib/hooks/useDeStock";
+import { useAccount } from "wagmi";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import {
+  TrendingUpIcon,
+  TrendingDownIcon,
+  BuildingIcon,
+  SearchIcon,
+  SortAscIcon,
+  FilterIcon,
+} from "lucide-react";
+import { AnimatedCounter } from "./AnimatedCounter";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { SkeletonLoader } from "./SkeletonLoader";
+import { formatUnits } from "viem";
 
 interface Company {
   id: number;
@@ -26,8 +33,8 @@ interface Company {
   sector?: string;
 }
 
-type SortField = 'name' | 'currentPrice' | 'change' | 'volume' | 'marketCap';
-type SortDirection = 'asc' | 'desc';
+type SortField = "name" | "currentPrice" | "change" | "volume" | "marketCap";
+type SortDirection = "asc" | "desc";
 
 export function CompanyList() {
   const { isConnected } = useAccount();
@@ -35,10 +42,10 @@ export function CompanyList() {
   const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortField, setSortField] = useState<SortField>('marketCap');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-  const [selectedSector, setSelectedSector] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState<SortField>("marketCap");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [selectedSector, setSelectedSector] = useState<string>("");
 
   useEffect(() => {
     if (isConnected && nextCompanyId > 0) {
@@ -53,25 +60,40 @@ export function CompanyList() {
       companyPromises.push(loadCompanyData(i));
     }
     const loadedCompanies = await Promise.all(companyPromises);
-    setCompanies(loadedCompanies.filter(c => c !== null) as Company[]);
+    setCompanies(loadedCompanies.filter((c) => c !== null) as Company[]);
     setLoading(false);
   };
 
   const loadCompanyData = async (id: number): Promise<Company | null> => {
     try {
-      const companyData = await getCompany(id);
-      const priceData = await getSharePrice(id);
-      
-      if (companyData && priceData) {
-        return {
-          id,
-          name: companyData.name,
-          owner: companyData.owner,
-          totalSupply: formatUnits(companyData.totalSupply, 0),
-          currentPrice: formatUnits(priceData, 18),
-        };
+      const companyResult = await getCompany(id);
+      const companyData = companyResult?.data;
+      const priceResult = await getSharePrice(id);
+      const priceData = priceResult?.data;
+
+      // Defensive mapping from contract result to Company interface
+      function mapCompany(raw: any): Company | null {
+        if (
+          Array.isArray(raw) &&
+          raw.length >= 5 &&
+          typeof raw[0] === "bigint" &&
+          typeof raw[1] === "string" &&
+          typeof raw[2] === "string" &&
+          typeof raw[3] === "bigint" &&
+          typeof raw[4] === "bigint"
+        ) {
+          return {
+            id,
+            name: raw[1],
+            owner: raw[2],
+            totalSupply: formatUnits(raw[4], 0),
+            currentPrice: priceData ? formatUnits(priceData, 18) : undefined,
+          };
+        }
+        return null;
       }
-      return null;
+
+      return mapCompany(companyData);
     } catch (error) {
       console.error(`Failed to load company ${id}:`, error);
       return null;
@@ -80,41 +102,44 @@ export function CompanyList() {
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       setSortField(field);
-      setSortDirection('desc');
+      setSortDirection("desc");
     }
   };
 
   const sortedAndFilteredCompanies = companies
-    .filter(company => {
-      const matchesSearch = company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           (company.symbol && company.symbol.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesSector = !selectedSector || company.sector === selectedSector;
+    .filter((company) => {
+      const matchesSearch =
+        company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (company.symbol &&
+          company.symbol.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesSector =
+        !selectedSector || company.sector === selectedSector;
       return matchesSearch && matchesSector;
     })
     .sort((a, b) => {
       let aValue: any, bValue: any;
-      
+
       switch (sortField) {
-        case 'name':
+        case "name":
           aValue = a.name;
           bValue = b.name;
           break;
-        case 'currentPrice':
-          aValue = parseFloat(a.currentPrice || '0');
-          bValue = parseFloat(b.currentPrice || '0');
+        case "currentPrice":
+          aValue = parseFloat(a.currentPrice || "0");
+          bValue = parseFloat(b.currentPrice || "0");
           break;
-        case 'change':
+        case "change":
           aValue = a.change || 0;
           bValue = b.change || 0;
           break;
-        case 'volume':
+        case "volume":
           aValue = a.volume || 0;
           bValue = b.volume || 0;
           break;
-        case 'marketCap':
+        case "marketCap":
           aValue = a.marketCap || 0;
           bValue = b.marketCap || 0;
           break;
@@ -122,16 +147,18 @@ export function CompanyList() {
           return 0;
       }
 
-      if (typeof aValue === 'string') {
-        return sortDirection === 'asc' 
-          ? aValue.localeCompare(bValue) 
+      if (typeof aValue === "string") {
+        return sortDirection === "asc"
+          ? aValue.localeCompare(bValue)
           : bValue.localeCompare(aValue);
       }
-      
-      return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
     });
 
-  const uniqueSectors = Array.from(new Set(companies.map(c => c.sector).filter(Boolean)));
+  const uniqueSectors = Array.from(
+    new Set(companies.map((c) => c.sector).filter(Boolean))
+  );
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -195,7 +222,7 @@ export function CompanyList() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       className="glass-card p-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -204,9 +231,9 @@ export function CompanyList() {
       <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
         Market Overview
       </h2>
-      
+
       {/* Search and Filter Controls */}
-      <motion.div 
+      <motion.div
         className="mb-6 space-y-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -229,10 +256,15 @@ export function CompanyList() {
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </div>
-          
+
           <select
             value={selectedSector}
             onChange={(e) => setSelectedSector(e.target.value)}
@@ -240,15 +272,17 @@ export function CompanyList() {
                      focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200"
           >
             <option value="">All Sectors</option>
-            {uniqueSectors.map(sector => (
-              <option key={sector} value={sector}>{sector}</option>
+            {uniqueSectors.map((sector) => (
+              <option key={sector} value={sector}>
+                {sector}
+              </option>
             ))}
           </select>
         </div>
       </motion.div>
 
       {/* Company Table */}
-      <motion.div 
+      <motion.div
         className="overflow-x-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -258,11 +292,11 @@ export function CompanyList() {
           <thead>
             <tr className="border-b border-gray-700/50">
               {[
-                { key: 'name', label: 'Company' },
-                { key: 'currentPrice', label: 'Price' },
-                { key: 'change', label: 'Change (24h)' },
-                { key: 'volume', label: 'Volume' },
-                { key: 'marketCap', label: 'Market Cap' }
+                { key: "name", label: "Company" },
+                { key: "currentPrice", label: "Price" },
+                { key: "change", label: "Change (24h)" },
+                { key: "volume", label: "Volume" },
+                { key: "marketCap", label: "Market Cap" },
               ].map(({ key, label }) => (
                 <th
                   key={key}
@@ -275,78 +309,98 @@ export function CompanyList() {
                     {sortField === key && (
                       <svg
                         className={`w-4 h-4 transition-transform duration-200 ${
-                          sortDirection === 'desc' ? 'rotate-180' : ''
+                          sortDirection === "desc" ? "rotate-180" : ""
                         }`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 15l7-7 7 7"
+                        />
                       </svg>
                     )}
                   </div>
                 </th>
               ))}
-              <th className="text-left py-4 px-4 text-gray-300 font-medium">Actions</th>
+              <th className="text-left py-4 px-4 text-gray-300 font-medium">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
-            {sortedAndFilteredCompanies.map((company: Company, index: number) => {
-              const changeColor = (company.change || 0) >= 0 ? 'text-green-400' : 'text-red-400';
-              const changePrefix = (company.change || 0) >= 0 ? '+' : '';
-              
-              return (
-                <motion.tr
-                  key={company.id}
-                  className="border-b border-gray-800/30 hover:bg-gray-800/20 transition-colors duration-200"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  whileHover={{ scale: 1.01 }}
-                >
-                  <td className="py-4 px-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 
-                                    flex items-center justify-center text-white font-bold">
-                        {company.symbol ? company.symbol.charAt(0) : company.name.charAt(0)}
-                      </div>
-                      <div>
-                        <div className="font-semibold text-white">{company.name}</div>
-                        <div className="text-sm text-gray-400">
-                          {company.symbol || formatAddress(company.id.toString())}
+            {sortedAndFilteredCompanies.map(
+              (company: Company, index: number) => {
+                const changeColor =
+                  (company.change || 0) >= 0
+                    ? "text-green-400"
+                    : "text-red-400";
+                const changePrefix = (company.change || 0) >= 0 ? "+" : "";
+
+                return (
+                  <motion.tr
+                    key={company.id}
+                    className="border-b border-gray-800/30 hover:bg-gray-800/20 transition-colors duration-200"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    whileHover={{ scale: 1.01 }}
+                  >
+                    <td className="py-4 px-4">
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 
+                                    flex items-center justify-center text-white font-bold"
+                        >
+                          {company.symbol
+                            ? company.symbol.charAt(0)
+                            : company.name.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="font-semibold text-white">
+                            {company.name}
+                          </div>
+                          <div className="text-sm text-gray-400">
+                            {company.symbol ||
+                              formatAddress(company.id.toString())}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <div className="font-semibold text-white">
-                      {company.currentPrice} DSTK
-                    </div>
-                  </td>
-                  <td className={`py-4 px-4 font-semibold ${changeColor}`}>
-                    {changePrefix}{company.change?.toFixed(2) || '0.00'}%
-                  </td>
-                  <td className="py-4 px-4 text-gray-300">
-                    {formatNumber(company.volume || 0)}
-                  </td>
-                  <td className="py-4 px-4 text-gray-300">
-                    {formatNumber(company.marketCap || 0)} DSTK
-                  </td>
-                  <td className="py-4 px-4">
-                    <motion.button
-                      onClick={() => router.push(`/company/${company.id}`)}
-                      className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="font-semibold text-white">
+                        {company.currentPrice} DSTK
+                      </div>
+                    </td>
+                    <td className={`py-4 px-4 font-semibold ${changeColor}`}>
+                      {changePrefix}
+                      {company.change?.toFixed(2) || "0.00"}%
+                    </td>
+                    <td className="py-4 px-4 text-gray-300">
+                      {formatNumber(company.volume || 0)}
+                    </td>
+                    <td className="py-4 px-4 text-gray-300">
+                      {formatNumber(company.marketCap || 0)} DSTK
+                    </td>
+                    <td className="py-4 px-4">
+                      <motion.button
+                        onClick={() => router.push(`/company/${company.id}`)}
+                        className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 
                                hover:from-blue-700 hover:to-purple-700 rounded-lg 
                                transition-all duration-200 text-sm font-medium text-white"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Trade
-                    </motion.button>
-                  </td>
-                </motion.tr>
-              );
-            })}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Trade
+                      </motion.button>
+                    </td>
+                  </motion.tr>
+                );
+              }
+            )}
           </tbody>
         </table>
       </motion.div>
@@ -359,7 +413,9 @@ export function CompanyList() {
         >
           <div className="text-lg font-medium mb-2">No companies found</div>
           <div className="text-sm">
-            {searchTerm ? `No results for "${searchTerm}"` : 'No companies available'}
+            {searchTerm
+              ? `No results for "${searchTerm}"`
+              : "No companies available"}
           </div>
         </motion.div>
       )}

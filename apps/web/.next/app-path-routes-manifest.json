@@ -1,0 +1,13 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/market/route": "/api/market",
+  "/api/faucet/route": "/api/faucet",
+  "/api/portfolio/[address]/route": "/api/portfolio/[address]",
+  "/api/portfolio/route": "/api/portfolio",
+  "/api/shareholders/[companyId]/route": "/api/shareholders/[companyId]",
+  "/api/trades/[companyId]/route": "/api/trades/[companyId]",
+  "/page": "/",
+  "/portfolio/page": "/portfolio",
+  "/register/page": "/register",
+  "/company/[id]/page": "/company/[id]"
+}

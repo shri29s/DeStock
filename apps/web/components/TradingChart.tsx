@@ -1,11 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { createChart, IChartApi, ISeriesApi, ColorType, UTCTimestamp } from 'lightweight-charts';
-import { motion } from 'framer-motion';
-import { useTheme } from 'next-themes';
-import { TrendingUpIcon, TrendingDownIcon, BarChart3Icon, LineChartIcon } from 'lucide-react';
-import { LoadingSpinner } from './LoadingSpinner';
+import { useEffect, useRef, useState } from "react";
+import {
+  createChart,
+  IChartApi,
+  ISeriesApi,
+  ColorType,
+  UTCTimestamp,
+} from "lightweight-charts";
+import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
+import {
+  TrendingUpIcon,
+  TrendingDownIcon,
+  BarChart3Icon,
+  LineChartIcon,
+} from "lucide-react";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface ChartDataPoint {
   time: UTCTimestamp;
@@ -25,73 +36,75 @@ interface TradingChartProps {
   className?: string;
 }
 
-type Timeframe = '1H' | '4H' | '1D' | '1W' | '1M';
-type ChartType = 'candlestick' | 'line' | 'area';
+type Timeframe = "1H" | "4H" | "1D" | "1W" | "1M";
+type ChartType = "candlestick" | "line" | "area";
 
 // Stable empty array reference to prevent unnecessary re-renders
 const EMPTY_DATA: ChartDataPoint[] = [];
 
 export function TradingChart({
-  symbol = 'DEMO',
+  symbol = "DEMO",
   data = EMPTY_DATA,
   height = 400,
   showTimeframes = true,
   showIndicators = true,
-  className = '',
+  className = "",
 }: TradingChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
-  const candlestickSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
+  const candlestickSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const dataRef = useRef<ChartDataPoint[]>(EMPTY_DATA);
-  const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe>('1D');
-  const [chartType, setChartType] = useState<ChartType>('candlestick');
+  const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe>("1D");
+  const [chartType, setChartType] = useState<ChartType>("candlestick");
   const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
   const { theme } = useTheme();
 
-  const timeframes: Timeframe[] = ['1H', '4H', '1D', '1W', '1M'];
+  const timeframes: Timeframe[] = ["1H", "4H", "1D", "1W", "1M"];
 
   // Initialize chart
   useEffect(() => {
     if (!chartContainerRef.current) return;
 
-    const isDark = theme === 'dark';
-    
+    const isDark = theme === "dark";
+
     const chart = createChart(chartContainerRef.current, {
       width: chartContainerRef.current.clientWidth,
       height,
       layout: {
-        background: { type: ColorType.Solid, color: 'transparent' },
-        textColor: isDark ? '#E5E7EB' : '#374151',
+        background: { type: ColorType.Solid, color: "transparent" },
+        textColor: isDark ? "#E5E7EB" : "#374151",
       },
       grid: {
         vertLines: {
-          color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+          color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
         },
         horzLines: {
-          color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+          color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
         },
       },
       crosshair: {
         mode: 1, // Normal crosshair
       },
       timeScale: {
-        borderColor: isDark ? '#374151' : '#D1D5DB',
+        borderColor: isDark ? "#374151" : "#D1D5DB",
         timeVisible: true,
         secondsVisible: false,
       },
       rightPriceScale: {
-        borderColor: isDark ? '#374151' : '#D1D5DB',
+        borderColor: isDark ? "#374151" : "#D1D5DB",
       },
     });
 
-    const candlestickSeries = chart.addCandlestickSeries({
-      upColor: '#00D4AA',
-      downColor: '#F6465D',
-      borderDownColor: '#F6465D',
-      borderUpColor: '#00D4AA',
-      wickDownColor: '#F6465D',
-      wickUpColor: '#00D4AA',
+    // Use correct v4 API for candlestick series
+    const candlestickSeries = chart.addCandlestickSeries();
+    candlestickSeries.applyOptions({
+      upColor: "#00D4AA",
+      downColor: "#F6465D",
+      borderDownColor: "#F6465D",
+      borderUpColor: "#00D4AA",
+      wickDownColor: "#F6465D",
+      wickUpColor: "#00D4AA",
     });
 
     chartRef.current = chart;
@@ -106,10 +119,10 @@ export function TradingChart({
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       if (chartRef.current) {
         chartRef.current.remove();
         chartRef.current = null;
@@ -122,26 +135,26 @@ export function TradingChart({
   useEffect(() => {
     if (!chartRef.current) return;
 
-    const isDark = theme === 'dark';
-    
+    const isDark = theme === "dark";
+
     chartRef.current.applyOptions({
       layout: {
-        background: { type: ColorType.Solid, color: 'transparent' },
-        textColor: isDark ? '#E5E7EB' : '#374151',
+        background: { type: ColorType.Solid, color: "transparent" },
+        textColor: isDark ? "#E5E7EB" : "#374151",
       },
       grid: {
         vertLines: {
-          color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+          color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
         },
         horzLines: {
-          color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+          color: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
         },
       },
       timeScale: {
-        borderColor: isDark ? '#374151' : '#D1D5DB',
+        borderColor: isDark ? "#374151" : "#D1D5DB",
       },
       rightPriceScale: {
-        borderColor: isDark ? '#374151' : '#D1D5DB',
+        borderColor: isDark ? "#374151" : "#D1D5DB",
       },
     });
   }, [theme]);
@@ -150,7 +163,7 @@ export function TradingChart({
   useEffect(() => {
     // Only update if data reference actually changed and has content
     if (data !== dataRef.current && data.length > 0 && data !== EMPTY_DATA) {
-      console.log('TradingChart: Using provided data', data.length, 'points');
+      console.log("TradingChart: Using provided data", data.length, "points");
       dataRef.current = data;
       setChartData(data);
       setLoading(false);
@@ -165,32 +178,41 @@ export function TradingChart({
         return;
       }
 
-      console.log('TradingChart: Loading data from API', { symbol, selectedTimeframe });
+      console.log("TradingChart: Loading data from API", {
+        symbol,
+        selectedTimeframe,
+      });
       setLoading(true);
       try {
         // Fetch data from API
-        const response = await fetch(`/api/market?type=chart&symbol=${symbol}&timeframe=${selectedTimeframe}&days=30`);
+        const response = await fetch(
+          `/api/market?type=chart&symbol=${symbol}&timeframe=${selectedTimeframe}&days=30`
+        );
         const result = await response.json();
-        
+
         if (response.ok && result.data && result.data.ohlc) {
           const apiData = result.data.ohlc || [];
-          
+
           // Convert to proper format for Lightweight Charts
           const formattedData = apiData.map((item: any) => ({
             ...item,
             time: item.time as UTCTimestamp,
           }));
-          
-          console.log('TradingChart: API data loaded', formattedData.length, 'points');
+
+          console.log(
+            "TradingChart: API data loaded",
+            formattedData.length,
+            "points"
+          );
           setChartData(formattedData);
         } else {
-          console.warn('Failed to fetch chart data:', result);
+          console.warn("Failed to fetch chart data:", result);
           // Set empty data to stop loading
           setChartData([]);
         }
         setLoading(false);
       } catch (error) {
-        console.error('Failed to load chart data:', error);
+        console.error("Failed to load chart data:", error);
         setChartData([]);
         setLoading(false);
       }
@@ -204,7 +226,7 @@ export function TradingChart({
     if (!candlestickSeriesRef.current || chartData.length === 0) return;
 
     candlestickSeriesRef.current.setData(chartData);
-    
+
     // Fit content after data is loaded
     if (chartRef.current) {
       chartRef.current.timeScale().fitContent();
@@ -215,10 +237,13 @@ export function TradingChart({
     setSelectedTimeframe(timeframe);
   };
 
-  const currentPrice = chartData.length > 0 ? chartData[chartData.length - 1].close : 0;
-  const previousPrice = chartData.length > 1 ? chartData[chartData.length - 2].close : currentPrice;
+  const currentPrice =
+    chartData.length > 0 ? chartData[chartData.length - 1].close : 0;
+  const previousPrice =
+    chartData.length > 1 ? chartData[chartData.length - 2].close : currentPrice;
   const priceChange = currentPrice - previousPrice;
-  const priceChangePercent = previousPrice > 0 ? (priceChange / previousPrice) * 100 : 0;
+  const priceChangePercent =
+    previousPrice > 0 ? (priceChange / previousPrice) * 100 : 0;
   const isPositive = priceChange >= 0;
 
   return (
@@ -230,20 +255,23 @@ export function TradingChart({
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               {symbol}
             </h3>
-            
+
             {/* Price Information */}
             <div className="flex items-center space-x-2">
               <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                 ${currentPrice.toFixed(2)}
               </span>
-              <div className={`flex items-center space-x-1 ${isPositive ? 'text-success' : 'text-danger'}`}>
+              <div
+                className={`flex items-center space-x-1 ${isPositive ? "text-success" : "text-danger"}`}
+              >
                 {isPositive ? (
                   <TrendingUpIcon className="w-4 h-4" />
                 ) : (
                   <TrendingDownIcon className="w-4 h-4" />
                 )}
                 <span className="font-medium">
-                  {isPositive ? '+' : ''}{priceChange.toFixed(2)} ({priceChangePercent.toFixed(2)}%)
+                  {isPositive ? "+" : ""}
+                  {priceChange.toFixed(2)} ({priceChangePercent.toFixed(2)}%)
                 </span>
               </div>
             </div>
@@ -252,22 +280,22 @@ export function TradingChart({
           {/* Chart Type Toggle */}
           <div className="flex items-center space-x-2">
             <motion.button
-              onClick={() => setChartType('candlestick')}
+              onClick={() => setChartType("candlestick")}
               className={`p-2 rounded-md transition-colors duration-200 ${
-                chartType === 'candlestick'
-                  ? 'bg-destock-primary text-white'
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                chartType === "candlestick"
+                  ? "bg-destock-primary text-white"
+                  : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
               }`}
               whileTap={{ scale: 0.95 }}
             >
               <BarChart3Icon className="w-4 h-4" />
             </motion.button>
             <motion.button
-              onClick={() => setChartType('line')}
+              onClick={() => setChartType("line")}
               className={`p-2 rounded-md transition-colors duration-200 ${
-                chartType === 'line'
-                  ? 'bg-destock-primary text-white'
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                chartType === "line"
+                  ? "bg-destock-primary text-white"
+                  : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
               }`}
               whileTap={{ scale: 0.95 }}
             >
@@ -285,8 +313,8 @@ export function TradingChart({
                 onClick={() => handleTimeframeChange(timeframe)}
                 className={`px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 ${
                   selectedTimeframe === timeframe
-                    ? 'bg-destock-primary text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? "bg-destock-primary text-white shadow-sm"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 }`}
                 whileTap={{ scale: 0.95 }}
               >
@@ -304,10 +332,10 @@ export function TradingChart({
             <LoadingSpinner />
           </div>
         )}
-        
+
         <motion.div
           ref={chartContainerRef}
-          className={`${loading ? 'opacity-30' : 'opacity-100'} transition-opacity duration-200`}
+          className={`${loading ? "opacity-30" : "opacity-100"} transition-opacity duration-200`}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: loading ? 0.3 : 1, scale: 1 }}
           transition={{ duration: 0.3 }}
@@ -321,25 +349,38 @@ export function TradingChart({
           <div>
             <span className="text-gray-500 dark:text-gray-400 block">Open</span>
             <span className="font-medium text-gray-900 dark:text-gray-100">
-              ${chartData.length > 0 ? chartData[chartData.length - 1].open.toFixed(2) : '0.00'}
+              $
+              {chartData.length > 0
+                ? chartData[chartData.length - 1].open.toFixed(2)
+                : "0.00"}
             </span>
           </div>
           <div>
             <span className="text-gray-500 dark:text-gray-400 block">High</span>
             <span className="font-medium text-success">
-              ${chartData.length > 0 ? chartData[chartData.length - 1].high.toFixed(2) : '0.00'}
+              $
+              {chartData.length > 0
+                ? chartData[chartData.length - 1].high.toFixed(2)
+                : "0.00"}
             </span>
           </div>
           <div>
             <span className="text-gray-500 dark:text-gray-400 block">Low</span>
             <span className="font-medium text-danger">
-              ${chartData.length > 0 ? chartData[chartData.length - 1].low.toFixed(2) : '0.00'}
+              $
+              {chartData.length > 0
+                ? chartData[chartData.length - 1].low.toFixed(2)
+                : "0.00"}
             </span>
           </div>
           <div>
-            <span className="text-gray-500 dark:text-gray-400 block">Volume</span>
+            <span className="text-gray-500 dark:text-gray-400 block">
+              Volume
+            </span>
             <span className="font-medium text-gray-900 dark:text-gray-100">
-              {chartData.length > 0 ? (chartData[chartData.length - 1].volume || 0).toLocaleString() : '0'}
+              {chartData.length > 0
+                ? (chartData[chartData.length - 1].volume || 0).toLocaleString()
+                : "0"}
             </span>
           </div>
         </div>

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 60, "column": 0}, "map": {"version":3,"sources":["file:///home/shri/web3Hackathon/DeStock/apps/web/app/api/market/route.ts"],"sourcesContent":["import { NextResponse } from 'next/server';\nimport { NextRequest } from 'next/server';\n\nexport async function GET(request: NextRequest) {\n  const searchParams = request.nextUrl.searchParams;\n  const type = searchParams.get('type');\n\n  if (type === 'companies') {\n    try {\n      const res = await fetch('http://localhost:3000/prices/all');\n      const data = await res.json();\n      return NextResponse.json({ companies: data });\n    } catch (error) {\n      console.error('Failed to fetch companies from backend:', error);\n      return NextResponse.json({ error: 'Failed to fetch companies' }, { status: 500 });\n    }\n  }\n\n  return NextResponse.json({ error: 'Invalid type' }, { status: 400 });\n}"],"names":[],"mappings":";;;AAAA;;AAGO,eAAe,IAAI,OAAoB;IAC5C,MAAM,eAAe,QAAQ,OAAO,CAAC,YAAY;IACjD,MAAM,OAAO,aAAa,GAAG,CAAC;IAE9B,IAAI,SAAS,aAAa;QACxB,IAAI;YACF,MAAM,MAAM,MAAM,MAAM;YACxB,MAAM,OAAO,MAAM,IAAI,IAAI;YAC3B,OAAO,gIAAA,CAAA,eAAY,CAAC,IAAI,CAAC;gBAAE,WAAW;YAAK;QAC7C,EAAE,OAAO,OAAO;YACd,QAAQ,KAAK,CAAC,2CAA2C;YACzD,OAAO,gIAAA,CAAA,eAAY,CAAC,IAAI,CAAC;gBAAE,OAAO;YAA4B,GAAG;gBAAE,QAAQ;YAAI;QACjF;IACF;IAEA,OAAO,gIAAA,CAAA,eAAY,CAAC,IAAI,CAAC;QAAE,OAAO;IAAe,GAAG;QAAE,QAAQ;IAAI;AACpE","debugId":null}}]
+}

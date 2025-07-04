@@ -1,34 +1,44 @@
-import { useReadContract, useWriteContract, useAccount } from 'wagmi';
-import { getContractAddress, DESTOCK_ABI } from '../contracts';
-import { parseEther } from 'viem';
+import { useReadContract, useWriteContract, useAccount } from "wagmi";
+import { getContractAddress, DESTOCK_ABI } from "../contracts";
+import { parseEther, Address } from "viem";
 
 export function useDeStock() {
   const { chainId } = useAccount();
-  const destockAddress = getContractAddress('DESTOCK', chainId ?? 31337);
+  const destockAddress = getContractAddress("DESTOCK", chainId ?? 31337);
 
-  const { data: nextCompanyId, refetch: refetchNextCompanyId } = useReadContract({
-    abi: DESTOCK_ABI,
-    address: destockAddress,
-    functionName: 'nextCompanyId',
-  });
+  const { data: nextCompanyId, refetch: refetchNextCompanyId } =
+    useReadContract({
+      abi: DESTOCK_ABI,
+      address: destockAddress,
+      functionName: "nextCompanyId",
+    });
 
-  const { writeContractAsync: registerCompany, isPending, isConfirming, isConfirmed, error } = useWriteContract();
+  const {
+    writeContractAsync: registerCompany,
+    isPending,
+    error,
+  } = useWriteContract();
 
-  const handleRegisterCompany = async (name: string, totalSupply: string, initialLiquidity: string, ipfsMetadataUri: string) => {
+  const handleRegisterCompany = async (
+    name: string,
+    totalSupply: string,
+    initialLiquidity: string
+  ) => {
     await registerCompany({
       abi: DESTOCK_ABI,
       address: destockAddress,
-      functionName: 'registerCompany',
-      args: [name, BigInt(totalSupply), parseEther(initialLiquidity), ipfsMetadataUri],
+      functionName: "registerCompany",
+      args: [name, parseEther(initialLiquidity), BigInt(totalSupply)],
     });
     refetchNextCompanyId();
   };
 
+  // Use 'companies' for company details
   const getCompany = (companyId: number) => {
     return useReadContract({
       abi: DESTOCK_ABI,
       address: destockAddress,
-      functionName: 'getCompanyDetails',
+      functionName: "companies",
       args: [BigInt(companyId)],
     });
   };
@@ -37,26 +47,17 @@ export function useDeStock() {
     return useReadContract({
       abi: DESTOCK_ABI,
       address: destockAddress,
-      functionName: 'getSharePrice',
+      functionName: "getSharePrice",
       args: [BigInt(companyId)],
     });
   };
 
-  const getBuyPrice = (companyId: number, amount: string) => {
+  const getShareBalance = (companyId: number, userAddress: Address) => {
     return useReadContract({
       abi: DESTOCK_ABI,
       address: destockAddress,
-      functionName: 'getBuyPrice',
-      args: [BigInt(companyId), BigInt(amount)],
-    });
-  };
-
-  const getSellPrice = (companyId: number, amount: string) => {
-    return useReadContract({
-      abi: DESTOCK_ABI,
-      address: destockAddress,
-      functionName: 'getSellPrice',
-      args: [BigInt(companyId), BigInt(amount)],
+      functionName: "balanceOf",
+      args: [userAddress, BigInt(companyId)],
     });
   };
 
@@ -67,13 +68,10 @@ export function useDeStock() {
     nextCompanyId: Number(nextCompanyId),
     registerCompany: handleRegisterCompany,
     isPending,
-    isConfirming,
-    isConfirmed,
     error,
     getCompany,
     getSharePrice,
-    getBuyPrice,
-    getSellPrice,
+    getShareBalance,
     buyShares,
     sellShares,
   };
