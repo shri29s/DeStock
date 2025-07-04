@@ -1,0 +1,17 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "deploy": "forge script script/Deploy.s.sol --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast",
+    "deploy:local": "forge script script/Deploy.s.sol --rpc-url http://127.0.0.1:8545 --private-key $PRIVATE_KEY --broadcast",
+    "copy-abi": "node scripts/copy-abi.js",
+    "postbuild": "npm run copy-abi",
+    "clean": "forge clean"
+  },
+  "devDependencies": {
+    "fs-extra": "^11.3.0"
+  }
+}

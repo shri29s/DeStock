@@ -1,0 +1,34 @@
+{
+  "name": "destock-monorepo",
+  "version": "1.0.0",
+  "description": "DeStock - Decentralized Stock Trading Platform",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm --prefix apps/web run dev",
+    "build": "npm --prefix packages/contracts run build && npm --prefix apps/web run build",
+    "start": "npm --prefix apps/web run start",
+    "lint": "npm --prefix apps/web run lint",
+    "clean": "npm --prefix apps/web run clean",
+    "contracts:build": "npm --prefix packages/contracts run build",
+    "contracts:test": "npm --prefix packages/contracts run test",
+    "contracts:deploy": "npm --prefix packages/contracts run deploy",
+    "web:dev": "npm --prefix apps/web run dev",
+    "web:build": "npm --prefix apps/web run build",
+    "web:start": "npm --prefix apps/web run start"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.12.1"
+}
