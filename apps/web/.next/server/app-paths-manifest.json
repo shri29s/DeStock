@@ -1,6 +1,6 @@
 {
-  "/api/faucet/route": "app/api/faucet/route.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/faucet/route": "app/api/faucet/route.js",
   "/api/market/route": "app/api/market/route.js",
   "/api/portfolio/[address]/route": "app/api/portfolio/[address]/route.js",
   "/api/portfolio/route": "app/api/portfolio/route.js",
