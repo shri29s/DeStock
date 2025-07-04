@@ -19,6 +19,7 @@ contract DeStock is ERC1155, Ownable, ReentrancyGuard {
         uint256 totalSupply;
         uint256 tokenReserve; // DSTK tokens
         uint256 shareReserve; // Share tokens
+        string ipfsMetadataUri;
     }
 
     mapping(uint256 => Company) public companies;
@@ -54,7 +55,8 @@ contract DeStock is ERC1155, Ownable, ReentrancyGuard {
     function registerCompany(
         string calldata name,
         uint256 totalSupply,
-        uint256 initialLiquidity // In unit like wei
+        uint256 initialLiquidity, // In unit like wei
+        string calldata ipfsMetadataUri
     ) external {
         require(totalSupply > 0, "DeStock: total supply must be > 0");
         require(
@@ -71,7 +73,8 @@ contract DeStock is ERC1155, Ownable, ReentrancyGuard {
             owner: msg.sender,
             totalSupply: totalSupply,
             tokenReserve: initialLiquidity,
-            shareReserve: totalSupply
+            shareReserve: totalSupply,
+            ipfsMetadataUri: ipfsMetadataUri
         });
 
         _mint(msg.sender, companyId, totalSupply, "");
@@ -167,5 +170,9 @@ contract DeStock is ERC1155, Ownable, ReentrancyGuard {
 
     function totalCompanies() public view returns (uint256) {
         return nextCompanyId;
+    }
+
+    function getCompanyMetadataUri(uint256 companyId) external view returns (string memory) {
+        return companies[companyId].ipfsMetadataUri;
     }
 }
