@@ -22,7 +22,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <LazyMotion features={domAnimation}>
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>
-            <WebSocketProvider url="ws://localhost:8080">
+            <WebSocketProvider url="ws://localhost:8080" enabled={process.env.NODE_ENV === 'development'}>
               {children}
               <Toaster 
                 position="top-right"

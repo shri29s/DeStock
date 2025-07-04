@@ -47,9 +47,10 @@ export function useWebSocket() {
 interface WebSocketProviderProps {
   children: React.ReactNode;
   url?: string;
+  enabled?: boolean;
 }
 
-export function WebSocketProvider({ children, url = 'ws://localhost:8080' }: WebSocketProviderProps) {
+export function WebSocketProvider({ children, url = 'ws://localhost:8080', enabled = false }: WebSocketProviderProps) {
   const ws = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
   const [isConnected, setIsConnected] = useState(false);
@@ -60,6 +61,11 @@ export function WebSocketProvider({ children, url = 'ws://localhost:8080' }: Web
   const [subscriptions, setSubscriptions] = useState<Set<number>>(new Set());
 
   const connect = () => {
+    if (!enabled) {
+      console.log('WebSocket connection disabled');
+      return;
+    }
+    
     if (ws.current?.readyState === WebSocket.OPEN) return;
 
     setConnectionStatus('connecting');
@@ -115,8 +121,8 @@ export function WebSocketProvider({ children, url = 'ws://localhost:8080' }: Web
         setIsConnected(false);
         setConnectionStatus('disconnected');
         
-        // Attempt to reconnect after 3 seconds
-        if (!event.wasClean) {
+        // Only attempt to reconnect if enabled and it wasn't a clean close
+        if (enabled && !event.wasClean) {
           reconnectTimeoutRef.current = setTimeout(() => {
             connect();
           }, 3000);
@@ -124,12 +130,13 @@ export function WebSocketProvider({ children, url = 'ws://localhost:8080' }: Web
       };
 
       ws.current.onerror = (error) => {
-        console.error('WebSocket error:', error);
+        console.log('WebSocket connection failed - services may not be running');
         setConnectionStatus('error');
+        setIsConnected(false);
       };
 
     } catch (error) {
-      console.error('Failed to create WebSocket connection:', error);
+      console.log('Failed to create WebSocket connection - services may not be running');
       setConnectionStatus('error');
     }
   };
@@ -175,12 +182,14 @@ export function WebSocketProvider({ children, url = 'ws://localhost:8080' }: Web
   };
 
   useEffect(() => {
-    connect();
+    if (enabled) {
+      connect();
+    }
     
     return () => {
       disconnect();
     };
-  }, [url]);
+  }, [url, enabled]);
 
   const contextValue: WebSocketContextValue = {
     isConnected,

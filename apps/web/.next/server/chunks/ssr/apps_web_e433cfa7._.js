@@ -324,13 +324,18 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$mo
 ;
 ;
 function AnimatedCounter({ value, format = 'decimal', decimals = 2, prefix = '', suffix = '', duration = 0.5, className = '', colorChange = false, previousValue }) {
-    const [displayValue, setDisplayValue] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(value);
+    // Ensure value is a valid number
+    const safeValue = typeof value === 'number' && !isNaN(value) ? value : 0;
+    const safePreviousValue = typeof previousValue === 'number' && !isNaN(previousValue) ? previousValue : undefined;
+    const [displayValue, setDisplayValue] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(safeValue);
     const [isChanging, setIsChanging] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const springValue = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$value$2f$use$2d$spring$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSpring"])(value, {
+    const springValue = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$value$2f$use$2d$spring$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSpring"])(safeValue, {
         stiffness: 100,
         damping: 15
     });
     const displayNumber = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$value$2f$use$2d$transform$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useTransform"])(springValue, (latest)=>{
+        // Ensure latest is a valid number
+        const safeLatest = typeof latest === 'number' && !isNaN(latest) ? latest : 0;
         let formatted;
         switch(format){
             case 'currency':
@@ -339,41 +344,41 @@ function AnimatedCounter({ value, format = 'decimal', decimals = 2, prefix = '',
                     currency: 'USD',
                     minimumFractionDigits: decimals,
                     maximumFractionDigits: decimals
-                }).format(latest);
+                }).format(safeLatest);
                 break;
             case 'percentage':
-                formatted = `${latest.toFixed(decimals)}%`;
+                formatted = `${safeLatest.toFixed(decimals)}%`;
                 break;
             case 'integer':
-                formatted = Math.round(latest).toLocaleString();
+                formatted = Math.round(safeLatest).toLocaleString();
                 break;
             case 'decimal':
             default:
-                formatted = latest.toFixed(decimals);
+                formatted = safeLatest.toFixed(decimals);
                 break;
         }
         return `${prefix}${formatted}${suffix}`;
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (value !== displayValue) {
+        if (safeValue !== displayValue) {
             setIsChanging(true);
-            springValue.set(value);
-            setDisplayValue(value);
+            springValue.set(safeValue);
+            setDisplayValue(safeValue);
             const timer = setTimeout(()=>{
                 setIsChanging(false);
             }, duration * 1000);
             return ()=>clearTimeout(timer);
         }
     }, [
-        value,
+        safeValue,
         displayValue,
         springValue,
         duration
     ]);
     const getChangeColor = ()=>{
-        if (!colorChange || previousValue === undefined) return '';
-        if (value > previousValue) return 'text-success';
-        if (value < previousValue) return 'text-danger';
+        if (!colorChange || safePreviousValue === undefined) return '';
+        if (safeValue > safePreviousValue) return 'text-success';
+        if (safeValue < safePreviousValue) return 'text-danger';
         return '';
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].span, {
@@ -394,7 +399,7 @@ function AnimatedCounter({ value, format = 'decimal', decimals = 2, prefix = '',
         children: displayNumber
     }, void 0, false, {
         fileName: "[project]/apps/web/components/AnimatedCounter.tsx",
-        lineNumber: 87,
+        lineNumber: 93,
         columnNumber: 5
     }, this);
 }

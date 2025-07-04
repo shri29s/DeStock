@@ -100,7 +100,9 @@ export function TradeView() {
 
   const calculateCost = () => {
     if (!selectedCompany || !watchedAmount) return '0';
-    return (parseFloat(selectedCompany.price) * parseFloat(watchedAmount)).toFixed(2);
+    const price = parseFloat(selectedCompany.price) || 0;
+    const amount = parseFloat(watchedAmount) || 0;
+    return (price * amount).toFixed(2);
   };
 
   const onSubmit = async (data: FormData) => {
@@ -124,16 +126,33 @@ export function TradeView() {
   const canTrade = () => {
     if (!selectedCompany || !watchedAmount) return false;
     
-    const amount = parseFloat(watchedAmount);
+    const amount = parseFloat(watchedAmount) || 0;
     if (amount <= 0) return false;
 
     if (tradeType === 'buy') {
-      const cost = parseFloat(calculateCost());
-      return parseFloat(balance) >= cost;
+      const cost = parseFloat(calculateCost()) || 0;
+      const userBalance = parseFloat(balance) || 0;
+      return userBalance >= cost;
     } else {
-      return parseFloat(userShares) >= amount;
+      const userSharesAmount = parseFloat(userShares) || 0;
+      return userSharesAmount >= amount;
     }
   };
+
+  // Prevent hydration mismatch by only rendering after client-side mount
+  if (!mounted) {
+    return (
+      <div className="trading-card text-center" suppressHydrationWarning={true}>
+        <ShoppingCartIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+          Trade Shares
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400">
+          Loading trading interface...
+        </p>
+      </div>
+    );
+  }
 
   if (!isConnected) {
     return (
@@ -144,21 +163,6 @@ export function TradeView() {
         </h3>
         <p className="text-gray-600 dark:text-gray-400">
           Connect your wallet to start trading shares.
-        </p>
-      </div>
-    );
-  }
-
-  // Render simple version before hydration to prevent mismatch
-  if (!mounted) {
-    return (
-      <div className="trading-card text-center">
-        <ShoppingCartIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-          Trade Shares
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400">
-          Loading trading interface...
         </p>
       </div>
     );
@@ -286,7 +290,7 @@ export function TradeView() {
                   transition={{ duration: 0.3 }}
                 >
                   <AnimatedCounter 
-                    value={parseFloat(selectedCompany.price)} 
+                    value={parseFloat(selectedCompany.price) || 0} 
                     suffix=" DSTK"
                     decimals={2}
                   />
@@ -295,7 +299,7 @@ export function TradeView() {
               <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center justify-between">
                 <span>Your Holdings:</span>
                 <AnimatedCounter 
-                  value={parseFloat(userShares)} 
+                  value={parseFloat(userShares) || 0} 
                   suffix=" shares"
                   decimals={0}
                   className="font-medium"
@@ -364,7 +368,7 @@ export function TradeView() {
                 <div className="flex justify-between font-semibold border-t border-white/10 dark:border-black/10 pt-2 text-gray-900 dark:text-gray-100">
                   <span>Total {tradeType === 'buy' ? 'Cost' : 'Proceeds'}:</span>
                   <AnimatedCounter 
-                    value={parseFloat(calculateCost())} 
+                    value={parseFloat(calculateCost()) || 0} 
                     suffix=" DSTK"
                     decimals={2}
                     className={tradeType === 'buy' ? 'text-danger' : 'text-success'}
@@ -375,7 +379,7 @@ export function TradeView() {
                 <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-between">
                   <span>Your DSTK Balance:</span>
                   <AnimatedCounter 
-                    value={parseFloat(balance || '0')} 
+                    value={parseFloat(balance || '0') || 0} 
                     suffix=" DSTK"
                     decimals={2}
                     className="font-medium"

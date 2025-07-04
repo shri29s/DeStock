@@ -77,7 +77,7 @@ function useWebSocket() {
     }
     return context;
 }
-function WebSocketProvider({ children, url = 'ws://localhost:8080' }) {
+function WebSocketProvider({ children, url = 'ws://localhost:8080', enabled = false }) {
     const ws = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const reconnectTimeoutRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])();
     const [isConnected, setIsConnected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -87,6 +87,10 @@ function WebSocketProvider({ children, url = 'ws://localhost:8080' }) {
     const [recentTrades, setRecentTrades] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(new Map());
     const [subscriptions, setSubscriptions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(new Set());
     const connect = ()=>{
+        if (!enabled) {
+            console.log('WebSocket connection disabled');
+            return;
+        }
         if (ws.current?.readyState === WebSocket.OPEN) return;
         setConnectionStatus('connecting');
         try {
@@ -134,19 +138,20 @@ function WebSocketProvider({ children, url = 'ws://localhost:8080' }) {
                 console.log('WebSocket disconnected:', event.code, event.reason);
                 setIsConnected(false);
                 setConnectionStatus('disconnected');
-                // Attempt to reconnect after 3 seconds
-                if (!event.wasClean) {
+                // Only attempt to reconnect if enabled and it wasn't a clean close
+                if (enabled && !event.wasClean) {
                     reconnectTimeoutRef.current = setTimeout(()=>{
                         connect();
                     }, 3000);
                 }
             };
             ws.current.onerror = (error)=>{
-                console.error('WebSocket error:', error);
+                console.log('WebSocket connection failed - services may not be running');
                 setConnectionStatus('error');
+                setIsConnected(false);
             };
         } catch (error) {
-            console.error('Failed to create WebSocket connection:', error);
+            console.log('Failed to create WebSocket connection - services may not be running');
             setConnectionStatus('error');
         }
     };
@@ -184,12 +189,15 @@ function WebSocketProvider({ children, url = 'ws://localhost:8080' }) {
         }
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        connect();
+        if (enabled) {
+            connect();
+        }
         return ()=>{
             disconnect();
         };
     }, [
-        url
+        url,
+        enabled
     ]);
     const contextValue = {
         isConnected,
@@ -205,7 +213,7 @@ function WebSocketProvider({ children, url = 'ws://localhost:8080' }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/apps/web/lib/providers/WebSocketProvider.tsx",
-        lineNumber: 196,
+        lineNumber: 205,
         columnNumber: 5
     }, this);
 }
@@ -254,6 +262,7 @@ function Providers({ children }) {
                     client: queryClient,
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$providers$2f$WebSocketProvider$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["WebSocketProvider"], {
                         url: "ws://localhost:8080",
+                        enabled: ("TURBOPACK compile-time value", "development") === 'development',
                         children: [
                             children,
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Toaster"], {

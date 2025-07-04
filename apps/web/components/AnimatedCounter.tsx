@@ -26,15 +26,21 @@ export function AnimatedCounter({
   colorChange = false,
   previousValue,
 }: AnimatedCounterProps) {
-  const [displayValue, setDisplayValue] = useState(value);
+  // Ensure value is a valid number
+  const safeValue = typeof value === 'number' && !isNaN(value) ? value : 0;
+  const safePreviousValue = typeof previousValue === 'number' && !isNaN(previousValue) ? previousValue : undefined;
+  
+  const [displayValue, setDisplayValue] = useState(safeValue);
   const [isChanging, setIsChanging] = useState(false);
 
-  const springValue = useSpring(value, {
+  const springValue = useSpring(safeValue, {
     stiffness: 100,
     damping: 15,
   });
 
   const displayNumber = useTransform(springValue, (latest) => {
+    // Ensure latest is a valid number
+    const safeLatest = typeof latest === 'number' && !isNaN(latest) ? latest : 0;
     let formatted: string;
     
     switch (format) {
@@ -44,17 +50,17 @@ export function AnimatedCounter({
           currency: 'USD',
           minimumFractionDigits: decimals,
           maximumFractionDigits: decimals,
-        }).format(latest);
+        }).format(safeLatest);
         break;
       case 'percentage':
-        formatted = `${latest.toFixed(decimals)}%`;
+        formatted = `${safeLatest.toFixed(decimals)}%`;
         break;
       case 'integer':
-        formatted = Math.round(latest).toLocaleString();
+        formatted = Math.round(safeLatest).toLocaleString();
         break;
       case 'decimal':
       default:
-        formatted = latest.toFixed(decimals);
+        formatted = safeLatest.toFixed(decimals);
         break;
     }
 
@@ -62,10 +68,10 @@ export function AnimatedCounter({
   });
 
   useEffect(() => {
-    if (value !== displayValue) {
+    if (safeValue !== displayValue) {
       setIsChanging(true);
-      springValue.set(value);
-      setDisplayValue(value);
+      springValue.set(safeValue);
+      setDisplayValue(safeValue);
       
       const timer = setTimeout(() => {
         setIsChanging(false);
@@ -73,13 +79,13 @@ export function AnimatedCounter({
 
       return () => clearTimeout(timer);
     }
-  }, [value, displayValue, springValue, duration]);
+  }, [safeValue, displayValue, springValue, duration]);
 
   const getChangeColor = () => {
-    if (!colorChange || previousValue === undefined) return '';
+    if (!colorChange || safePreviousValue === undefined) return '';
     
-    if (value > previousValue) return 'text-success';
-    if (value < previousValue) return 'text-danger';
+    if (safeValue > safePreviousValue) return 'text-success';
+    if (safeValue < safePreviousValue) return 'text-danger';
     return '';
   };
 
