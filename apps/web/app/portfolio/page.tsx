@@ -41,6 +41,7 @@ export default function PortfolioPage() {
   const { getShareBalance, nextCompanyId } = useDeStock();
   const [holdings, setHoldings] = useState<HoldingItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [stats, setStats] = useState<PortfolioStats>({
     totalValue: 0,
     totalPnL: 0,
@@ -61,6 +62,11 @@ export default function PortfolioPage() {
       return () => clearInterval(interval);
     }
   }, [isConnected, nextCompanyId]);
+
+  // Fix hydration by ensuring client-side rendering only after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const loadPortfolio = async () => {
     setLoading(true);
@@ -171,11 +177,7 @@ export default function PortfolioPage() {
   if (!isConnected) {
     return (
       <div className="max-w-6xl mx-auto">
-        <motion.div 
-          className="glass-card text-center py-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <div className="glass-card text-center py-16">
           <WalletIcon className="w-20 h-20 text-blue-400 mx-auto mb-6" />
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
             Connect Your Wallet
@@ -183,7 +185,24 @@ export default function PortfolioPage() {
           <p className="text-gray-400 text-lg">
             Connect your wallet to view your portfolio and track your investments.
           </p>
-        </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render simple version before hydration to prevent mismatch
+  if (!mounted) {
+    return (
+      <div className="max-w-6xl mx-auto">
+        <div className="glass-card text-center py-16">
+          <WalletIcon className="w-20 h-20 text-blue-400 mx-auto mb-6" />
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
+            Portfolio Analytics
+          </h1>
+          <p className="text-gray-400 text-lg">
+            Loading your portfolio...
+          </p>
+        </div>
       </div>
     );
   }
@@ -194,6 +213,7 @@ export default function PortfolioPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      suppressHydrationWarning={true}
     >
       {/* Header */}
       <motion.div

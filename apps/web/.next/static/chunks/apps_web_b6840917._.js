@@ -1693,7 +1693,7 @@ function CompanyPage() {
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                className: "text-3xl font-bold text-gray-900",
+                                className: "text-3xl font-bold text-high-contrast",
                                 children: company.name
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1707,7 +1707,7 @@ function CompanyPage() {
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-gray-600",
+                        className: "text-medium-contrast",
                         children: [
                             "Owned by ",
                             formatAddress(company.owner)
@@ -1732,7 +1732,7 @@ function CompanyPage() {
                             className: "p-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-sm font-medium text-gray-500 mb-2",
+                                    className: "text-sm font-semibold text-medium-contrast mb-3",
                                     children: "Current Price"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1743,7 +1743,7 @@ function CompanyPage() {
                                     className: "flex items-center space-x-2",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-2xl font-bold text-gray-900",
+                                            className: "text-2xl font-bold text-high-contrast",
                                             children: [
                                                 company.currentPrice,
                                                 " DSTK"
@@ -1754,7 +1754,7 @@ function CompanyPage() {
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: `inline-flex items-center text-sm ${company.change24h >= 0 ? 'text-green-600' : 'text-red-600'}`,
+                                            className: `inline-flex items-center text-sm font-medium ${company.change24h >= 0 ? 'success' : 'danger'}`,
                                             children: [
                                                 company.change24h >= 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUpIcon$3e$__["TrendingUpIcon"], {
                                                     className: "w-4 h-4 mr-1"
@@ -1801,7 +1801,7 @@ function CompanyPage() {
                             className: "p-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-sm font-medium text-gray-500 mb-2",
+                                    className: "text-sm font-semibold text-medium-contrast mb-3",
                                     children: "Market Cap"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1809,7 +1809,7 @@ function CompanyPage() {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-2xl font-bold text-gray-900",
+                                    className: "text-2xl font-bold text-high-contrast",
                                     children: [
                                         company.marketCap,
                                         " DSTK"
@@ -1836,7 +1836,7 @@ function CompanyPage() {
                             className: "p-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-sm font-medium text-gray-500 mb-2",
+                                    className: "text-sm font-semibold text-medium-contrast mb-3",
                                     children: "Total Supply"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1844,7 +1844,7 @@ function CompanyPage() {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-2xl font-bold text-gray-900",
+                                    className: "text-2xl font-bold text-high-contrast",
                                     children: company.totalSupply
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1868,7 +1868,7 @@ function CompanyPage() {
                             className: "p-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-sm font-medium text-gray-500 mb-2",
+                                    className: "text-sm font-semibold text-medium-contrast mb-3",
                                     children: "Initial Price"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1876,7 +1876,7 @@ function CompanyPage() {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-2xl font-bold text-gray-900",
+                                    className: "text-2xl font-bold text-high-contrast",
                                     children: [
                                         company.initialPrice,
                                         " DSTK"
@@ -1915,7 +1915,7 @@ function CompanyPage() {
                                     className: "p-6",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                            className: "text-lg font-medium text-gray-900 mb-4",
+                                            className: "text-lg font-semibold text-high-contrast mb-4",
                                             children: "Company Information"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1930,7 +1930,7 @@ function CompanyPage() {
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("dt", {
-                                                                className: "text-sm font-medium text-gray-500",
+                                                                className: "text-sm font-medium text-medium-contrast",
                                                                 children: "Company ID"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1938,7 +1938,7 @@ function CompanyPage() {
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("dd", {
-                                                                className: "text-sm text-gray-900",
+                                                                className: "text-sm text-high-contrast font-medium",
                                                                 children: company.id
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1954,7 +1954,7 @@ function CompanyPage() {
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("dt", {
-                                                                className: "text-sm font-medium text-gray-500",
+                                                                className: "text-sm font-medium text-medium-contrast",
                                                                 children: "Owner"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1962,7 +1962,7 @@ function CompanyPage() {
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("dd", {
-                                                                className: "text-sm text-gray-900",
+                                                                className: "text-sm text-high-contrast font-medium",
                                                                 children: formatAddress(company.owner)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1978,7 +1978,7 @@ function CompanyPage() {
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("dt", {
-                                                                className: "text-sm font-medium text-gray-500",
+                                                                className: "text-sm font-medium text-medium-contrast",
                                                                 children: "Total Shares"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -1986,7 +1986,7 @@ function CompanyPage() {
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("dd", {
-                                                                className: "text-sm text-gray-900",
+                                                                className: "text-sm text-high-contrast font-medium",
                                                                 children: company.totalSupply
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -2002,7 +2002,7 @@ function CompanyPage() {
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("dt", {
-                                                                className: "text-sm font-medium text-gray-500",
+                                                                className: "text-sm font-medium text-medium-contrast",
                                                                 children: "Launch Price"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -2010,7 +2010,7 @@ function CompanyPage() {
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("dd", {
-                                                                className: "text-sm text-gray-900",
+                                                                className: "text-sm text-high-contrast font-medium",
                                                                 children: [
                                                                     company.initialPrice,
                                                                     " DSTK"
@@ -2054,7 +2054,7 @@ function CompanyPage() {
                                     className: "p-6",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                            className: "text-lg font-medium text-gray-900 mb-4",
+                                            className: "text-lg font-semibold text-high-contrast mb-4",
                                             children: "Price Chart"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/company/[id]/page.tsx",
@@ -2062,19 +2062,19 @@ function CompanyPage() {
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "h-64 bg-gray-50 rounded-lg flex items-center justify-center",
+                                            className: "h-64 bg-high-visibility rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "text-center",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUpIcon$3e$__["TrendingUpIcon"], {
-                                                        className: "w-12 h-12 text-gray-400 mx-auto mb-2"
+                                                        className: "w-12 h-12 text-medium-contrast mx-auto mb-2"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/app/company/[id]/page.tsx",
                                                         lineNumber: 208,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-gray-500",
+                                                        className: "text-medium-contrast",
                                                         children: "Price chart coming soon"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/app/company/[id]/page.tsx",
