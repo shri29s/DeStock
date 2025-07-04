@@ -1,222 +1,147 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import { useDeStock } from '@/lib/hooks/useDeStock';
+import { useDeStockToken } from '@/lib/hooks/useDeStockToken';
 import { useAccount } from 'wagmi';
-import { TradeView } from '@/components/TradeView';
-import { BuildingIcon, TrendingUpIcon, TrendingDownIcon, UsersIcon } from 'lucide-react';
+import { formatUnits, parseEther } from 'viem';
+import { useState, useEffect } from 'react';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TradeHistory } from '@/components/TradeHistory';
+import { ShareholderList } from '@/components/ShareholderList';
 
-interface CompanyData {
-  id: number;
-  name: string;
-  owner: string;
-  initialPrice: string;
-  totalSupply: string;
-  currentPrice: string;
-  marketCap: string;
-  change24h: number;
-}
+const schema = z.object({
+  amount: z.string().min(1, 'Amount is required'),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export default function CompanyPage() {
-  const params = useParams();
-  const companyId = params?.id as string;
-  const { isConnected } = useAccount();
-  const { getCompany, getSharePrice } = useDeStock();
-  const [company, setCompany] = useState<CompanyData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
+  const companyId = parseInt(id as string);
+  const { isConnected, address } = useAccount();
+  const { getCompany, getSharePrice, getBuyPrice, getSellPrice, buyShares, sellShares } = useDeStock();
+  const { balance, approve, allowance, isApproving } = useDeStockToken();
+
+  const { data: company } = getCompany(companyId);
+  const { data: sharePrice } = getSharePrice(companyId);
+
+  const [buyPrice, setBuyPrice] = useState<bigint | undefined>();
+  const [sellPrice, setSellPrice] = useState<bigint | undefined>();
+  const [needsApproval, setNeedsApproval] = useState(true);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const watchedAmount = watch('amount');
 
   useEffect(() => {
-    if (companyId && isConnected) {
-      loadCompanyData();
+    if (watchedAmount) {
+      getBuyPrice(companyId, watchedAmount).then(setBuyPrice);
+      getSellPrice(companyId, watchedAmount).then(setSellPrice);
     }
-  }, [companyId, isConnected]);
+  }, [watchedAmount, companyId, getBuyPrice, getSellPrice]);
 
-  const loadCompanyData = async () => {
-    try {
-      // Placeholder implementation - would need real contract calls
-      const mockCompany: CompanyData = {
-        id: parseInt(companyId),
-        name: `Company ${parseInt(companyId) + 1}`,
-        owner: '0x1234567890123456789012345678901234567890',
-        initialPrice: '10.0',
-        totalSupply: '1000',
-        currentPrice: '12.5',
-        marketCap: '12500',
-        change24h: 8.7,
-      };
-      
-      setCompany(mockCompany);
-    } catch (error) {
-      console.error('Failed to load company data:', error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (isConnected && address && allowance && buyPrice) {
+      const currentAllowance = BigInt(allowance.toString());
+      setNeedsApproval(currentAllowance < buyPrice);
+    }
+  }, [isConnected, address, allowance, buyPrice]);
+
+  const handleApprove = async () => {
+    if (buyPrice) {
+      approve(formatUnits(buyPrice, 18));
     }
   };
 
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  const handleBuy = async (data: FormData) => {
+    await buyShares({
+      args: [BigInt(companyId), BigInt(data.amount)],
+    });
   };
 
-  if (!isConnected) {
-    return (
-      <div className="max-w-4xl mx-auto">
-        <div className="destock-card text-center py-12">
-          <BuildingIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Connect Your Wallet
-          </h1>
-          <p className="text-gray-600">
-            Connect your wallet to view company details.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="max-w-6xl mx-auto space-y-8">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="destock-card animate-pulse">
-              <div className="h-32 bg-gray-200 rounded"></div>
-            </div>
-          </div>
-          <div className="destock-card animate-pulse">
-            <div className="h-96 bg-gray-200 rounded"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleSell = async (data: FormData) => {
+    await sellShares({
+      args: [BigInt(companyId), BigInt(data.amount)],
+    });
+  };
 
   if (!company) {
-    return (
-      <div className="max-w-4xl mx-auto">
-        <div className="destock-card text-center py-12">
-          <BuildingIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Company Not Found
-          </h1>
-          <p className="text-gray-600">
-            The company you're looking for doesn't exist.
-          </p>
-        </div>
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      {/* Company Header */}
-      <div>
-        <div className="flex items-center space-x-3 mb-4">
-          <BuildingIcon className="w-8 h-8 text-destock-primary" />
-          <h1 className="text-3xl font-bold text-high-contrast">{company.name}</h1>
-        </div>
-        <p className="text-medium-contrast">
-          Owned by {formatAddress(company.owner)}
-        </p>
-      </div>
-
-      {/* Price and Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="destock-card">
-          <div className="p-6">
-            <h3 className="text-sm font-semibold text-medium-contrast mb-3">Current Price</h3>
-            <div className="flex items-center space-x-2">
-              <p className="text-2xl font-bold text-high-contrast">{company.currentPrice} DSTK</p>
-              <span
-                className={`inline-flex items-center text-sm font-medium ${
-                  company.change24h >= 0 ? 'success' : 'danger'
-                }`}
-              >
-                {company.change24h >= 0 ? (
-                  <TrendingUpIcon className="w-4 h-4 mr-1" />
-                ) : (
-                  <TrendingDownIcon className="w-4 h-4 mr-1" />
-                )}
-                {company.change24h >= 0 ? '+' : ''}{company.change24h.toFixed(2)}%
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="destock-card">
-          <div className="p-6">
-            <h3 className="text-sm font-semibold text-medium-contrast mb-3">Market Cap</h3>
-            <p className="text-2xl font-bold text-high-contrast">{company.marketCap} DSTK</p>
-          </div>
-        </div>
-
-        <div className="destock-card">
-          <div className="p-6">
-            <h3 className="text-sm font-semibold text-medium-contrast mb-3">Total Supply</h3>
-            <p className="text-2xl font-bold text-high-contrast">{company.totalSupply}</p>
-          </div>
-        </div>
-
-        <div className="destock-card">
-          <div className="p-6">
-            <h3 className="text-sm font-semibold text-medium-contrast mb-3">Initial Price</h3>
-            <p className="text-2xl font-bold text-high-contrast">{company.initialPrice} DSTK</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Company Info */}
-          <div className="destock-card">
-            <div className="p-6">
-              <h2 className="text-lg font-semibold text-high-contrast mb-4">Company Information</h2>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <dt className="text-sm font-medium text-medium-contrast">Company ID</dt>
-                    <dd className="text-sm text-high-contrast font-medium">{company.id}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-medium text-medium-contrast">Owner</dt>
-                    <dd className="text-sm text-high-contrast font-medium">{formatAddress(company.owner)}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-medium text-medium-contrast">Total Shares</dt>
-                    <dd className="text-sm text-high-contrast font-medium">{company.totalSupply}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-medium text-medium-contrast">Launch Price</dt>
-                    <dd className="text-sm text-high-contrast font-medium">{company.initialPrice} DSTK</dd>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Price Chart Placeholder */}
-          <div className="destock-card">
-            <div className="p-6">
-              <h2 className="text-lg font-semibold text-high-contrast mb-4">Price Chart</h2>
-              <div className="h-64 bg-high-visibility rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700">
-                <div className="text-center">
-                  <TrendingUpIcon className="w-12 h-12 text-medium-contrast mx-auto mb-2" />
-                  <p className="text-medium-contrast">Price chart coming soon</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Trading Panel */}
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4">{company.name}</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <TradeView />
+          <h2 className="text-xl font-semibold">Company Details</h2>
+          <p>Owner: {company.owner}</p>
+          <p>Total Supply: {formatUnits(company.totalSupply, 0)}</p>
+          <p>Share Price: {sharePrice ? formatUnits(sharePrice, 18) : 'N/A'} DSTK</p>
         </div>
+        <div>
+          <h2 className="text-xl font-semibold">Trade</h2>
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
+                Amount
+              </label>
+              <input
+                {...register('amount')}
+                type="number"
+                id="amount"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+              {errors.amount && <p className="text-red-500 text-sm">{errors.amount.message}</p>}
+            </div>
+            {buyPrice && <p>Estimated Cost: {formatUnits(buyPrice, 18)} DSTK</p>}
+            {sellPrice && <p>Estimated Proceeds: {formatUnits(sellPrice, 18)} DSTK</p>}
+
+            <div className="flex space-x-4">
+              {needsApproval ? (
+                <button
+                  type="button"
+                  onClick={handleApprove}
+                  disabled={isApproving}
+                  className="w-full destock-button-secondary"
+                >
+                  {isApproving ? 'Approving...' : 'Approve DSTK'}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleSubmit(handleBuy)}
+                  className="w-full destock-button-primary"
+                >
+                  Buy Shares
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleSubmit(handleSell)}
+                className="w-full destock-button-danger"
+              >
+                Sell Shares
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div className="mt-8">
+        <TradeHistory companyId={companyId} />
+      </div>
+      <div className="mt-8">
+        <ShareholderList companyId={companyId} />
       </div>
     </div>
   );

@@ -5,23 +5,24 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useDeStock } from '@/lib/hooks/useDeStock';
-import { useDSTK } from '@/lib/hooks/useDSTK';
+import { useDeStockToken } from '@/lib/hooks/useDeStockToken';
 import { useAccount } from 'wagmi';
-import { REGISTRATION_FEE } from '@/lib/contracts';
-import { formatUnits } from 'viem';
+import { REGISTRATION_FEE, getContractAddress } from '@/lib/contracts';
+import { formatUnits, parseEther } from 'viem';
 
 const schema = z.object({
   name: z.string().min(1, 'Company name is required').max(50, 'Name too long'),
-  initialPrice: z.string().min(1, 'Initial price is required'),
   totalSupply: z.string().min(1, 'Total supply is required'),
+  initialLiquidity: z.string().min(1, 'Initial liquidity is required'),
+  ipfsMetadataUri: z.string().min(1, 'IPFS Metadata URI is required'),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export function CompanyRegistry() {
-  const { isConnected, address } = useAccount();
+  const { isConnected, address, chainId } = useAccount();
   const { registerCompany, isPending, isConfirming, isConfirmed, error } = useDeStock();
-  const { balance, approve, getAllowance } = useDSTK();
+  const { balance, approve, allowance, isApproving } = useDeStockToken();
   const [needsApproval, setNeedsApproval] = useState(true);
 
   const {
@@ -35,31 +36,32 @@ export function CompanyRegistry() {
   });
 
   const watchedValues = watch();
-  const estimatedCost = watchedValues.initialPrice && watchedValues.totalSupply 
-    ? (parseFloat(watchedValues.initialPrice) * parseFloat(watchedValues.totalSupply) + 100).toString()
+  const estimatedCost = watchedValues.initialLiquidity
+    ? (parseFloat(watchedValues.initialLiquidity) + 100).toString()
     : '100';
 
   const checkApproval = async () => {
-    if (!isConnected || !address) return;
-    
-    // Check if user has enough balance
-    const userBalance = parseFloat(balance);
+    if (!isConnected || !address || !allowance) return;
+
+    const userBalance = balance ? parseFloat(formatUnits(balance, 18)) : 0;
     const requiredBalance = parseFloat(estimatedCost);
-    
+
     if (userBalance < requiredBalance) {
       setNeedsApproval(true);
       return;
     }
 
-    // Check allowance (this would need to be implemented properly with contract address)
-    setNeedsApproval(false);
+    const currentAllowance = parseFloat(formatUnits(allowance, 18));
+    setNeedsApproval(currentAllowance < requiredBalance);
   };
+
+  useState(() => {
+    checkApproval();
+  });
 
   const handleApprove = async () => {
     if (!address) return;
-    
-    // This would need the DeStock contract address
-    // approve(destockContractAddress, estimatedCost);
+    approve(estimatedCost);
   };
 
   const onSubmit = async (data: FormData) => {
@@ -68,14 +70,14 @@ export function CompanyRegistry() {
       return;
     }
 
-    const userBalance = parseFloat(balance);
-    if (userBalance < 100) {
-      alert('Insufficient DSTK balance. You need at least 100 DSTK to register a company.');
+    const userBalance = balance ? parseFloat(formatUnits(balance, 18)) : 0;
+    if (userBalance < parseFloat(estimatedCost)) {
+      alert('Insufficient DSTK balance.');
       return;
     }
 
     try {
-      await registerCompany(data.name, data.initialPrice, data.totalSupply);
+      await registerCompany(data.name, data.totalSupply, data.initialLiquidity, data.ipfsMetadataUri);
       reset();
     } catch (error) {
       console.error('Registration failed:', error);
@@ -120,24 +122,6 @@ export function CompanyRegistry() {
           </div>
 
           <div>
-            <label className="destock-label" htmlFor="initialPrice">
-              Initial Share Price (DSTK)
-            </label>
-            <input
-              {...register('initialPrice')}
-              type="number"
-              step="0.01"
-              min="0.01"
-              id="initialPrice"
-              className="destock-input"
-              placeholder="10.00"
-            />
-            {errors.initialPrice && (
-              <p className="mt-1 text-sm danger">{errors.initialPrice.message}</p>
-            )}
-          </div>
-
-          <div>
             <label className="destock-label" htmlFor="totalSupply">
               Total Share Supply
             </label>
@@ -154,6 +138,40 @@ export function CompanyRegistry() {
             )}
           </div>
 
+          <div>
+            <label className="destock-label" htmlFor="initialLiquidity">
+              Initial Liquidity (DSTK)
+            </label>
+            <input
+              {...register('initialLiquidity')}
+              type="number"
+              step="0.01"
+              min="10"
+              id="initialLiquidity"
+              className="destock-input"
+              placeholder="10000"
+            />
+            {errors.initialLiquidity && (
+              <p className="mt-1 text-sm danger">{errors.initialLiquidity.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="destock-label" htmlFor="ipfsMetadataUri">
+              IPFS Metadata URI
+            </label>
+            <input
+              {...register('ipfsMetadataUri')}
+              type="text"
+              id="ipfsMetadataUri"
+              className="destock-input"
+              placeholder="ipfs://..."
+            />
+            {errors.ipfsMetadataUri && (
+              <p className="mt-1 text-sm danger">{errors.ipfsMetadataUri.message}</p>
+            )}
+          </div>
+
           <div className="bg-high-visibility p-4 rounded-lg border border-gray-200 dark:border-gray-700">
             <h4 className="text-sm font-medium text-high-contrast mb-2">Cost Breakdown</h4>
             <div className="space-y-1 text-sm text-medium-contrast">
@@ -161,11 +179,11 @@ export function CompanyRegistry() {
                 <span>Registration Fee:</span>
                 <span>100 DSTK</span>
               </div>
-              {watchedValues.initialPrice && watchedValues.totalSupply && (
+              {watchedValues.initialLiquidity && (
                 <div className="flex justify-between">
                   <span>Initial Liquidity:</span>
                   <span>
-                    {(parseFloat(watchedValues.initialPrice) * parseFloat(watchedValues.totalSupply)).toFixed(2)} DSTK
+                    {parseFloat(watchedValues.initialLiquidity).toFixed(2)} DSTK
                   </span>
                 </div>
               )}
@@ -175,7 +193,7 @@ export function CompanyRegistry() {
               </div>
             </div>
             <div className="mt-2 text-xs text-low-contrast">
-              Your Balance: {balance} DSTK
+              Your Balance: {balance ? formatUnits(balance, 18) : 0} DSTK
             </div>
           </div>
 
@@ -187,17 +205,28 @@ export function CompanyRegistry() {
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={isPending || isConfirming || parseFloat(balance) < parseFloat(estimatedCost)}
-            className="w-full destock-button-primary disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isPending || isConfirming
-              ? 'Processing...'
-              : parseFloat(balance) < parseFloat(estimatedCost)
-              ? 'Insufficient Balance'
-              : 'Register Company'}
-          </button>
+          {needsApproval ? (
+            <button
+              type="button"
+              onClick={handleApprove}
+              disabled={isApproving || isPending || isConfirming}
+              className="w-full destock-button-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isApproving ? 'Approving...' : 'Approve DSTK'}
+            </button>
+          ) : (
+            <button
+              type="submit"
+              disabled={isPending || isConfirming || (balance ? parseFloat(formatUnits(balance, 18)) : 0) < parseFloat(estimatedCost)}
+              className="w-full destock-button-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isPending || isConfirming
+                ? 'Processing...'
+                : (balance ? parseFloat(formatUnits(balance, 18)) : 0) < parseFloat(estimatedCost)
+                ? 'Insufficient Balance'
+                : 'Register Company'}
+            </button>
+          )}
 
           {isConfirmed && (
             <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">

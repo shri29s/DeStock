@@ -1,122 +1,80 @@
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { DESTOCK_ABI, getContractAddress } from '../contracts';
-import { useCallback, useMemo } from 'react';
-import { Address, parseEther, formatEther } from 'viem';
+import { useReadContract, useWriteContract, useAccount } from 'wagmi';
+import { getContractAddress, DESTOCK_ABI } from '../contracts';
+import { parseEther } from 'viem';
 
 export function useDeStock() {
-  const { address, chainId } = useAccount();
-  
-  const contractAddress = useMemo(() => {
-    if (!chainId) return undefined;
-    return getContractAddress('DESTOCK', chainId);
-  }, [chainId]);
+  const { chainId } = useAccount();
+  const destockAddress = getContractAddress('DESTOCK', chainId ?? 31337);
 
-  const { writeContract, data: hash, error, isPending } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash,
-  });
-
-  // Read functions
-  const { data: nextCompanyId } = useReadContract({
-    address: contractAddress,
+  const { data: nextCompanyId, refetch: refetchNextCompanyId } = useReadContract({
     abi: DESTOCK_ABI,
+    address: destockAddress,
     functionName: 'nextCompanyId',
   });
 
-  const getCompany = useCallback((companyId: number) => {
-    return useReadContract({
-      address: contractAddress,
+  const { writeContractAsync: registerCompany, isPending, isConfirming, isConfirmed, error } = useWriteContract();
+
+  const handleRegisterCompany = async (name: string, totalSupply: string, initialLiquidity: string, ipfsMetadataUri: string) => {
+    await registerCompany({
       abi: DESTOCK_ABI,
-      functionName: 'companies',
+      address: destockAddress,
+      functionName: 'registerCompany',
+      args: [name, BigInt(totalSupply), parseEther(initialLiquidity), ipfsMetadataUri],
+    });
+    refetchNextCompanyId();
+  };
+
+  const getCompany = (companyId: number) => {
+    return useReadContract({
+      abi: DESTOCK_ABI,
+      address: destockAddress,
+      functionName: 'getCompanyDetails',
       args: [BigInt(companyId)],
     });
-  }, [contractAddress]);
+  };
 
-  const getSharePrice = useCallback((companyId: number) => {
+  const getSharePrice = (companyId: number) => {
     return useReadContract({
-      address: contractAddress,
       abi: DESTOCK_ABI,
+      address: destockAddress,
       functionName: 'getSharePrice',
       args: [BigInt(companyId)],
     });
-  }, [contractAddress]);
+  };
 
-  const getShareBalance = useCallback((companyId: number, userAddress?: Address) => {
-    const targetAddress = userAddress || address;
+  const getBuyPrice = (companyId: number, amount: string) => {
     return useReadContract({
-      address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'balanceOf',
-      args: targetAddress ? [targetAddress, BigInt(companyId)] : undefined,
-      query: {
-        enabled: !!targetAddress,
-      },
+      address: destockAddress,
+      functionName: 'getBuyPrice',
+      args: [BigInt(companyId), BigInt(amount)],
     });
-  }, [contractAddress, address]);
+  };
 
-  // Write functions
-  const registerCompany = useCallback(
-    (name: string, initialPrice: string, totalSupply: string) => {
-      if (!contractAddress) return;
-      
-      writeContract({
-        address: contractAddress,
-        abi: DESTOCK_ABI,
-        functionName: 'registerCompany',
-        args: [name, parseEther(initialPrice), BigInt(totalSupply)],
-      });
-    },
-    [contractAddress, writeContract]
-  );
+  const getSellPrice = (companyId: number, amount: string) => {
+    return useReadContract({
+      abi: DESTOCK_ABI,
+      address: destockAddress,
+      functionName: 'getSellPrice',
+      args: [BigInt(companyId), BigInt(amount)],
+    });
+  };
 
-  const buyShares = useCallback(
-    (companyId: number, amount: string) => {
-      if (!contractAddress) return;
-      
-      writeContract({
-        address: contractAddress,
-        abi: DESTOCK_ABI,
-        functionName: 'buyShares',
-        args: [BigInt(companyId), BigInt(amount)],
-      });
-    },
-    [contractAddress, writeContract]
-  );
-
-  const sellShares = useCallback(
-    (companyId: number, amount: string) => {
-      if (!contractAddress) return;
-      
-      writeContract({
-        address: contractAddress,
-        abi: DESTOCK_ABI,
-        functionName: 'sellShares',
-        args: [BigInt(companyId), BigInt(amount)],
-      });
-    },
-    [contractAddress, writeContract]
-  );
+  const { writeContractAsync: buyShares } = useWriteContract();
+  const { writeContractAsync: sellShares } = useWriteContract();
 
   return {
-    // Contract data
-    contractAddress,
-    nextCompanyId: nextCompanyId ? Number(nextCompanyId) : 0,
-    
-    // Read functions
-    getCompany,
-    getSharePrice,
-    getShareBalance,
-    
-    // Write functions
-    registerCompany,
-    buyShares,
-    sellShares,
-    
-    // Transaction state
-    hash,
+    nextCompanyId: Number(nextCompanyId),
+    registerCompany: handleRegisterCompany,
     isPending,
     isConfirming,
     isConfirmed,
     error,
+    getCompany,
+    getSharePrice,
+    getBuyPrice,
+    getSellPrice,
+    buyShares,
+    sellShares,
   };
 }

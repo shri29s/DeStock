@@ -10,13 +10,13 @@ import { TrendingUpIcon, TrendingDownIcon, BuildingIcon, SearchIcon, SortAscIcon
 import { AnimatedCounter } from './AnimatedCounter';
 import { LoadingSpinner } from './LoadingSpinner';
 import { SkeletonLoader } from './SkeletonLoader';
+import { formatUnits } from 'viem';
 
 interface Company {
   id: number;
   name: string;
   symbol?: string;
   owner: string;
-  initialPrice: string;
   totalSupply: string;
   currentPrice?: string;
   change?: number;
@@ -41,50 +41,37 @@ export function CompanyList() {
   const [selectedSector, setSelectedSector] = useState<string>('');
 
   useEffect(() => {
-    loadCompanies();
-  }, []);
+    if (isConnected && nextCompanyId > 0) {
+      loadCompanies();
+    }
+  }, [isConnected, nextCompanyId]);
 
   const loadCompanies = async () => {
     setLoading(true);
-    try {
-      const response = await fetch('/api/market?type=companies');
-      const result = await response.json();
-      setCompanies(result.companies || []);
-    } catch (error) {
-      console.error('Failed to load companies:', error);
-      // Fallback to previous implementation if API fails
-      if (isConnected && nextCompanyId > 0) {
-        await loadCompaniesFromContract();
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadCompaniesFromContract = async () => {
     const companyPromises = [];
     for (let i = 0; i < nextCompanyId; i++) {
       companyPromises.push(loadCompanyData(i));
     }
     const loadedCompanies = await Promise.all(companyPromises);
-    setCompanies(loadedCompanies.filter(Boolean) as Company[]);
+    setCompanies(loadedCompanies.filter(c => c !== null) as Company[]);
+    setLoading(false);
   };
 
   const loadCompanyData = async (id: number): Promise<Company | null> => {
     try {
-      // Note: This would need to be implemented with actual contract calls
-      // const companyData = await getCompany(id);
-      // const priceData = await getSharePrice(id);
+      const companyData = await getCompany(id);
+      const priceData = await getSharePrice(id);
       
-      // Placeholder data for now
-      return {
-        id,
-        name: `Company ${id + 1}`,
-        owner: '0x1234567890123456789012345678901234567890',
-        initialPrice: '10.0',
-        totalSupply: '1000',
-        currentPrice: '12.5',
-      };
+      if (companyData && priceData) {
+        return {
+          id,
+          name: companyData.name,
+          owner: companyData.owner,
+          totalSupply: formatUnits(companyData.totalSupply, 0),
+          currentPrice: formatUnits(priceData, 18),
+        };
+      }
+      return null;
     } catch (error) {
       console.error(`Failed to load company ${id}:`, error);
       return null;

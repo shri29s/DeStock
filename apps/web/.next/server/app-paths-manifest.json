@@ -1,4 +1,13 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/faucet/route": "app/api/faucet/route.js",
   "/api/market/route": "app/api/market/route.js",
-  "/page": "app/page.js"
+  "/api/portfolio/[address]/route": "app/api/portfolio/[address]/route.js",
+  "/api/trades/[companyId]/route": "app/api/trades/[companyId]/route.js",
+  "/api/portfolio/route": "app/api/portfolio/route.js",
+  "/api/shareholders/[companyId]/route": "app/api/shareholders/[companyId]/route.js",
+  "/page": "app/page.js",
+  "/portfolio/page": "app/portfolio/page.js",
+  "/company/[id]/page": "app/company/[id]/page.js",
+  "/register/page": "app/register/page.js"
 }
