@@ -26,7 +26,7 @@ async function connectToDb() {
 
 async function pollAndStorePrices() {
   try {
-    const nextCompanyId = await contract.nextCompanyId();
+    const nextCompanyId = await contract.totalCompanies();
     for (let i = 0; i < nextCompanyId; i++) {
       const price = await contract.getSharePrice(i);
       const priceCollection = db.collection(`company_${i}_prices`);
@@ -41,25 +41,53 @@ async function pollAndStorePrices() {
   }
 }
 
-async function updateShareholderBalance(companyId, shareholderAddress, amountChange) {
-    const shareholdersCollection = db.collection("shareholders");
-    await shareholdersCollection.updateOne(
-        { companyId, address: shareholderAddress },
-        { $inc: { balance: amountChange } },
-        { upsert: true }
-    );
+async function updateShareholderBalance(
+  companyId,
+  shareholderAddress,
+  amountChange
+) {
+  const shareholdersCollection = db.collection("shareholders");
+  await shareholdersCollection.updateOne(
+    { companyId, address: shareholderAddress },
+    { $inc: { balance: amountChange } },
+    { upsert: true }
+  );
 }
 
 async function storeTradeHistory(trade) {
-    const tradeHistoryCollection = db.collection("trade_history");
-    await tradeHistoryCollection.insertOne(trade);
+  const tradeHistoryCollection = db.collection("trade_history");
+  await tradeHistoryCollection.insertOne(trade);
 }
+
+app.get("/prices/all", async (req, res) => {
+  try {
+    const nextCompanyId = await contract.totalCompanies();
+    const companies = [];
+    for (let i = 0; i < nextCompanyId; i++) {
+      const company = await contract.companies(i);
+      const price = await contract.getSharePrice(i);
+      companies.push({
+        id: i,
+        name: company.name,
+        owner: company.owner,
+        totalSupply: company.totalSupply.toString(),
+        currentPrice: price.toString(),
+      });
+    }
+    res.json(companies);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.get("/prices/:companyId", async (req, res) => {
   try {
     const companyId = req.params.companyId;
     const priceCollection = db.collection(`company_${companyId}_prices`);
-    const prices = await priceCollection.find().sort({ timestamp: -1 }).toArray();
+    const prices = await priceCollection
+      .find()
+      .sort({ timestamp: -1 })
+      .toArray();
     res.json(prices);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -67,31 +95,40 @@ app.get("/prices/:companyId", async (req, res) => {
 });
 
 app.get("/shareholders/:companyId", async (req, res) => {
-    try {
-        const companyId = parseInt(req.params.companyId);
-        const shareholdersCollection = db.collection("shareholders");
-        const shareholders = await shareholdersCollection.find({ companyId, balance: { $gt: 0 } }).toArray();
-        res.json(shareholders);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+    const companyId = parseInt(req.params.companyId);
+    const shareholdersCollection = db.collection("shareholders");
+    const shareholders = await shareholdersCollection
+      .find({ companyId, balance: { $gt: 0 } })
+      .toArray();
+    res.json(shareholders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.get("/trades/:companyId", async (req, res) => {
-    try {
-        const companyId = parseInt(req.params.companyId);
-        const tradeHistoryCollection = db.collection("trade_history");
-        const trades = await tradeHistoryCollection.find({ companyId: companyId }).sort({ timestamp: -1 }).toArray();
-        res.json(trades);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+    const companyId = parseInt(req.params.companyId);
+    const tradeHistoryCollection = db.collection("trade_history");
+    const trades = await tradeHistoryCollection
+      .find({ companyId: companyId })
+      .sort({ timestamp: -1 })
+      .toArray();
+    res.json(trades);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.get("/trades/latest/:n", async (req, res) => {
   try {
     const tradeHistoryCollection = db.collection("trade_history");
-    const trades = await tradeHistoryCollection.find().sort({ timestamp: -1 }).limit(Number(n)).toArray();
+    const trades = await tradeHistoryCollection
+      .find()
+      .sort({ timestamp: -1 })
+      .limit(Number(n))
+      .toArray();
     res.json(trades);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -99,7 +136,8 @@ app.get("/trades/latest/:n", async (req, res) => {
 });
 
 app.get("/portfolio/:address", async (req, res) => {
-  const shareholders = await db.collection("shareholders")
+  const shareholders = await db
+    .collection("shareholders")
     .find({ address: req.params.address.toLowerCase(), balance: { $gt: 0 } })
     .toArray();
   res.json(shareholders);
@@ -110,28 +148,32 @@ async function startServer() {
   setInterval(pollAndStorePrices, pollingInterval);
 
   contract.on("SharesPurchased", (companyId, buyer, amount, cost) => {
-    console.log(`SharesPurchased event: companyId=${companyId}, buyer=${buyer}, amount=${amount}`);
+    console.log(
+      `SharesPurchased event: companyId=${companyId}, buyer=${buyer}, amount=${amount}`
+    );
     updateShareholderBalance(Number(companyId), buyer, Number(amount));
     storeTradeHistory({
-        type: "buy",
-        companyId: Number(companyId),
-        address: buyer,
-        amount: Number(amount),
-        price: cost.toString(),
-        timestamp: new Date(),
+      type: "buy",
+      companyId: Number(companyId),
+      address: buyer,
+      amount: Number(amount),
+      price: cost.toString(),
+      timestamp: new Date(),
     });
   });
 
   contract.on("SharesSold", (companyId, seller, amount, proceeds) => {
-    console.log(`SharesSold event: companyId=${companyId}, seller=${seller}, amount=${amount}`);
+    console.log(
+      `SharesSold event: companyId=${companyId}, seller=${seller}, amount=${amount}`
+    );
     updateShareholderBalance(Number(companyId), seller, -Number(amount));
     storeTradeHistory({
-        type: "sell",
-        companyId: Number(companyId),
-        address: seller,
-        amount: Number(amount),
-        price: proceeds.toString(),
-        timestamp: new Date(),
+      type: "sell",
+      companyId: Number(companyId),
+      address: seller,
+      amount: Number(amount),
+      price: proceeds.toString(),
+      timestamp: new Date(),
     });
   });
 

@@ -36,7 +36,8 @@ contract DeStockTest is Test {
         destock.registerCompany(
             "Alice's Apples",
             1000,
-            destock.MINIMUM_LIQUIDITY()
+            destock.MINIMUM_LIQUIDITY(),
+            ""
         );
 
         (
@@ -45,7 +46,7 @@ contract DeStockTest is Test {
             address companyOwner,
             uint256 totalSupply,
             uint256 tokenReserve,
-            uint256 shareReserve
+            uint256 shareReserve,
         ) = destock.companies(0);
         assertEq(companyOwner, alice, "Company owner should be Alice");
         assertEq(totalSupply, 1000, "Total supply should be 1000");
@@ -65,7 +66,7 @@ contract DeStockTest is Test {
     function test_Fail_RegisterCompany_InsufficientLiquidity() public {
         vm.startPrank(alice);
         vm.expectRevert("DeStock: insufficient liquidity");
-        destock.registerCompany("Alice's Apples", 1000, 5 ether);
+        destock.registerCompany("Alice's Apples", 1000, 5 ether, "");
     }
 
     // Buy shares tests
@@ -76,7 +77,8 @@ contract DeStockTest is Test {
         destock.registerCompany(
             "Alice's Apples",
             1000,
-            destock.MINIMUM_LIQUIDITY()
+            destock.MINIMUM_LIQUIDITY(),
+            ""
         );
         destock.setApprovalForAll(address(destock), true);
         vm.stopPrank();
@@ -105,7 +107,7 @@ contract DeStockTest is Test {
             ,
             ,
             ,
-            uint256 shareReserve
+            uint256 shareReserve,
         ) = destock.companies(0);
         assertEq(
             shareReserve,
@@ -126,7 +128,8 @@ contract DeStockTest is Test {
         destock.registerCompany(
             "Alice's Apples",
             1000,
-            destock.MINIMUM_LIQUIDITY()
+            destock.MINIMUM_LIQUIDITY(),
+            ""
         );
         vm.stopPrank();
 
@@ -141,7 +144,8 @@ contract DeStockTest is Test {
         destock.registerCompany(
             "Alice's Apples",
             1000,
-            destock.MINIMUM_LIQUIDITY()
+            destock.MINIMUM_LIQUIDITY(),
+            ""
         );
         vm.stopPrank();
 
@@ -193,7 +197,7 @@ contract DeStockTest is Test {
             ,
             ,
             ,
-            uint256 shareReserve
+            uint256 shareReserve,
         ) = destock.companies(0);
         assertEq(
             shareReserve,
@@ -214,7 +218,8 @@ contract DeStockTest is Test {
         destock.registerCompany(
             "Alice's Apples",
             1000,
-            destock.MINIMUM_LIQUIDITY()
+            destock.MINIMUM_LIQUIDITY(),
+            ""
         );
         vm.stopPrank();
 
@@ -229,7 +234,8 @@ contract DeStockTest is Test {
         destock.registerCompany(
             "Alice's Apples",
             1000,
-            destock.MINIMUM_LIQUIDITY()
+            destock.MINIMUM_LIQUIDITY(),
+            ""
         );
         vm.stopPrank();
 
