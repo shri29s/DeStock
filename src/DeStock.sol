@@ -163,4 +163,8 @@ contract DeStock is ERC1155, Ownable {
         require(company.owner != address(0), "Company does not exist");
         return company;
     }   
+
+    function totalCompanies() public view returns (uint256) {
+        return nextCompanyId;
+    }
 }
