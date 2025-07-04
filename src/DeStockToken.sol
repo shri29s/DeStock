@@ -10,7 +10,7 @@ contract DeStockToken is ERC20, ERC20Capped, Ownable {
         ERC20Capped(10_000_000 * 10 ** 18)
         Ownable(msg.sender)
     {
-        _mint(address(this), 1_000_000 * 10 ** decimals());
+        _mint(address(this), 5_000_000 * 10 ** decimals());
     }
 
     function mint(address to, uint256 amount) public onlyOwner {
@@ -19,6 +19,15 @@ contract DeStockToken is ERC20, ERC20Capped, Ownable {
 
     function transferFromContract(address to, uint256 amount) public onlyOwner {
         _transfer(address(this), to, amount);
+    }
+
+    // Test purpose
+    function batchAirDrop(address[] calldata recipients, uint256[] calldata amounts) external {
+        require(recipients.length == amounts.length, "Length mismatch");
+
+        for (uint256 i = 0; i < recipients.length; i++) {
+            _transfer(address(this), recipients[i], amounts[i]);
+        }
     }
 
     // Resolve conflict between ERC20 and ERC20Capped

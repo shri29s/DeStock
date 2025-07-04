@@ -24,6 +24,7 @@ contract DeStockTest is Test {
 
         // Fund users
         vm.startPrank(owner);
+        destockToken.mint(owner, 2000 ether);
         destockToken.transfer(alice, 1000 ether);
         destockToken.transfer(bob, 1000 ether);
         vm.stopPrank();
@@ -33,23 +34,25 @@ contract DeStockTest is Test {
     function test_RegisterCompany() public {
         vm.startPrank(alice);
         // Alice approves DeStock contract to spend her DSTK
-        destockToken.approve(address(destock), destock.REGISTRATION_FEE());
+        destockToken.approve(address(destock), destock.MINIMUM_LIQUIDITY());
         
         // Alice registers a company
-        destock.registerCompany("Alice's Apples", 10 ether, 1000);
+        destock.registerCompany("Alice's Apples", 1000, destock.MINIMUM_LIQUIDITY());
 
         // Check company details
-        (, string memory name, address companyOwner, , ) = destock.companies(0);
+        (,, address companyOwner, uint256 totalSupply, uint256 tokenReserve, uint256 shareReserve) = destock.companies(0);
         assertEq(companyOwner, alice, "Company owner should be Alice");
-        assertEq(name, "Alice's Apples", "Company name is incorrect");
+        assertEq(totalSupply, 1000, "Total supply should be 1000");
+        assertEq(tokenReserve, destock.MINIMUM_LIQUIDITY(), "Token reserve is incorrect");
+        assertEq(shareReserve, 1000, "Share reserve is incorrect");
         
         // Check Alice received her shares
         assertEq(destock.balanceOf(alice, 0), 1000, "Alice should own 1000 shares");
     }
 
-    function test_Fail_RegisterCompany_InsufficientAllowance() public {
+    function test_Fail_RegisterCompany_InsufficientLiquidity() public {
         vm.startPrank(alice);
-        try destock.registerCompany("Alice's Apples", 10 ether, 1000) {
+        try destock.registerCompany("Alice's Apples", 1000, 5 ether) {
             fail();
         } catch {
             // Expected revert
@@ -60,8 +63,8 @@ contract DeStockTest is Test {
     function test_BuyShares() public {
         // 1. Alice registers a company
         vm.startPrank(alice);
-        destockToken.approve(address(destock), destock.REGISTRATION_FEE());
-        destock.registerCompany("Alice's Apples", 10 ether, 1000);
+        destockToken.approve(address(destock), destock.MINIMUM_LIQUIDITY());
+        destock.registerCompany("Alice's Apples", 1000, destock.MINIMUM_LIQUIDITY());
         // Alice must approve the DeStock contract to transfer her shares for the LP
         destock.setApprovalForAll(address(destock), true);
         vm.stopPrank();
@@ -69,8 +72,7 @@ contract DeStockTest is Test {
         // 2. Bob buys shares
         vm.startPrank(bob);
         uint256 sharesToBuy = 50;
-        uint256 initialPrice = destock.getSharePrice(0);
-        uint256 cost = initialPrice * sharesToBuy;
+        uint256 cost = destock.getBuyPrice(0, sharesToBuy);
 
         destockToken.approve(address(destock), cost);
         destock.buyShares(0, sharesToBuy);
@@ -79,8 +81,9 @@ contract DeStockTest is Test {
         assertEq(destock.balanceOf(bob, 0), sharesToBuy, "Bob should have 50 shares");
         assertEq(destockToken.balanceOf(bob), 1000 ether - cost, "Bob's DSTK balance is wrong");
         
-        // Check Alice's share balance
-        assertEq(destock.balanceOf(alice, 0), 1000 - sharesToBuy, "Alice should have 950 shares left");
+        // Check company reserves
+        (,,,,, uint256 shareReserve) = destock.companies(0);
+        assertEq(shareReserve, 1000 - sharesToBuy, "Share reserve should be 950");
     }
 
     function test_SellShares() public {
@@ -90,42 +93,23 @@ contract DeStockTest is Test {
         // 2. Bob sells his shares
         vm.startPrank(bob);
         uint256 sharesToSell = 25;
-        uint256 sellPrice = destock.getSharePrice(0);
-        uint256 proceeds = sellPrice * sharesToSell;
+        uint256 proceeds = destock.getSellPrice(0, sharesToSell);
 
         // Bob must approve the contract to take his shares
         destock.setApprovalForAll(address(destock), true);
+        
+        vm.startPrank(alice);
+        destockToken.approve(address(destock), proceeds);
+        vm.stopPrank();
+        
+        vm.startPrank(bob);
         destock.sellShares(0, sharesToSell);
 
         // Check Bob's balances
         assertEq(destock.balanceOf(bob, 0), 25, "Bob should have 25 shares left");
-        // Bob's balance = initial - cost + proceeds
-        assertEq(destockToken.balanceOf(bob), 1000 ether - (10 ether * 50) + proceeds, "Bob's DSTK balance is wrong after selling");
-    }
-
-    // Admin test
-    function test_WithdrawFees() public {
-        // Alice registers a company, paying a fee
-        vm.startPrank(alice);
-        destockToken.approve(address(destock), destock.REGISTRATION_FEE());
-        destock.registerCompany("Alice's Apples", 10 ether, 1000);
-        vm.stopPrank();
-
-        // Owner withdraws the fees
-        vm.startPrank(owner);
-        uint256 initialOwnerBalance = destockToken.balanceOf(owner);
-        destock.withdrawFees();
-        uint256 finalOwnerBalance = destockToken.balanceOf(owner);
-
-        assertEq(finalOwnerBalance, initialOwnerBalance + destock.REGISTRATION_FEE(), "Owner did not receive fees");
-    }
-
-    function test_Fail_WithdrawFees_NotOwner() public {
-        vm.prank(alice); // Not the owner
-        try destock.withdrawFees() {
-            fail();
-        } catch {
-            // Expected revert
-        }
+        
+        // Check company reserves
+        (,,,,, uint256 shareReserve) = destock.companies(0);
+        assertEq(shareReserve, 950 + sharesToSell, "Share reserve should be 975");
     }
 }

@@ -9,8 +9,8 @@ contract Deploy is Script {
     function run() external returns (DeStockToken, DeStock) {
         vm.startBroadcast();
 
-        DeStockToken destockToken = new DeStockToken(msg.sender);
-        DeStock destock = new DeStock(address(destockToken), msg.sender);
+        DeStockToken destockToken = new DeStockToken();
+        DeStock destock = new DeStock(address(destockToken));
 
         vm.stopBroadcast();
         return (destockToken, destock);
