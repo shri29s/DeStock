@@ -28,9 +28,12 @@ interface TradingChartProps {
 type Timeframe = '1H' | '4H' | '1D' | '1W' | '1M';
 type ChartType = 'candlestick' | 'line' | 'area';
 
+// Stable empty array reference to prevent unnecessary re-renders
+const EMPTY_DATA: ChartDataPoint[] = [];
+
 export function TradingChart({
   symbol = 'DEMO',
-  data = [],
+  data = EMPTY_DATA,
   height = 400,
   showTimeframes = true,
   showIndicators = true,
@@ -39,6 +42,7 @@ export function TradingChart({
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candlestickSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
+  const dataRef = useRef<ChartDataPoint[]>(EMPTY_DATA);
   const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe>('1D');
   const [chartType, setChartType] = useState<ChartType>('candlestick');
   const [loading, setLoading] = useState(true);
@@ -142,37 +146,49 @@ export function TradingChart({
     });
   }, [theme]);
 
-  // Load chart data
+  // Handle prop data changes
+  useEffect(() => {
+    // Only update if data reference actually changed and has content
+    if (data !== dataRef.current && data.length > 0 && data !== EMPTY_DATA) {
+      console.log('TradingChart: Using provided data', data.length, 'points');
+      dataRef.current = data;
+      setChartData(data);
+      setLoading(false);
+    }
+  }, [data]);
+
+  // Load chart data from API
   useEffect(() => {
     const loadData = async () => {
+      // Skip API loading if data is provided via props
+      if (data.length > 0 && data !== EMPTY_DATA) {
+        return;
+      }
+
+      console.log('TradingChart: Loading data from API', { symbol, selectedTimeframe });
       setLoading(true);
       try {
-        // If data is provided directly, use it
-        if (data.length > 0) {
-          setChartData(data);
-          setLoading(false);
-        } else {
-          // Fetch data from API
-          const response = await fetch(`/api/market?type=chart&symbol=${symbol}&timeframe=${selectedTimeframe}&days=30`);
-          const result = await response.json();
+        // Fetch data from API
+        const response = await fetch(`/api/market?type=chart&symbol=${symbol}&timeframe=${selectedTimeframe}&days=30`);
+        const result = await response.json();
+        
+        if (response.ok && result.data && result.data.ohlc) {
+          const apiData = result.data.ohlc || [];
           
-          if (result.success && result.data) {
-            const apiData = result.data.ohlc || [];
-            
-            // Convert to proper format for Lightweight Charts
-            const formattedData = apiData.map((item: any) => ({
-              ...item,
-              time: item.time as UTCTimestamp,
-            }));
-            
-            setChartData(formattedData);
-          } else {
-            console.warn('Failed to fetch chart data:', result);
-            // Set empty data to stop loading
-            setChartData([]);
-          }
-          setLoading(false);
+          // Convert to proper format for Lightweight Charts
+          const formattedData = apiData.map((item: any) => ({
+            ...item,
+            time: item.time as UTCTimestamp,
+          }));
+          
+          console.log('TradingChart: API data loaded', formattedData.length, 'points');
+          setChartData(formattedData);
+        } else {
+          console.warn('Failed to fetch chart data:', result);
+          // Set empty data to stop loading
+          setChartData([]);
         }
+        setLoading(false);
       } catch (error) {
         console.error('Failed to load chart data:', error);
         setChartData([]);
@@ -181,7 +197,7 @@ export function TradingChart({
     };
 
     loadData();
-  }, [symbol, selectedTimeframe, data]);
+  }, [symbol, selectedTimeframe]);
 
   // Update chart data
   useEffect(() => {

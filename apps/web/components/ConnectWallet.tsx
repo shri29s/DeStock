@@ -3,8 +3,9 @@
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 import { metaMask } from 'wagmi/connectors';
 import { useDSTK } from '@/lib/hooks/useDSTK';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronDownIcon, WalletIcon } from 'lucide-react';
+import { ClientOnly } from './ClientOnly';
 
 export function ConnectWallet() {
   const { address, isConnected, chain } = useAccount();
@@ -13,6 +14,11 @@ export function ConnectWallet() {
   const { switchChain } = useSwitchChain();
   const { balance } = useDSTK();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleConnect = () => {
     connect({ connector: metaMask() });
@@ -32,6 +38,16 @@ export function ConnectWallet() {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
+  // Show loading placeholder until mounted
+  if (!mounted) {
+    return (
+      <div className="destock-button-primary flex items-center space-x-2 opacity-50">
+        <WalletIcon className="w-4 h-4" />
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
   if (!isConnected) {
     return (
       <button
@@ -46,7 +62,7 @@ export function ConnectWallet() {
   }
 
   return (
-    <div className="relative" suppressHydrationWarning>
+    <div className="relative">
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className="flex items-center space-x-3 bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-destock-primary focus:ring-offset-2"

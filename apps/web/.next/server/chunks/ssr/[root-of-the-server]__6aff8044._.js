@@ -1607,6 +1607,10 @@ function ConnectWallet() {
     const { switchChain } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useSwitchChain$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSwitchChain"])();
     const { balance } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDSTK$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDSTK"])();
     const [isDropdownOpen, setIsDropdownOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        setMounted(true);
+    }, []);
     const handleConnect = ()=>{
         connect({
             connector: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$wagmi$2f$connectors$2f$dist$2f$esm$2f$metaMask$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["metaMask"])()
@@ -1625,6 +1629,32 @@ function ConnectWallet() {
     const formatAddress = (addr)=>{
         return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
     };
+    // Show loading placeholder until mounted
+    if (!mounted) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "destock-button-primary flex items-center space-x-2 opacity-50",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wallet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__WalletIcon$3e$__["WalletIcon"], {
+                    className: "w-4 h-4"
+                }, void 0, false, {
+                    fileName: "[project]/apps/web/components/ConnectWallet.tsx",
+                    lineNumber: 45,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                    children: "Loading..."
+                }, void 0, false, {
+                    fileName: "[project]/apps/web/components/ConnectWallet.tsx",
+                    lineNumber: 46,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/apps/web/components/ConnectWallet.tsx",
+            lineNumber: 44,
+            columnNumber: 7
+        }, this);
+    }
     if (!isConnected) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
             onClick: handleConnect,
@@ -1635,26 +1665,25 @@ function ConnectWallet() {
                     className: "w-4 h-4"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                    lineNumber: 42,
+                    lineNumber: 58,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                     children: isConnecting ? 'Connecting...' : 'Connect Wallet'
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                    lineNumber: 43,
+                    lineNumber: 59,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-            lineNumber: 37,
+            lineNumber: 53,
             columnNumber: 7
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "relative",
-        suppressHydrationWarning: true,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 onClick: ()=>setIsDropdownOpen(!isDropdownOpen),
@@ -1667,7 +1696,7 @@ function ConnectWallet() {
                                 className: "w-4 h-4 text-destock-primary"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                lineNumber: 55,
+                                lineNumber: 71,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1678,7 +1707,7 @@ function ConnectWallet() {
                                         children: formatAddress(address)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                        lineNumber: 57,
+                                        lineNumber: 73,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1689,32 +1718,32 @@ function ConnectWallet() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                        lineNumber: 58,
+                                        lineNumber: 74,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                lineNumber: 56,
+                                lineNumber: 72,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                        lineNumber: 54,
+                        lineNumber: 70,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDownIcon$3e$__["ChevronDownIcon"], {
                         className: "w-4 h-4"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                        lineNumber: 61,
+                        lineNumber: 77,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                lineNumber: 50,
+                lineNumber: 66,
                 columnNumber: 7
             }, this),
             isDropdownOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1728,7 +1757,7 @@ function ConnectWallet() {
                                 children: formatAddress(address)
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                lineNumber: 67,
+                                lineNumber: 83,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1740,7 +1769,7 @@ function ConnectWallet() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                lineNumber: 70,
+                                lineNumber: 86,
                                 columnNumber: 13
                             }, this),
                             chain && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1751,13 +1780,13 @@ function ConnectWallet() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                lineNumber: 74,
+                                lineNumber: 90,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                        lineNumber: 66,
+                        lineNumber: 82,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1768,7 +1797,7 @@ function ConnectWallet() {
                                 children: "Switch Network"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                lineNumber: 81,
+                                lineNumber: 97,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1777,7 +1806,7 @@ function ConnectWallet() {
                                 children: "Localhost"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                lineNumber: 84,
+                                lineNumber: 100,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1786,13 +1815,13 @@ function ConnectWallet() {
                                 children: "Sepolia Testnet"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                                lineNumber: 90,
+                                lineNumber: 106,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                        lineNumber: 80,
+                        lineNumber: 96,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1803,24 +1832,24 @@ function ConnectWallet() {
                             children: "Disconnect Wallet"
                         }, void 0, false, {
                             fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                            lineNumber: 99,
+                            lineNumber: 115,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                        lineNumber: 98,
+                        lineNumber: 114,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-                lineNumber: 65,
+                lineNumber: 81,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/components/ConnectWallet.tsx",
-        lineNumber: 49,
+        lineNumber: 65,
         columnNumber: 5
     }, this);
 }

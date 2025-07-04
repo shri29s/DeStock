@@ -7,9 +7,11 @@ import { TradingChart } from '@/components/TradingChart';
 import { MarketHeatMap } from '@/components/MarketHeatMap';
 import { PriceTicker } from '@/components/PriceTicker';
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 
 export default function HomePage() {
-  const widgets = [
+  // Memoize widget components to prevent re-creation on every render
+  const widgets = useMemo(() => [
     {
       id: 'trading',
       title: 'Trading Interface',
@@ -24,9 +26,9 @@ export default function HomePage() {
       defaultSize: 60,
       minSize: 40,
     },
-  ];
+  ], []);
 
-  const bottomWidgets = [
+  const bottomWidgets = useMemo(() => [
     {
       id: 'companies',
       title: 'Market Overview',
@@ -41,7 +43,7 @@ export default function HomePage() {
       defaultSize: 40,
       minSize: 30,
     },
-  ];
+  ], []);
 
   return (
     <motion.div 

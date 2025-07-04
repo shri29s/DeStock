@@ -2505,10 +2505,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f
 ;
 ;
 ;
-function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes = true, showIndicators = true, className = '' }) {
+// Stable empty array reference to prevent unnecessary re-renders
+const EMPTY_DATA = [];
+function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTimeframes = true, showIndicators = true, className = '' }) {
     const chartContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const chartRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const candlestickSeriesRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const dataRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(EMPTY_DATA);
     const [selectedTimeframe, setSelectedTimeframe] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('1D');
     const [chartType, setChartType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('candlestick');
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
@@ -2616,34 +2619,49 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
     }, [
         theme
     ]);
-    // Load chart data
+    // Handle prop data changes
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        // Only update if data reference actually changed and has content
+        if (data !== dataRef.current && data.length > 0 && data !== EMPTY_DATA) {
+            console.log('TradingChart: Using provided data', data.length, 'points');
+            dataRef.current = data;
+            setChartData(data);
+            setLoading(false);
+        }
+    }, [
+        data
+    ]);
+    // Load chart data from API
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const loadData = async ()=>{
+            // Skip API loading if data is provided via props
+            if (data.length > 0 && data !== EMPTY_DATA) {
+                return;
+            }
+            console.log('TradingChart: Loading data from API', {
+                symbol,
+                selectedTimeframe
+            });
             setLoading(true);
             try {
-                // If data is provided directly, use it
-                if (data.length > 0) {
-                    setChartData(data);
-                    setLoading(false);
+                // Fetch data from API
+                const response = await fetch(`/api/market?type=chart&symbol=${symbol}&timeframe=${selectedTimeframe}&days=30`);
+                const result = await response.json();
+                if (response.ok && result.data && result.data.ohlc) {
+                    const apiData = result.data.ohlc || [];
+                    // Convert to proper format for Lightweight Charts
+                    const formattedData = apiData.map((item)=>({
+                            ...item,
+                            time: item.time
+                        }));
+                    console.log('TradingChart: API data loaded', formattedData.length, 'points');
+                    setChartData(formattedData);
                 } else {
-                    // Fetch data from API
-                    const response = await fetch(`/api/market?type=chart&symbol=${symbol}&timeframe=${selectedTimeframe}&days=30`);
-                    const result = await response.json();
-                    if (result.success && result.data) {
-                        const apiData = result.data.ohlc || [];
-                        // Convert to proper format for Lightweight Charts
-                        const formattedData = apiData.map((item)=>({
-                                ...item,
-                                time: item.time
-                            }));
-                        setChartData(formattedData);
-                    } else {
-                        console.warn('Failed to fetch chart data:', result);
-                        // Set empty data to stop loading
-                        setChartData([]);
-                    }
-                    setLoading(false);
+                    console.warn('Failed to fetch chart data:', result);
+                    // Set empty data to stop loading
+                    setChartData([]);
                 }
+                setLoading(false);
             } catch (error) {
                 console.error('Failed to load chart data:', error);
                 setChartData([]);
@@ -2653,8 +2671,7 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
         loadData();
     }, [
         symbol,
-        selectedTimeframe,
-        data
+        selectedTimeframe
     ]);
     // Update chart data
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -2692,7 +2709,7 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                         children: symbol
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 214,
+                                        lineNumber: 230,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2706,7 +2723,7 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                lineNumber: 220,
+                                                lineNumber: 236,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2716,13 +2733,13 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 225,
+                                                        lineNumber: 241,
                                                         columnNumber: 19
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingDownIcon$3e$__["TrendingDownIcon"], {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 227,
+                                                        lineNumber: 243,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2736,25 +2753,25 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 229,
+                                                        lineNumber: 245,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                lineNumber: 223,
+                                                lineNumber: 239,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 219,
+                                        lineNumber: 235,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 213,
+                                lineNumber: 229,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2770,12 +2787,12 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                            lineNumber: 247,
+                                            lineNumber: 263,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 238,
+                                        lineNumber: 254,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -2788,24 +2805,24 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                            lineNumber: 258,
+                                            lineNumber: 274,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 249,
+                                        lineNumber: 265,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 237,
+                                lineNumber: 253,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 212,
+                        lineNumber: 228,
                         columnNumber: 9
                     }, this),
                     showTimeframes && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2819,18 +2836,18 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                 children: timeframe
                             }, timeframe, false, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 267,
+                                lineNumber: 283,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 265,
+                        lineNumber: 281,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 211,
+                lineNumber: 227,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2840,12 +2857,12 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                         className: "absolute inset-0 flex items-center justify-center z-10",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$LoadingSpinner$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["LoadingSpinner"], {}, void 0, false, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 288,
+                            lineNumber: 304,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 287,
+                        lineNumber: 303,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2867,13 +2884,13 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                         }
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 292,
+                        lineNumber: 308,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 285,
+                lineNumber: 301,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2888,7 +2905,7 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                     children: "Open"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 306,
+                                    lineNumber: 322,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2899,13 +2916,13 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 307,
+                                    lineNumber: 323,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 305,
+                            lineNumber: 321,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2915,7 +2932,7 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                     children: "High"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 312,
+                                    lineNumber: 328,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2926,13 +2943,13 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 313,
+                                    lineNumber: 329,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 311,
+                            lineNumber: 327,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2942,7 +2959,7 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                     children: "Low"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 318,
+                                    lineNumber: 334,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2953,13 +2970,13 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 319,
+                                    lineNumber: 335,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 317,
+                            lineNumber: 333,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2969,7 +2986,7 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                     children: "Volume"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 324,
+                                    lineNumber: 340,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2977,30 +2994,30 @@ function TradingChart({ symbol = 'DEMO', data = [], height = 400, showTimeframes
                                     children: chartData.length > 0 ? (chartData[chartData.length - 1].volume || 0).toLocaleString() : '0'
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 325,
+                                    lineNumber: 341,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 323,
+                            lineNumber: 339,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                    lineNumber: 304,
+                    lineNumber: 320,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 303,
+                lineNumber: 319,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/components/TradingChart.tsx",
-        lineNumber: 209,
+        lineNumber: 225,
         columnNumber: 5
     }, this);
 }
@@ -3609,6 +3626,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$MarketHeatMap$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/components/MarketHeatMap.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$PriceTicker$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/components/PriceTicker.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/framer-motion/dist/es/render/components/motion/proxy.mjs [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 'use client';
 ;
 ;
@@ -3618,58 +3636,60 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$mo
 ;
 ;
 ;
+;
 function HomePage() {
-    const widgets = [
-        {
-            id: 'trading',
-            title: 'Trading Interface',
-            component: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$TradeView$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TradeView"], {}, void 0, false, {
-                fileName: "[project]/apps/web/app/page.tsx",
-                lineNumber: 16,
-                columnNumber: 18
-            }, this),
-            defaultSize: 40,
-            minSize: 30
-        },
-        {
-            id: 'chart',
-            title: 'Price Chart',
-            component: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$TradingChart$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TradingChart"], {
-                symbol: "DSTK",
-                height: 350
-            }, void 0, false, {
-                fileName: "[project]/apps/web/app/page.tsx",
-                lineNumber: 23,
-                columnNumber: 18
-            }, this),
-            defaultSize: 60,
-            minSize: 40
-        }
-    ];
-    const bottomWidgets = [
-        {
-            id: 'companies',
-            title: 'Market Overview',
-            component: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$CompanyList$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CompanyList"], {}, void 0, false, {
-                fileName: "[project]/apps/web/app/page.tsx",
-                lineNumber: 33,
-                columnNumber: 18
-            }, this),
-            defaultSize: 60,
-            minSize: 50
-        },
-        {
-            id: 'heatmap',
-            title: 'Market Heat Map',
-            component: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$MarketHeatMap$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["MarketHeatMap"], {}, void 0, false, {
-                fileName: "[project]/apps/web/app/page.tsx",
-                lineNumber: 40,
-                columnNumber: 18
-            }, this),
-            defaultSize: 40,
-            minSize: 30
-        }
-    ];
+    // Memoize widget components to prevent re-creation on every render
+    const widgets = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>[
+            {
+                id: 'trading',
+                title: 'Trading Interface',
+                component: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$TradeView$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TradeView"], {}, void 0, false, {
+                    fileName: "[project]/apps/web/app/page.tsx",
+                    lineNumber: 18,
+                    columnNumber: 18
+                }, this),
+                defaultSize: 40,
+                minSize: 30
+            },
+            {
+                id: 'chart',
+                title: 'Price Chart',
+                component: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$TradingChart$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TradingChart"], {
+                    symbol: "DSTK",
+                    height: 350
+                }, void 0, false, {
+                    fileName: "[project]/apps/web/app/page.tsx",
+                    lineNumber: 25,
+                    columnNumber: 18
+                }, this),
+                defaultSize: 60,
+                minSize: 40
+            }
+        ], []);
+    const bottomWidgets = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>[
+            {
+                id: 'companies',
+                title: 'Market Overview',
+                component: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$CompanyList$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CompanyList"], {}, void 0, false, {
+                    fileName: "[project]/apps/web/app/page.tsx",
+                    lineNumber: 35,
+                    columnNumber: 18
+                }, this),
+                defaultSize: 60,
+                minSize: 50
+            },
+            {
+                id: 'heatmap',
+                title: 'Market Heat Map',
+                component: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$MarketHeatMap$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["MarketHeatMap"], {}, void 0, false, {
+                    fileName: "[project]/apps/web/app/page.tsx",
+                    lineNumber: 42,
+                    columnNumber: 18
+                }, this),
+                defaultSize: 40,
+                minSize: 30
+            }
+        ], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
         className: "space-y-6",
         initial: {
@@ -3704,7 +3724,7 @@ function HomePage() {
                         children: "Welcome to DeStock"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/page.tsx",
-                        lineNumber: 60,
+                        lineNumber: 62,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3712,13 +3732,13 @@ function HomePage() {
                         children: "The professional decentralized trading platform with advanced charting, real-time analytics, and seamless Web3 integration. Trade company shares using DSTK tokens with institutional-grade tools."
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/page.tsx",
-                        lineNumber: 63,
+                        lineNumber: 65,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/page.tsx",
-                lineNumber: 54,
+                lineNumber: 56,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3736,12 +3756,12 @@ function HomePage() {
                 },
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$PriceTicker$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PriceTicker"], {}, void 0, false, {
                     fileName: "[project]/apps/web/app/page.tsx",
-                    lineNumber: 76,
+                    lineNumber: 78,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/app/page.tsx",
-                lineNumber: 71,
+                lineNumber: 73,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3761,12 +3781,12 @@ function HomePage() {
                     widgets: widgets
                 }, void 0, false, {
                     fileName: "[project]/apps/web/app/page.tsx",
-                    lineNumber: 85,
+                    lineNumber: 87,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/app/page.tsx",
-                lineNumber: 80,
+                lineNumber: 82,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3787,18 +3807,18 @@ function HomePage() {
                     layout: "grid"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/app/page.tsx",
-                    lineNumber: 94,
+                    lineNumber: 96,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/app/page.tsx",
-                lineNumber: 89,
+                lineNumber: 91,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/app/page.tsx",
-        lineNumber: 47,
+        lineNumber: 49,
         columnNumber: 5
     }, this);
 }
