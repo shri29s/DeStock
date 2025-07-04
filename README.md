@@ -121,6 +121,29 @@ chmod +x start-destock.sh
 ./start-destock.sh
 ```
 
+**✨ What the startup script does:**
+- 🔍 **Smart Detection**: Checks if Anvil is already running
+- ⛓️ **Auto Blockchain**: Starts Anvil if needed with proper configuration
+- 🔨 **Contract Pipeline**: Compiles, tests, and deploys smart contracts
+- 📄 **Address Updates**: Automatically updates .env with new contract addresses
+- 🐳 **Docker Services**: Starts all microservices with health checks
+- 🌐 **Frontend Launch**: Starts Next.js development server
+- 🏥 **Health Monitoring**: Verifies all services are running correctly
+- 📊 **Status Dashboard**: Shows all service URLs and management commands
+
+**🎯 Expected successful output:**
+```
+🎉 DeStock Trading Platform is now running!
+==================================================
+📱 Frontend:      http://localhost:3003
+🔗 Blockchain:    http://localhost:8545
+🐳 Load Balancer: http://localhost:80
+⚙️  Trade Engine:  http://localhost:3002
+🤖 Market Maker:  http://localhost:3001
+🗄️  Database:     localhost:5432
+💾 Redis Cache:   localhost:6379
+```
+
 ### 📝 Manual Setup (Step by Step)
 
 #### 1️⃣ Start Local Blockchain
