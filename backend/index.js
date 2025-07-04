@@ -105,7 +105,6 @@ app.get("/portfolio/:address", async (req, res) => {
   res.json(shareholders);
 });
 
-
 async function startServer() {
   await connectToDb();
   setInterval(pollAndStorePrices, pollingInterval);
