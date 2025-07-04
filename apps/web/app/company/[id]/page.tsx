@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TradeHistory } from '@/components/TradeHistory';
 import { ShareholderList } from '@/components/ShareholderList';
+import { getContractAddress, DESTOCK_ABI } from '@/lib/contracts';
 
 const schema = z.object({
   amount: z.string().min(1, 'Amount is required'),
@@ -21,15 +22,16 @@ type FormData = z.infer<typeof schema>;
 export default function CompanyPage() {
   const { id } = useParams();
   const companyId = parseInt(id as string);
-  const { isConnected, address } = useAccount();
+  const { isConnected, address, chainId } = useAccount();
   const { getCompany, getSharePrice, getBuyPrice, getSellPrice, buyShares, sellShares } = useDeStock();
   const { balance, approve, allowance, isApproving } = useDeStockToken();
+
+  // Get the contract address for the current chain
+  const destockAddress = getContractAddress('DESTOCK', chainId ?? 31337);
 
   const { data: company } = getCompany(companyId);
   const { data: sharePrice } = getSharePrice(companyId);
 
-  const [buyPrice, setBuyPrice] = useState<bigint | undefined>();
-  const [sellPrice, setSellPrice] = useState<bigint | undefined>();
   const [needsApproval, setNeedsApproval] = useState(true);
 
   const {
@@ -43,34 +45,39 @@ export default function CompanyPage() {
 
   const watchedAmount = watch('amount');
 
-  useEffect(() => {
-    if (watchedAmount) {
-      getBuyPrice(companyId, watchedAmount).then(setBuyPrice);
-      getSellPrice(companyId, watchedAmount).then(setSellPrice);
-    }
-  }, [watchedAmount, companyId, getBuyPrice, getSellPrice]);
+  // Use the hook results directly instead of treating them as promises
+  const { data: buyPrice } = getBuyPrice(companyId, watchedAmount || '0');
+  const { data: sellPrice } = getSellPrice(companyId, watchedAmount || '0');
 
   useEffect(() => {
     if (isConnected && address && allowance && buyPrice) {
       const currentAllowance = BigInt(allowance.toString());
-      setNeedsApproval(currentAllowance < buyPrice);
+      setNeedsApproval(currentAllowance < BigInt(buyPrice.toString()));
     }
   }, [isConnected, address, allowance, buyPrice]);
 
   const handleApprove = async () => {
     if (buyPrice) {
-      approve(formatUnits(buyPrice, 18));
+      approve(formatUnits(BigInt(buyPrice.toString()), 18));
     }
   };
 
   const handleBuy = async (data: FormData) => {
+    // buyShares is writeContractAsync and needs full contract config
     await buyShares({
+      abi: DESTOCK_ABI,
+      address: destockAddress,
+      functionName: 'buyShares',
       args: [BigInt(companyId), BigInt(data.amount)],
     });
   };
 
   const handleSell = async (data: FormData) => {
+    // sellShares is writeContractAsync and needs full contract config
     await sellShares({
+      abi: DESTOCK_ABI,
+      address: destockAddress,
+      functionName: 'sellShares',
       args: [BigInt(companyId), BigInt(data.amount)],
     });
   };
@@ -104,8 +111,8 @@ export default function CompanyPage() {
               />
               {errors.amount && <p className="text-red-500 text-sm">{errors.amount.message}</p>}
             </div>
-            {buyPrice && <p>Estimated Cost: {formatUnits(buyPrice, 18)} DSTK</p>}
-            {sellPrice && <p>Estimated Proceeds: {formatUnits(sellPrice, 18)} DSTK</p>}
+            {buyPrice && <p>Estimated Cost: {formatUnits(BigInt(buyPrice.toString()), 18)} DSTK</p>}
+            {sellPrice && <p>Estimated Proceeds: {formatUnits(BigInt(sellPrice.toString()), 18)} DSTK</p>}
 
             <div className="flex space-x-4">
               {needsApproval ? (

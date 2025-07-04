@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  context: { params: { companyId: string } }
+  { params }: { params: Promise<{ companyId: string }> }
 ) {
-  const { companyId } = context.params;
+  // In Next.js 15, params is now a Promise and needs to be awaited
+  const { companyId } = await params;
 
   try {
     const response = await fetch(
