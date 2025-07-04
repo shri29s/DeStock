@@ -41,6 +41,15 @@ async function pollAndStorePrices() {
   }
 }
 
+async function updateShareholderBalance(companyId, shareholderAddress, amountChange) {
+    const shareholdersCollection = db.collection("shareholders");
+    await shareholdersCollection.updateOne(
+        { companyId, address: shareholderAddress },
+        { $inc: { balance: amountChange } },
+        { upsert: true }
+    );
+}
+
 app.get("/prices/:companyId", async (req, res) => {
   try {
     const companyId = req.params.companyId;
@@ -52,9 +61,31 @@ app.get("/prices/:companyId", async (req, res) => {
   }
 });
 
+app.get("/shareholders/:companyId", async (req, res) => {
+    try {
+        const companyId = parseInt(req.params.companyId);
+        const shareholdersCollection = db.collection("shareholders");
+        const shareholders = await shareholdersCollection.find({ companyId, balance: { $gt: 0 } }).toArray();
+        res.json(shareholders);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 async function startServer() {
   await connectToDb();
   setInterval(pollAndStorePrices, pollingInterval);
+
+  contract.on("SharesPurchased", (companyId, buyer, amount, cost) => {
+    console.log(`SharesPurchased event: companyId=${companyId}, buyer=${buyer}, amount=${amount}`);
+    updateShareholderBalance(Number(companyId), buyer, Number(amount));
+  });
+
+  contract.on("SharesSold", (companyId, seller, amount, proceeds) => {
+    console.log(`SharesSold event: companyId=${companyId}, seller=${seller}, amount=${amount}`);
+    updateShareholderBalance(Number(companyId), seller, -Number(amount));
+  });
+
   app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
   });
