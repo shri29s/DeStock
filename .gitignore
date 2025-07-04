@@ -13,7 +13,11 @@ docs/
 # Dotenv file
 .env
 frontend/.env
+backend/.env
 
 # frontend
 frontend/node_modules
 node_modules
+
+# backend
+backend/node_modules
