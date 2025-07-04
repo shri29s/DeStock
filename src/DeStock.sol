@@ -9,7 +9,7 @@ contract DeStock is ERC1155, Ownable {
     // State variables
     IERC20 public immutable destockToken;
     uint256 public nextCompanyId;
-    uint256 public constant REGISTRATION_FEE = 100 ether;
+    uint256 public constant REGISTRATION_FEE = 100 * 10 ** 18;
 
     struct Company {
         uint256 id;
@@ -50,10 +50,7 @@ contract DeStock is ERC1155, Ownable {
     );
 
     // Constructor
-    constructor(
-        address _destockTokenAddress,
-        address initialOwner
-    ) ERC1155("") Ownable(initialOwner) {
+    constructor(address _destockTokenAddress) ERC1155("") Ownable(msg.sender) {
         destockToken = IERC20(_destockTokenAddress);
     }
 

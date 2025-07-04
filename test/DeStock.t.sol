@@ -18,8 +18,8 @@ contract DeStockTest is Test {
     function setUp() public {
         // Deploy contracts
         vm.startPrank(owner);
-        destockToken = new DeStockToken(owner);
-        destock = new DeStock(address(destockToken), owner);
+        destockToken = new DeStockToken();
+        destock = new DeStock(address(destockToken));
         vm.stopPrank();
 
         // Fund users
