@@ -85,10 +85,10 @@ export function CompanyRegistry() {
   if (!isConnected) {
     return (
       <div className="destock-card text-center py-8">
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
+        <h3 className="text-lg font-medium text-high-contrast mb-2">
           Connect Your Wallet
         </h3>
-        <p className="text-gray-600">
+        <p className="text-medium-contrast">
           Please connect your wallet to register a company.
         </p>
       </div>
@@ -98,7 +98,7 @@ export function CompanyRegistry() {
   return (
     <div className="destock-card">
       <div className="p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-6">
+        <h3 className="text-lg font-medium text-high-contrast mb-6">
           Register Your Company
         </h3>
         
@@ -115,7 +115,7 @@ export function CompanyRegistry() {
               placeholder="Enter company name"
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+              <p className="mt-1 text-sm danger">{errors.name.message}</p>
             )}
           </div>
 
@@ -133,7 +133,7 @@ export function CompanyRegistry() {
               placeholder="10.00"
             />
             {errors.initialPrice && (
-              <p className="mt-1 text-sm text-red-600">{errors.initialPrice.message}</p>
+              <p className="mt-1 text-sm danger">{errors.initialPrice.message}</p>
             )}
           </div>
 
@@ -150,13 +150,13 @@ export function CompanyRegistry() {
               placeholder="1000"
             />
             {errors.totalSupply && (
-              <p className="mt-1 text-sm text-red-600">{errors.totalSupply.message}</p>
+              <p className="mt-1 text-sm danger">{errors.totalSupply.message}</p>
             )}
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-gray-900 mb-2">Cost Breakdown</h4>
-            <div className="space-y-1 text-sm text-gray-600">
+          <div className="bg-high-visibility p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+            <h4 className="text-sm font-medium text-high-contrast mb-2">Cost Breakdown</h4>
+            <div className="space-y-1 text-sm text-medium-contrast">
               <div className="flex justify-between">
                 <span>Registration Fee:</span>
                 <span>100 DSTK</span>
@@ -169,19 +169,19 @@ export function CompanyRegistry() {
                   </span>
                 </div>
               )}
-              <div className="flex justify-between font-medium border-t pt-1">
+              <div className="flex justify-between font-medium border-t border-gray-300 dark:border-gray-600 pt-1 text-high-contrast">
                 <span>Total Cost:</span>
                 <span>{estimatedCost} DSTK</span>
               </div>
             </div>
-            <div className="mt-2 text-xs text-gray-500">
+            <div className="mt-2 text-xs text-low-contrast">
               Your Balance: {balance} DSTK
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 p-4 rounded-lg">
-              <p className="text-sm text-red-800">
+            <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-800">
+              <p className="text-sm danger">
                 Registration failed: {error.message}
               </p>
             </div>
@@ -200,8 +200,8 @@ export function CompanyRegistry() {
           </button>
 
           {isConfirmed && (
-            <div className="bg-green-50 p-4 rounded-lg">
-              <p className="text-sm text-green-800">
+            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+              <p className="text-sm success">
                 Company registered successfully! 🎉
               </p>
             </div>

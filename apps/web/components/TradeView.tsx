@@ -11,7 +11,6 @@ import { useAccount } from 'wagmi';
 import { ShoppingCartIcon, DollarSignIcon, TrendingUpIcon, TrendingDownIcon, AlertCircleIcon } from 'lucide-react';
 import { AnimatedCounter } from './AnimatedCounter';
 import { LoadingSpinner } from './LoadingSpinner';
-import { toast } from 'react-hot-toast';
 
 const schema = z.object({
   companyId: z.string().min(1, 'Please select a company'),
@@ -35,6 +34,12 @@ export function TradeView() {
   const [tradeType, setTradeType] = useState<'buy' | 'sell'>('buy');
   const [userShares, setUserShares] = useState<string>('0');
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Fix hydration by ensuring client-side rendering only after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const {
     register,
@@ -134,11 +139,26 @@ export function TradeView() {
     return (
       <div className="trading-card text-center">
         <ShoppingCartIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
           Connect Your Wallet
         </h3>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           Connect your wallet to start trading shares.
+        </p>
+      </div>
+    );
+  }
+
+  // Render simple version before hydration to prevent mismatch
+  if (!mounted) {
+    return (
+      <div className="trading-card text-center">
+        <ShoppingCartIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+          Trade Shares
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400">
+          Loading trading interface...
         </p>
       </div>
     );
@@ -146,10 +166,11 @@ export function TradeView() {
 
   return (
     <motion.div 
-      className="glass-card p-6 widget-enter"
+      className="glass-card p-6"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
+      suppressHydrationWarning={true}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">

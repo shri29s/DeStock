@@ -1,3 +1,10 @@
 {
-  "/page": "/"
+  "/_not-found/page": "/_not-found",
+  "/api/faucet/route": "/api/faucet",
+  "/api/portfolio/route": "/api/portfolio",
+  "/api/market/route": "/api/market",
+  "/company/[id]/page": "/company/[id]",
+  "/page": "/",
+  "/portfolio/page": "/portfolio",
+  "/register/page": "/register"
 }
