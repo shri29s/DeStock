@@ -24,6 +24,13 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+    
+    /* Trading Platform Variables */
+    --success: 158 64% 52%;
+    --danger: 348 83% 47%;
+    --warning: 48 96% 53%;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
   }
 
   .dark {
@@ -46,6 +53,13 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 94.1%;
+    
+    /* Dark Theme Trading Variables */
+    --success: 158 64% 52%;
+    --danger: 348 83% 47%;
+    --warning: 48 96% 53%;
+    --glass-bg: rgba(0, 0, 0, 0.1);
+    --glass-border: rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -59,42 +73,84 @@
   }
 }
 
+/* Glassmorphism Utility Classes */
+.glass-card {
+  @apply backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-black/20 rounded-lg shadow-lg;
+}
+
+.glass-nav {
+  @apply backdrop-blur-lg bg-white/80 dark:bg-black/80 border-b border-white/20 dark:border-black/20;
+}
+
+.glass-modal {
+  @apply backdrop-blur-xl bg-white/20 dark:bg-black/20 border border-white/30 dark:border-black/30;
+}
+
+.glass-button {
+  @apply backdrop-blur-sm bg-white/20 dark:bg-black/20 border border-white/30 dark:border-black/30 hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-200;
+}
+
 /* DeStock Custom Styles */
 .destock-gradient {
   background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
 }
 
 .destock-card {
-  @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200;
+  @apply glass-card transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
 }
 
 .destock-button-primary {
-  @apply bg-destock-primary hover:bg-destock-secondary text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-destock-primary focus:ring-offset-2;
+  @apply bg-destock-primary hover:bg-destock-secondary text-white font-medium py-2 px-4 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-destock-primary focus:ring-offset-2 backdrop-blur-sm;
 }
 
 .destock-button-secondary {
-  @apply bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+  @apply glass-button text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
 }
 
 .destock-input {
-  @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-destock-primary focus:border-destock-primary sm:text-sm;
+  @apply block w-full px-3 py-2 glass-card backdrop-blur-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-destock-primary focus:border-destock-primary sm:text-sm transition-all duration-200;
 }
 
 .destock-label {
-  @apply block text-sm font-medium text-gray-700 mb-1;
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
 }
 
 .trading-card {
-  @apply destock-card p-6;
+  @apply glass-card p-6 transition-all duration-300 hover:shadow-xl;
 }
 
 .company-card {
-  @apply destock-card p-4 hover:scale-105 transform transition-transform duration-200;
+  @apply glass-card p-4 hover:scale-105 transform transition-all duration-200 hover:shadow-lg;
 }
 
 /* Loading animations */
 .animate-pulse-slow {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+/* Number counter animation */
+.number-counter {
+  animation: counter 0.3s ease-out;
+}
+
+/* Widget animations */
+.widget-enter {
+  animation: widget-enter 0.3s ease-out;
+}
+
+/* Theme transition */
+.theme-transition {
+  @apply transition-colors duration-300 ease-in-out;
 }
 
 /* Custom scrollbar */
@@ -103,14 +159,26 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(241, 241, 241, 0.5);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(45, 45, 45, 0.5);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: rgba(193, 193, 193, 0.8);
   border-radius: 3px;
 }
 
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.8);
+}
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: rgba(168, 168, 168, 1);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(170, 170, 170, 1);
 }

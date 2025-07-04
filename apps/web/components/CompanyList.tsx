@@ -1,47 +1,73 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useDeStock } from '@/lib/hooks/useDeStock';
 import { useAccount } from 'wagmi';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { TrendingUpIcon, TrendingDownIcon, BuildingIcon } from 'lucide-react';
+import { TrendingUpIcon, TrendingDownIcon, BuildingIcon, SearchIcon, SortAscIcon, FilterIcon } from 'lucide-react';
+import { AnimatedCounter } from './AnimatedCounter';
+import { LoadingSpinner } from './LoadingSpinner';
+import { SkeletonLoader } from './SkeletonLoader';
 
 interface Company {
   id: number;
   name: string;
+  symbol?: string;
   owner: string;
   initialPrice: string;
   totalSupply: string;
   currentPrice?: string;
+  change?: number;
+  changePercent?: number;
+  volume?: number;
+  marketCap?: number;
+  sector?: string;
 }
+
+type SortField = 'name' | 'currentPrice' | 'change' | 'volume' | 'marketCap';
+type SortDirection = 'asc' | 'desc';
 
 export function CompanyList() {
   const { isConnected } = useAccount();
   const { nextCompanyId, getCompany, getSharePrice } = useDeStock();
+  const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortField, setSortField] = useState<SortField>('marketCap');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [selectedSector, setSelectedSector] = useState<string>('');
 
   useEffect(() => {
-    if (isConnected && nextCompanyId > 0) {
-      loadCompanies();
-    }
-  }, [isConnected, nextCompanyId]);
+    loadCompanies();
+  }, []);
 
   const loadCompanies = async () => {
     setLoading(true);
     try {
-      const companyPromises = [];
-      for (let i = 0; i < nextCompanyId; i++) {
-        companyPromises.push(loadCompanyData(i));
-      }
-      const loadedCompanies = await Promise.all(companyPromises);
-      setCompanies(loadedCompanies.filter(Boolean) as Company[]);
+      const response = await fetch('/api/market?type=companies');
+      const result = await response.json();
+      setCompanies(result.companies || []);
     } catch (error) {
       console.error('Failed to load companies:', error);
+      // Fallback to previous implementation if API fails
+      if (isConnected && nextCompanyId > 0) {
+        await loadCompaniesFromContract();
+      }
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadCompaniesFromContract = async () => {
+    const companyPromises = [];
+    for (let i = 0; i < nextCompanyId; i++) {
+      companyPromises.push(loadCompanyData(i));
+    }
+    const loadedCompanies = await Promise.all(companyPromises);
+    setCompanies(loadedCompanies.filter(Boolean) as Company[]);
   };
 
   const loadCompanyData = async (id: number): Promise<Company | null> => {
@@ -65,12 +91,70 @@ export function CompanyList() {
     }
   };
 
-  const filteredCompanies = companies.filter(company =>
-    company.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('desc');
+    }
+  };
+
+  const sortedAndFilteredCompanies = companies
+    .filter(company => {
+      const matchesSearch = company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (company.symbol && company.symbol.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesSector = !selectedSector || company.sector === selectedSector;
+      return matchesSearch && matchesSector;
+    })
+    .sort((a, b) => {
+      let aValue: any, bValue: any;
+      
+      switch (sortField) {
+        case 'name':
+          aValue = a.name;
+          bValue = b.name;
+          break;
+        case 'currentPrice':
+          aValue = parseFloat(a.currentPrice || '0');
+          bValue = parseFloat(b.currentPrice || '0');
+          break;
+        case 'change':
+          aValue = a.change || 0;
+          bValue = b.change || 0;
+          break;
+        case 'volume':
+          aValue = a.volume || 0;
+          bValue = b.volume || 0;
+          break;
+        case 'marketCap':
+          aValue = a.marketCap || 0;
+          bValue = b.marketCap || 0;
+          break;
+        default:
+          return 0;
+      }
+
+      if (typeof aValue === 'string') {
+        return sortDirection === 'asc' 
+          ? aValue.localeCompare(bValue) 
+          : bValue.localeCompare(aValue);
+      }
+      
+      return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+    });
+
+  const uniqueSectors = Array.from(new Set(companies.map(c => c.sector).filter(Boolean)));
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const formatNumber = (num: number) => {
+    if (num >= 1e9) return `${(num / 1e9).toFixed(1)}B`;
+    if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
+    if (num >= 1e3) return `${(num / 1e3).toFixed(1)}K`;
+    return num.toString();
   };
 
   if (!isConnected) {
@@ -124,74 +208,174 @@ export function CompanyList() {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium text-gray-900">
-          Listed Companies ({companies.length})
-        </h3>
-        <div className="w-64">
-          <input
-            type="text"
-            placeholder="Search companies..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="destock-input text-sm"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        {filteredCompanies.map((company) => {
-          const priceChange = company.currentPrice && company.initialPrice
-            ? ((parseFloat(company.currentPrice) - parseFloat(company.initialPrice)) / parseFloat(company.initialPrice)) * 100
-            : 0;
-
-          return (
-            <Link
-              key={company.id}
-              href={`/company/${company.id}`}
-              className="block"
+    <motion.div 
+      className="glass-card p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+    >
+      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        Market Overview
+      </h2>
+      
+      {/* Search and Filter Controls */}
+      <motion.div 
+        className="mb-6 space-y-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Search companies or symbols..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full p-3 pl-10 rounded-xl bg-gray-800/50 border border-gray-700/50 
+                       text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+                       focus:ring-blue-500/50 transition-all duration-200"
+            />
+            <svg
+              className="absolute left-3 top-3 w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <div className="company-card">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <BuildingIcon className="w-4 h-4 text-destock-primary" />
-                      <h4 className="font-medium text-gray-900">{company.name}</h4>
-                    </div>
-                    <div className="text-sm text-gray-600 space-y-1">
-                      <div>Owner: {formatAddress(company.owner)}</div>
-                      <div>Total Supply: {company.totalSupply} shares</div>
-                    </div>
-                  </div>
-                  
-                  <div className="text-right">
-                    <div className="text-lg font-semibold text-gray-900">
-                      {company.currentPrice || company.initialPrice} DSTK
-                    </div>
-                    {company.currentPrice && priceChange !== 0 && (
-                      <div className={`flex items-center text-sm ${priceChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {priceChange > 0 ? (
-                          <TrendingUpIcon className="w-3 h-3 mr-1" />
-                        ) : (
-                          <TrendingDownIcon className="w-3 h-3 mr-1" />
-                        )}
-                        {priceChange > 0 ? '+' : ''}{priceChange.toFixed(2)}%
-                      </div>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          
+          <select
+            value={selectedSector}
+            onChange={(e) => setSelectedSector(e.target.value)}
+            className="p-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white 
+                     focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200"
+          >
+            <option value="">All Sectors</option>
+            {uniqueSectors.map(sector => (
+              <option key={sector} value={sector}>{sector}</option>
+            ))}
+          </select>
+        </div>
+      </motion.div>
+
+      {/* Company Table */}
+      <motion.div 
+        className="overflow-x-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-gray-700/50">
+              {[
+                { key: 'name', label: 'Company' },
+                { key: 'currentPrice', label: 'Price' },
+                { key: 'change', label: 'Change (24h)' },
+                { key: 'volume', label: 'Volume' },
+                { key: 'marketCap', label: 'Market Cap' }
+              ].map(({ key, label }) => (
+                <th
+                  key={key}
+                  className="text-left py-4 px-4 text-gray-300 font-medium cursor-pointer 
+                           hover:text-white transition-colors duration-200"
+                  onClick={() => handleSort(key as SortField)}
+                >
+                  <div className="flex items-center space-x-1">
+                    <span>{label}</span>
+                    {sortField === key && (
+                      <svg
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          sortDirection === 'desc' ? 'rotate-180' : ''
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                      </svg>
                     )}
                   </div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+                </th>
+              ))}
+              <th className="text-left py-4 px-4 text-gray-300 font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedAndFilteredCompanies.map((company: Company, index: number) => {
+              const changeColor = (company.change || 0) >= 0 ? 'text-green-400' : 'text-red-400';
+              const changePrefix = (company.change || 0) >= 0 ? '+' : '';
+              
+              return (
+                <motion.tr
+                  key={company.id}
+                  className="border-b border-gray-800/30 hover:bg-gray-800/20 transition-colors duration-200"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  whileHover={{ scale: 1.01 }}
+                >
+                  <td className="py-4 px-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 
+                                    flex items-center justify-center text-white font-bold">
+                        {company.symbol ? company.symbol.charAt(0) : company.name.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-white">{company.name}</div>
+                        <div className="text-sm text-gray-400">
+                          {company.symbol || formatAddress(company.id.toString())}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-4 px-4">
+                    <div className="font-semibold text-white">
+                      {company.currentPrice} DSTK
+                    </div>
+                  </td>
+                  <td className={`py-4 px-4 font-semibold ${changeColor}`}>
+                    {changePrefix}{company.change?.toFixed(2) || '0.00'}%
+                  </td>
+                  <td className="py-4 px-4 text-gray-300">
+                    {formatNumber(company.volume || 0)}
+                  </td>
+                  <td className="py-4 px-4 text-gray-300">
+                    {formatNumber(company.marketCap || 0)} DSTK
+                  </td>
+                  <td className="py-4 px-4">
+                    <motion.button
+                      onClick={() => router.push(`/company/${company.id}`)}
+                      className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 
+                               hover:from-blue-700 hover:to-purple-700 rounded-lg 
+                               transition-all duration-200 text-sm font-medium text-white"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Trade
+                    </motion.button>
+                  </td>
+                </motion.tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </motion.div>
 
-      {filteredCompanies.length === 0 && searchTerm && (
-        <div className="text-center py-8 text-gray-500">
-          No companies found matching "{searchTerm}"
-        </div>
+      {sortedAndFilteredCompanies.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-12 text-gray-400"
+        >
+          <div className="text-lg font-medium mb-2">No companies found</div>
+          <div className="text-sm">
+            {searchTerm ? `No results for "${searchTerm}"` : 'No companies available'}
+          </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }
