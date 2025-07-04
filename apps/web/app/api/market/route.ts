@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateOHLCData, generateCompanyData, calculateSMA, calculateEMA, calculateRSI, generateVolumeData } from '@/lib/utils/chartData';
+import { getAllCompanies } from '@/lib/utils/companyUtils';
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,36 +14,59 @@ export async function GET(request: NextRequest) {
     await new Promise(resolve => setTimeout(resolve, Math.random() * 500 + 200));
 
     if (type === 'companies') {
-      const companies = generateCompanyData(20);
+      // Use meme token data instead of generated data
+      const memeCompanies = getAllCompanies();
+      const companies = memeCompanies.map((company, index) => ({
+        id: index,
+        name: company.name,
+        symbol: company.symbol,
+        owner: '0x' + Math.random().toString(16).substr(2, 40), // Mock address
+        initialPrice: company.price.replace('$', ''),
+        totalSupply: '1000000',
+        currentPrice: company.price.replace('$', ''),
+        price: parseFloat(company.price.replace('$', '')),
+        change: (Math.random() - 0.5) * 20, // Random change
+        changePercent: (Math.random() - 0.5) * 20,
+        volume: Math.floor(Math.random() * 1000000),
+        marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
+        sector: company.sector,
+        logo: company.logo,
+        tokenData: company
+      }));
       return NextResponse.json({ companies });
     }
 
     if (type === 'ticker') {
-      // Generate ticker data for multiple companies
-      const companies = generateCompanyData(10);
-      const tickerData = companies.map(company => ({
+      // Use real token data for ticker
+      const memeCompanies = getAllCompanies();
+      const tickerData = memeCompanies.slice(0, 10).map(company => ({
         symbol: company.symbol,
         name: company.name,
-        price: company.price,
-        change: company.change,
-        changePercent: company.changePercent,
-        volume: company.volume,
+        price: parseFloat(company.price.replace('$', '')),
+        change: (Math.random() - 0.5) * 10, // Random change for demo
+        changePercent: (Math.random() - 0.5) * 15, // Random change percentage
+        volume: Math.floor(Math.random() * 1000000),
       }));
       
       return NextResponse.json({ ticker: tickerData });
     }
 
     if (type === 'heatmap') {
-      // Generate heatmap data
-      const companies = generateCompanyData(12);
-      const heatmap = companies.map((company, index) => ({
-        id: index.toString(),
-        name: company.name,
-        symbol: company.symbol,
-        value: company.price,
-        change: company.changePercent,
-        size: Math.min(Math.max((company.marketCap / 1000000000) * 50 + 40, 40), 120) // Scale market cap to size
-      }));
+      // Use real token data for heatmap
+      const memeCompanies = getAllCompanies();
+      const heatmap = memeCompanies.slice(0, 12).map((company, index) => {
+        const marketCapValue = parseFloat(company.marketCap.replace(/[$BM]/g, ''));
+        const marketCapInNumber = company.marketCap.includes('B') ? marketCapValue * 1000000000 : marketCapValue * 1000000;
+        
+        return {
+          id: company.id,
+          name: company.name,
+          symbol: company.symbol,
+          value: parseFloat(company.price.replace('$', '')),
+          change: (Math.random() - 0.5) * 20, // Random change for demo
+          size: Math.min(Math.max((marketCapInNumber / 1000000000) * 50 + 40, 40), 120)
+        };
+      });
       
       return NextResponse.json({ heatmap });
     }
@@ -88,8 +112,25 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Default market overview
-    const companies = generateCompanyData(15);
+    // Default market overview - use real token data
+    const memeCompanies = getAllCompanies();
+    const companies = memeCompanies.slice(0, 15).map((company, index) => ({
+      id: index,
+      name: company.name,
+      symbol: company.symbol,
+      owner: '0x' + Math.random().toString(16).substr(2, 40), // Mock address
+      initialPrice: company.price.replace('$', ''),
+      totalSupply: '1000000',
+      currentPrice: company.price.replace('$', ''),
+      price: parseFloat(company.price.replace('$', '')),
+      change: (Math.random() - 0.5) * 20, // Random change
+      changePercent: (Math.random() - 0.5) * 20,
+      volume: Math.floor(Math.random() * 1000000),
+      marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
+      sector: company.sector,
+      logo: company.logo,
+      tokenData: company
+    }));
     const marketStats = {
       totalMarketCap: companies.reduce((sum, c) => sum + c.marketCap, 0),
       totalVolume: companies.reduce((sum, c) => sum + c.volume, 0),

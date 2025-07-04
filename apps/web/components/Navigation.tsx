@@ -8,6 +8,7 @@ import { ThemeToggle } from './ThemeToggle';
 
 const navigation = [
   { name: 'Dashboard', href: '/' },
+  { name: 'Tokens', href: '/tokens' },
   { name: 'Register Company', href: '/register' },
   { name: 'Portfolio', href: '/portfolio' },
 ];

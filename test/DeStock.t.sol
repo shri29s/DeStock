@@ -45,7 +45,9 @@ contract DeStockTest is Test {
             address companyOwner,
             uint256 totalSupply,
             uint256 tokenReserve,
-            uint256 shareReserve
+            uint256 shareReserve,
+            uint256 lpTokenSupply,
+            uint256 collectedFees
         ) = destock.companies(0);
         assertEq(companyOwner, alice, "Company owner should be Alice");
         assertEq(totalSupply, 1000, "Total supply should be 1000");
@@ -85,7 +87,9 @@ contract DeStockTest is Test {
         vm.startPrank(bob);
         uint256 sharesToBuy = 50;
         uint256 cost = destock.getBuyPrice(0, sharesToBuy);
-        destockToken.approve(address(destock), cost);
+        uint256 fee = (cost * 25) / 10000; // 0.25% trading fee
+        uint256 totalCost = cost + fee;
+        destockToken.approve(address(destock), totalCost);
         destock.buyShares(0, sharesToBuy);
 
         assertEq(
@@ -95,7 +99,7 @@ contract DeStockTest is Test {
         );
         assertEq(
             destockToken.balanceOf(bob),
-            1000 ether - cost,
+            1000 ether - totalCost,
             "Bob's DSTK balance is wrong"
         );
 
@@ -105,7 +109,8 @@ contract DeStockTest is Test {
             ,
             ,
             ,
-            uint256 shareReserve
+            uint256 shareReserve,
+            ,
         ) = destock.companies(0);
         assertEq(
             shareReserve,
@@ -147,12 +152,14 @@ contract DeStockTest is Test {
 
         vm.startPrank(bob);
         uint256 cost = destock.getBuyPrice(0, 50);
+        uint256 fee = (cost * 25) / 10000; // 0.25% trading fee
+        uint256 totalCost = cost + fee;
         vm.expectRevert(
             abi.encodeWithSignature(
                 "ERC20InsufficientAllowance(address,uint256,uint256)",
                 address(destock),
                 0,
-                cost
+                totalCost
             )
         );
         destock.buyShares(0, 50);
@@ -165,15 +172,11 @@ contract DeStockTest is Test {
         vm.startPrank(bob);
         uint256 sharesToSell = 25;
         uint256 proceeds = destock.getSellPrice(0, sharesToSell);
+        uint256 fee = (proceeds * 25) / 10000; // 0.25% trading fee
+        uint256 netProceeds = proceeds - fee;
         destock.setApprovalForAll(address(destock), true);
         uint256 bobBalanceBefore = destockToken.balanceOf(bob);
-        vm.stopPrank();
-
-        vm.startPrank(alice);
-        destockToken.approve(address(destock), proceeds);
-        vm.stopPrank();
-
-        vm.startPrank(bob);
+        
         destock.sellShares(0, sharesToSell);
 
         assertEq(
@@ -183,9 +186,10 @@ contract DeStockTest is Test {
         );
         assertEq(
             destockToken.balanceOf(bob),
-            bobBalanceBefore + proceeds,
+            bobBalanceBefore + netProceeds,
             "Bob's DSTK balance is wrong after selling"
         );
+        vm.stopPrank();
 
         (
             ,
@@ -193,7 +197,8 @@ contract DeStockTest is Test {
             ,
             ,
             ,
-            uint256 shareReserve
+            uint256 shareReserve,
+            ,
         ) = destock.companies(0);
         assertEq(
             shareReserve,

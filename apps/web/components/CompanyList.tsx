@@ -6,10 +6,13 @@ import { useDeStock } from '@/lib/hooks/useDeStock';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { TrendingUpIcon, TrendingDownIcon, BuildingIcon, SearchIcon, SortAscIcon, FilterIcon } from 'lucide-react';
 import { AnimatedCounter } from './AnimatedCounter';
 import { LoadingSpinner } from './LoadingSpinner';
 import { SkeletonLoader } from './SkeletonLoader';
+import { getAllCompanies, getCompanyLogo, getAllSectors } from '@/lib/utils/companyUtils';
+import { Company as CompanyType } from '@/lib/types/company';
 
 interface Company {
   id: number;
@@ -24,6 +27,8 @@ interface Company {
   volume?: number;
   marketCap?: number;
   sector?: string;
+  logo?: string;
+  tokenData?: CompanyType;
 }
 
 type SortField = 'name' | 'currentPrice' | 'change' | 'volume' | 'marketCap';
@@ -47,12 +52,35 @@ export function CompanyList() {
   const loadCompanies = async () => {
     setLoading(true);
     try {
+      // Try to load from API first
       const response = await fetch('/api/market?type=companies');
-      const result = await response.json();
-      setCompanies(result.companies || []);
+      if (response.ok) {
+        const result = await response.json();
+        setCompanies(result.companies || []);
+      } else {
+        // Fallback to token data
+        const tokenCompanies = getAllCompanies();
+        const transformedCompanies = tokenCompanies.map((company, index) => ({
+          id: index,
+          name: company.name,
+          symbol: company.symbol,
+          owner: '0x' + Math.random().toString(16).substr(2, 40), // Mock address
+          initialPrice: company.price.replace('$', ''),
+          totalSupply: '1000000',
+          currentPrice: company.price.replace('$', ''),
+          change: (Math.random() - 0.5) * 20, // Random change
+          changePercent: (Math.random() - 0.5) * 20,
+          volume: Math.floor(Math.random() * 1000000),
+          marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
+          sector: company.sector,
+          logo: company.logo,
+          tokenData: company // Store the full token data
+        }));
+        setCompanies(transformedCompanies);
+      }
     } catch (error) {
       console.error('Failed to load companies:', error);
-      // Fallback to previous implementation if API fails
+      // Final fallback to contract data if available
       if (isConnected && nextCompanyId > 0) {
         await loadCompaniesFromContract();
       }
@@ -319,14 +347,37 @@ export function CompanyList() {
                 >
                   <td className="py-4 px-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 
-                                    flex items-center justify-center text-white font-bold">
-                        {company.symbol ? company.symbol.charAt(0) : company.name.charAt(0)}
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 
+                                    flex items-center justify-center text-white font-bold relative">
+                        {company.logo ? (
+                          <Image
+                            src={company.logo}
+                            alt={`${company.name} logo`}
+                            width={40}
+                            height={40}
+                            className="object-cover rounded-full"
+                            onError={(e) => {
+                              // Fallback to symbol if image fails
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        ) : null}
+                        {!company.logo && (
+                          <span className="text-sm font-bold">
+                            {company.symbol ? company.symbol.charAt(0) : company.name.charAt(0)}
+                          </span>
+                        )}
+                        {/* Fallback text overlay */}
+                        <span className="absolute inset-0 flex items-center justify-center text-sm font-bold bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                          {company.symbol ? company.symbol.charAt(0) : company.name.charAt(0)}
+                        </span>
                       </div>
                       <div>
-                        <div className="font-semibold text-white">{company.name}</div>
+                        <div className="font-semibold text-white">
+                          <span>{company.name}</span>
+                        </div>
                         <div className="text-sm text-gray-400">
-                          {company.symbol || formatAddress(company.id.toString())}
+                          <span>{company.symbol || formatAddress(company.id.toString())}</span>
                         </div>
                       </div>
                     </div>

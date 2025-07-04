@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { getAllCompanies } from '@/lib/utils/companyUtils';
 
 interface HeatMapData {
   id: string;
@@ -31,37 +32,25 @@ export function MarketHeatMap({ className }: MarketHeatMapProps) {
       setHeatMapData(result.heatmap || []);
     } catch (error) {
       console.error('Failed to load heatmap data:', error);
-      // Fallback mock data
-      setHeatMapData(generateMockHeatMapData());
+      // Fallback to real token data
+      const companies = getAllCompanies().slice(0, 12);
+      const fallbackData = companies.map((company) => {
+        const marketCapValue = parseFloat(company.marketCap.replace(/[$BM]/g, ''));
+        const marketCapInNumber = company.marketCap.includes('B') ? marketCapValue * 1000000000 : marketCapValue * 1000000;
+        
+        return {
+          id: company.id,
+          name: company.name,
+          symbol: company.symbol,
+          value: parseFloat(company.price.replace('$', '')),
+          change: (Math.random() - 0.5) * 20, // Random change for demo
+          size: Math.min(Math.max((marketCapInNumber / 1000000000) * 50 + 40, 40), 120)
+        };
+      });
+      setHeatMapData(fallbackData);
     } finally {
       setLoading(false);
     }
-  };
-
-  const generateMockHeatMapData = (): HeatMapData[] => {
-    const companies = [
-      { name: 'TechCorp', symbol: 'TECH' },
-      { name: 'FinanceInc', symbol: 'FIN' },
-      { name: 'HealthCare Ltd', symbol: 'HEAL' },
-      { name: 'Energy Solutions', symbol: 'NRGY' },
-      { name: 'Retail Giant', symbol: 'RTGN' },
-      { name: 'Manufacturing Co', symbol: 'MANU' },
-      { name: 'Transport Hub', symbol: 'TRNS' },
-      { name: 'Media Group', symbol: 'MEDA' },
-      { name: 'Real Estate', symbol: 'REST' },
-      { name: 'Biotech Inc', symbol: 'BIOT' },
-      { name: 'Aerospace Ltd', symbol: 'AERO' },
-      { name: 'Telecom Corp', symbol: 'TCOM' }
-    ];
-
-    return companies.map((company, index) => ({
-      id: index.toString(),
-      name: company.name,
-      symbol: company.symbol,
-      value: Math.random() * 1000 + 100,
-      change: (Math.random() - 0.5) * 20,
-      size: Math.random() * 80 + 40
-    }));
   };
 
   const getColorByChange = (change: number) => {

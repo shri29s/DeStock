@@ -19,7 +19,20 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'gateway.lighthouse.storage',
+        port: '',
+        pathname: '/ipfs/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,

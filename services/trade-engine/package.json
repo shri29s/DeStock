@@ -1,0 +1,26 @@
+{
+  "name": "destock-trade-engine",
+  "version": "1.0.0",
+  "description": "Real-time trade engine for DeStock platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ethers": "^6.8.1",
+    "ws": "^8.14.2",
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0"
+  },
+  "keywords": ["defi", "trading", "orderbook", "ethereum", "postgresql"],
+  "author": "DeStock Team",
+  "license": "MIT"
+}

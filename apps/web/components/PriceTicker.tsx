@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUpIcon, TrendingDownIcon } from 'lucide-react';
 import { AnimatedCounter } from './AnimatedCounter';
+import { getAllCompanies } from '@/lib/utils/companyUtils';
 
 interface TickerItem {
   symbol: string;
@@ -39,12 +40,17 @@ export function PriceTicker({
         setTickerData(result.ticker || []);
       } catch (error) {
         console.error('Failed to fetch ticker data:', error);
-        // Fallback data
-        setTickerData([
-          { symbol: 'AAPL', name: 'Apple Inc.', price: 182.52, change: 2.34, changePercent: 1.3, volume: 45234567 },
-          { symbol: 'MSFT', name: 'Microsoft', price: 378.91, change: -1.23, changePercent: -0.32, volume: 23456789 },
-          { symbol: 'GOOGL', name: 'Alphabet', price: 142.65, change: 3.45, changePercent: 2.5, volume: 34567890 },
-        ]);
+        // Fallback to real token data
+        const companies = getAllCompanies().slice(0, 10);
+        const fallbackData = companies.map(company => ({
+          symbol: company.symbol,
+          name: company.name,
+          price: parseFloat(company.price.replace('$', '')),
+          change: (Math.random() - 0.5) * 10,
+          changePercent: (Math.random() - 0.5) * 15,
+          volume: Math.floor(Math.random() * 1000000),
+        }));
+        setTickerData(fallbackData);
       } finally {
         setLoading(false);
       }
