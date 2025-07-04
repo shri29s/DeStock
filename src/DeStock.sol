@@ -1,39 +1,34 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract DeStock is ERC1155, Ownable {
     // State variables
     IERC20 public immutable destockToken;
     uint256 public nextCompanyId;
-    uint256 public constant REGISTRATION_FEE = 100 ether;
+    uint256 public constant MINIMUM_LIQUIDITY = 10 * 10**18;
 
     struct Company {
         uint256 id;
         string name;
         address owner;
-        uint256 initialPrice; // In DSTK
         uint256 totalSupply;
-    }
-
-    struct LiquidityPool {
         uint256 tokenReserve; // DSTK tokens
         uint256 shareReserve; // Share tokens
     }
 
     mapping(uint256 => Company) public companies;
-    mapping(uint256 => LiquidityPool) public liquidityPools;
 
     // Events
     event CompanyRegistered(
         uint256 indexed companyId,
         string name,
         address indexed owner,
-        uint256 initialPrice,
-        uint256 totalSupply
+        uint256 initialShares,
+        uint256 initialLiquidity
     );
 
     event SharesPurchased(
@@ -50,57 +45,74 @@ contract DeStock is ERC1155, Ownable {
     );
 
     // Constructor
-    constructor(
-        address _destockTokenAddress,
-        address initialOwner
-    ) ERC1155("") Ownable(initialOwner) {
+    constructor(address _destockTokenAddress) ERC1155("") Ownable(msg.sender) {
         destockToken = IERC20(_destockTokenAddress);
     }
 
     // Register company
     function registerCompany(
         string calldata name,
-        uint256 initialPrice,
-        uint256 totalSupply
+        uint256 totalSupply,
+        uint256 initialLiquidity // In unit like wei
     ) external {
         require(totalSupply > 0, "DeStock: total supply must be > 0");
-        require(initialPrice > 0, "DeStock: initial price must be > 0");
+        require(
+            initialLiquidity >= MINIMUM_LIQUIDITY,
+            "DeStock: insufficient liquidity"
+        );
 
-        destockToken.transferFrom(msg.sender, address(this), REGISTRATION_FEE);
+        destockToken.transferFrom(msg.sender, address(this), initialLiquidity);
 
         uint256 companyId = nextCompanyId++;
         companies[companyId] = Company({
             id: companyId,
             name: name,
             owner: msg.sender,
-            initialPrice: initialPrice,
-            totalSupply: totalSupply
+            totalSupply: totalSupply,
+            tokenReserve: initialLiquidity,
+            shareReserve: totalSupply
         });
 
         _mint(msg.sender, companyId, totalSupply, "");
-
-        // Initialize the liquidity pool
-        liquidityPools[companyId] = LiquidityPool({
-            tokenReserve: initialPrice * totalSupply, // A simplified initial liquidity
-            shareReserve: totalSupply
-        });
 
         emit CompanyRegistered(
             companyId,
             name,
             msg.sender,
-            initialPrice,
-            totalSupply
+            totalSupply,
+            initialLiquidity
         );
     }
 
     // AMM logic
     function getSharePrice(uint256 companyId) public view returns (uint256) {
-        LiquidityPool storage pool = liquidityPools[companyId];
-        if (pool.shareReserve == 0) {
-            return companies[companyId].initialPrice;
+        Company storage company = companies[companyId];
+        if (company.shareReserve == 0) {
+            return company.tokenReserve / company.totalSupply;
         }
-        return pool.tokenReserve / pool.shareReserve;
+        return company.tokenReserve / company.shareReserve;
+    }
+
+    function getBuyPrice(
+        uint256 companyId,
+        uint256 amount
+    ) public view returns (uint256) {
+        Company storage company = companies[companyId];
+        uint256 k = company.tokenReserve * company.shareReserve;
+        uint256 newShareReserve = company.shareReserve - amount;
+        uint256 newTokenReserve = k / newShareReserve;
+        return newTokenReserve - company.tokenReserve;
+    }
+
+    function getSellPrice(
+        uint256 companyId,
+        uint256 amount
+    ) public view returns (uint256) {
+        Company storage company = companies[companyId];
+        uint256 k = company.tokenReserve * company.shareReserve;
+        uint256 newShareReserve = company.shareReserve + amount;
+        uint256 newTokenReserve = k / newShareReserve;
+        return company.tokenReserve - newTokenReserve;
     }
 
     function buyShares(uint256 companyId, uint256 amount) external {
@@ -108,14 +120,13 @@ contract DeStock is ERC1155, Ownable {
         Company storage company = companies[companyId];
         require(company.owner != address(0), "DeStock: company does not exist");
 
-        uint256 cost = getSharePrice(companyId) * amount;
+        uint256 cost = getBuyPrice(companyId, amount);
 
-        destockToken.transferFrom(msg.sender, address(this), cost);
+        destockToken.transferFrom(msg.sender, company.owner, cost);
         _safeTransferFrom(company.owner, msg.sender, companyId, amount, "");
 
-        LiquidityPool storage pool = liquidityPools[companyId];
-        pool.tokenReserve += cost;
-        pool.shareReserve -= amount;
+        company.tokenReserve += cost;
+        company.shareReserve -= amount;
 
         emit SharesPurchased(companyId, msg.sender, amount, cost);
     }
@@ -129,28 +140,31 @@ contract DeStock is ERC1155, Ownable {
             "DeStock: insufficient share balance"
         );
 
-        uint256 proceeds = getSharePrice(companyId) * amount;
+        uint256 proceeds = getSellPrice(companyId, amount);
 
+        destockToken.transferFrom(company.owner, msg.sender, proceeds);
         _safeTransferFrom(msg.sender, company.owner, companyId, amount, "");
-        destockToken.transfer(msg.sender, proceeds);
 
-        LiquidityPool storage pool = liquidityPools[companyId];
-        pool.tokenReserve -= proceeds;
-        pool.shareReserve += amount;
+        company.tokenReserve -= proceeds;
+        company.shareReserve += amount;
 
         emit SharesSold(companyId, msg.sender, amount, proceeds);
-    }   
-
-    // Admin functions
-    function withdrawFees() external onlyOwner {
-        uint256 balance = destockToken.balanceOf(address(this));
-        require(balance > 0, "DeStock: no fees to withdraw");
-        destockToken.transfer(owner(), balance);
     }
 
     function supportsInterface(
         bytes4 interfaceId
     ) public view virtual override(ERC1155) returns (bool) {
         return super.supportsInterface(interfaceId);
+    }
+
+    // Utility functions
+    function getCompanyDetails(uint256 companyId) public view returns (Company memory) {
+        Company memory company = companies[companyId];
+        require(company.owner != address(0), "Company does not exist");
+        return company;
+    }   
+
+    function totalCompanies() public view returns (uint256) {
+        return nextCompanyId;
     }
 }
