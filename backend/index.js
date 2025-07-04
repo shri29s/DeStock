@@ -50,6 +50,11 @@ async function updateShareholderBalance(companyId, shareholderAddress, amountCha
     );
 }
 
+async function storeTradeHistory(trade) {
+    const tradeHistoryCollection = db.collection("trade_history");
+    await tradeHistoryCollection.insertOne(trade);
+}
+
 app.get("/prices/:companyId", async (req, res) => {
   try {
     const companyId = req.params.companyId;
@@ -72,6 +77,35 @@ app.get("/shareholders/:companyId", async (req, res) => {
     }
 });
 
+app.get("/trades/:companyId", async (req, res) => {
+    try {
+        const companyId = parseInt(req.params.companyId);
+        const tradeHistoryCollection = db.collection("trade_history");
+        const trades = await tradeHistoryCollection.find({ companyId: companyId }).sort({ timestamp: -1 }).toArray();
+        res.json(trades);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get("/trades/latest/:n", async (req, res) => {
+  try {
+    const tradeHistoryCollection = db.collection("trade_history");
+    const trades = await tradeHistoryCollection.find().sort({ timestamp: -1 }).limit(Number(n)).toArray();
+    res.json(trades);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/portfolio/:address", async (req, res) => {
+  const shareholders = await db.collection("shareholders")
+    .find({ address: req.params.address.toLowerCase(), balance: { $gt: 0 } })
+    .toArray();
+  res.json(shareholders);
+});
+
+
 async function startServer() {
   await connectToDb();
   setInterval(pollAndStorePrices, pollingInterval);
@@ -79,11 +113,27 @@ async function startServer() {
   contract.on("SharesPurchased", (companyId, buyer, amount, cost) => {
     console.log(`SharesPurchased event: companyId=${companyId}, buyer=${buyer}, amount=${amount}`);
     updateShareholderBalance(Number(companyId), buyer, Number(amount));
+    storeTradeHistory({
+        type: "buy",
+        companyId: Number(companyId),
+        address: buyer,
+        amount: Number(amount),
+        price: cost.toString(),
+        timestamp: new Date(),
+    });
   });
 
   contract.on("SharesSold", (companyId, seller, amount, proceeds) => {
     console.log(`SharesSold event: companyId=${companyId}, seller=${seller}, amount=${amount}`);
     updateShareholderBalance(Number(companyId), seller, -Number(amount));
+    storeTradeHistory({
+        type: "sell",
+        companyId: Number(companyId),
+        address: seller,
+        amount: Number(amount),
+        price: proceeds.toString(),
+        timestamp: new Date(),
+    });
   });
 
   app.listen(port, () => {
