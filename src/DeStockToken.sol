@@ -3,8 +3,9 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract DeStockToken is ERC20, ERC20Capped, Ownable {
+contract DeStockToken is ERC20, ERC20Capped, Ownable, ReentrancyGuard {
     constructor()
         ERC20("DeStock Token", "DSTK")
         ERC20Capped(10_000_000 * 10 ** 18)
@@ -17,12 +18,12 @@ contract DeStockToken is ERC20, ERC20Capped, Ownable {
         _mint(to, amount);
     }
 
-    function transferFromContract(address to, uint256 amount) public onlyOwner {
+    function transferFromContract(address to, uint256 amount) public onlyOwner nonReentrant {
         _transfer(address(this), to, amount);
     }
 
     // Test purpose
-    function batchAirDrop(address[] calldata recipients, uint256[] calldata amounts) external {
+    function batchAirDrop(address[] calldata recipients, uint256[] calldata amounts) external nonReentrant {
         require(recipients.length == amounts.length, "Length mismatch");
 
         for (uint256 i = 0; i < recipients.length; i++) {

@@ -4,8 +4,9 @@ pragma solidity ^0.8.20;
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract DeStock is ERC1155, Ownable {
+contract DeStock is ERC1155, Ownable, ReentrancyGuard {
     // State variables
     IERC20 public immutable destockToken;
     uint256 public nextCompanyId;
@@ -115,7 +116,7 @@ contract DeStock is ERC1155, Ownable {
         return company.tokenReserve - newTokenReserve;
     }
 
-    function buyShares(uint256 companyId, uint256 amount) external {
+    function buyShares(uint256 companyId, uint256 amount) external nonReentrant {
         require(amount > 0, "DeStock: amount must be > 0");
         Company storage company = companies[companyId];
         require(company.owner != address(0), "DeStock: company does not exist");
@@ -131,7 +132,7 @@ contract DeStock is ERC1155, Ownable {
         emit SharesPurchased(companyId, msg.sender, amount, cost);
     }
 
-    function sellShares(uint256 companyId, uint256 amount) external {
+    function sellShares(uint256 companyId, uint256 amount) external nonReentrant {
         require(amount > 0, "DeStock: amount must be > 0");
         Company storage company = companies[companyId];
         require(company.owner != address(0), "DeStock: company does not exist");
