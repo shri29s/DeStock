@@ -13,13 +13,15 @@
     "start": "npm --prefix apps/web run start",
     "lint": "npm --prefix apps/web run lint",
     "clean": "npm --prefix apps/web run clean",
-    "contracts:build": "npm --prefix packages/contracts run build",
-    "contracts:test": "npm --prefix packages/contracts run test",
-    "contracts:deploy": "npm --prefix packages/contracts run deploy",
+    "contracts:build": "cd contracts && forge build",
+    "contracts:test": "cd contracts && forge test",
+    "contracts:deploy": "cd contracts && forge script script/Deploy.s.sol:Deploy --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast",
     "web:dev": "npm --prefix apps/web run dev",
     "web:build": "npm --prefix apps/web run build",
     "web:start": "npm --prefix apps/web run start",
-    "bootstrap": "ts-node scripts/bootstrapCompanies.ts"
+    "bootstrap": "ts-node scripts/bootstrapCompanies.ts",
+    "platform:start": "./scripts/start-destock.sh",
+    "platform:stop": "./scripts/stop-destock.sh"
   },
   "devDependencies": {
     "@types/node": "^20.19.4",

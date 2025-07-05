@@ -1,0 +1,99 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: destock-postgres
+    environment:
+      POSTGRES_DB: destock
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../services/trade-engine/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - destock-network
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    container_name: destock-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - destock-network
+
+  # Trade Engine Service
+  trade-engine:
+    build:
+      context: ../services/trade-engine
+      dockerfile: Dockerfile
+    container_name: destock-trade-engine
+    env_file:
+      - ../.env
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - WS_PORT=8080
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=destock
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+    ports:
+      - "3002:3002"
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - destock-network
+    restart: unless-stopped
+
+  # Market Maker Service
+  market-maker:
+    build:
+      context: ../services/market-maker
+      dockerfile: Dockerfile
+    container_name: destock-market-maker
+    env_file:
+      - ../.env
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - WS_PORT=8081
+    ports:
+      - "3001:3001"
+      - "8081:8081"
+    networks:
+      - destock-network
+    restart: unless-stopped
+
+  # Nginx Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: destock-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - trade-engine
+      - market-maker
+    networks:
+      - destock-network
+    restart: unless-stopped
+
+networks:
+  destock-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
