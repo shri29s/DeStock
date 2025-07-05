@@ -57,6 +57,10 @@ else
     ANVIL_PID=$!
     echo "📝 Anvil started with PID: $ANVIL_PID"
     
+    # Save PID to file for stop script
+    echo "ANVIL_PID=$ANVIL_PID" > .destock-pids
+    echo "START_TIME=\"$(date)\"" >> .destock-pids
+    
     # Wait for Anvil to be ready
     if wait_for_service "http://localhost:8545" "Anvil blockchain"; then
         echo "✅ Anvil blockchain ready"
@@ -202,6 +206,9 @@ echo "🚀 Starting Next.js development server..."
 npm run dev > ../frontend.log 2>&1 &
 FRONTEND_PID=$!
 echo "📝 Frontend started with PID: $FRONTEND_PID"
+
+# Update PID file
+echo "FRONTEND_PID=$FRONTEND_PID" >> ../../.destock-pids
 
 # Go back to root directory
 cd ../..

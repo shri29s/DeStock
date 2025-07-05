@@ -85,6 +85,45 @@ DeStock/
     └── README.md               # This file
 ```
 
+## 🚀 Quick Start
+
+### ⚡ One-Command Launch
+```bash
+# Clone and start the entire platform
+git clone https://github.com/shri29s/DeStock.git
+cd DeStock
+chmod +x start-destock.sh
+./start-destock.sh
+```
+
+### 🎛️ Platform Management
+```bash
+# Start platform
+./start-destock.sh
+# or
+./destock.sh start
+
+# Stop platform
+./stop-destock.sh  
+# or
+./destock.sh stop
+
+# Check status
+./destock.sh status
+
+# View logs
+./destock.sh logs docker
+```
+
+**📚 For complete management guide including troubleshooting, service URLs, and advanced commands, see [PLATFORM_MANAGEMENT.md](PLATFORM_MANAGEMENT.md)**
+
+### 🌐 Access URLs (After Startup)
+| Service | URL | Description |
+|---------|-----|-------------|
+| **Trading Interface** | http://localhost:3000 | Main trading platform |
+| **API Gateway** | http://localhost:80 | Load balancer |
+| **Blockchain RPC** | http://localhost:8545 | Anvil endpoint |
+
 ## 🚀 Complete Setup Guide
 
 ### 📋 Prerequisites
@@ -110,93 +149,46 @@ node --version
 ### 🏁 One-Command Startup
 
 ```bash
-# Clone and setup
-git clone https://github.com/shri29s/DeStock.git
-cd DeStock
-
-# Make startup script executable
-chmod +x start-destock.sh
-
-# Start entire platform
+# Start entire platform (recommended)
 ./start-destock.sh
 ```
 
-**✨ What the startup script does:**
-- 🔍 **Smart Detection**: Checks if Anvil is already running
-- ⛓️ **Auto Blockchain**: Starts Anvil if needed with proper configuration
-- 🔨 **Contract Pipeline**: Compiles, tests, and deploys smart contracts
-- 📄 **Address Updates**: Automatically updates .env with new contract addresses
-- 🐳 **Docker Services**: Starts all microservices with health checks
-- 🌐 **Frontend Launch**: Starts Next.js development server
-- 🏥 **Health Monitoring**: Verifies all services are running correctly
-- 📊 **Status Dashboard**: Shows all service URLs and management commands
+**✨ This automatically handles:**
+- ⛓️ Anvil blockchain setup
+- 🔨 Contract compilation and deployment  
+- 🐳 Docker microservices startup
+- 🌐 Frontend launch
+- 🏥 Health checks and verification
 
-**🎯 Expected successful output:**
+**🎯 Expected output on success:**
 ```
 🎉 DeStock Trading Platform is now running!
-==================================================
-📱 Frontend:      http://localhost:3003
-🔗 Blockchain:    http://localhost:8545
+📱 Frontend:      http://localhost:3000
+🔗 Blockchain:    http://localhost:8545  
 🐳 Load Balancer: http://localhost:80
-⚙️  Trade Engine:  http://localhost:3002
-🤖 Market Maker:  http://localhost:3001
-🗄️  Database:     localhost:5432
-💾 Redis Cache:   localhost:6379
 ```
 
-### 📝 Manual Setup (Step by Step)
+**📚 For manual setup, troubleshooting, and advanced management, see [PLATFORM_MANAGEMENT.md](PLATFORM_MANAGEMENT.md)**
 
-#### 1️⃣ Start Local Blockchain
+### 📝 Manual Setup (Optional)
+
+For development or troubleshooting, you can start services individually:
 
 ```bash
-# Terminal 1 - Start Anvil blockchain
+# 1. Start blockchain
 anvil --host 0.0.0.0 --port 8545 --chain-id 31337
-```
 
-**Keep this running!** Provides:
-- Local Ethereum node: `http://localhost:8545`
-- 10 pre-funded accounts
-- Instant mining for testing
+# 2. Deploy contracts  
+forge script script/Deploy.s.sol:Deploy --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
 
-#### 2️⃣ Deploy Smart Contracts
-
-```bash
-# Terminal 2 - Deploy contracts
-cd DeStock
-
-# Compile contracts
-forge build
-
-# Run tests
-forge test -vv
-
-# Deploy to local chain
-forge script script/Deploy.s.sol:Deploy \
-  --rpc-url http://localhost:8545 \
-  --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
-  --broadcast
-```
-
-#### 3️⃣ Start Microservices
-
-```bash
-# Terminal 3 - Start Docker services
-docker-compose down
-docker-compose build --no-cache
+# 3. Start microservices
 docker-compose up -d
 
-# Verify all services running
-docker-compose ps
+# 4. Start frontend
+cd apps/web && npm install && npm run dev
 ```
 
-#### 4️⃣ Start Frontend
-
-```bash
-# Terminal 4 - Start Next.js
-cd apps/web
-npm install
-npm run dev
-```
+**📚 For detailed manual setup instructions, see [PLATFORM_MANAGEMENT.md](PLATFORM_MANAGEMENT.md)**
 
 ## 📊 Key Features
 
@@ -289,22 +281,45 @@ Tables:
 - Load balancing across services
 - Health monitoring and failover
 
-## 🌐 Access URLs
+## 🌐 Platform URLs
 
-### 🎮 User Interfaces
-- **Trading Platform**: http://localhost:3003
+### 🎮 Main Interfaces
+- **Trading Platform**: http://localhost:3000 (or 3003)
 - **API Gateway**: http://localhost:80
 
-### 🔧 Microservices
+### 🔧 Development Access
 - **Trade Engine**: http://localhost:3002
-- **Market Maker**: http://localhost:3001
+- **Market Maker**: http://localhost:3001  
+- **Blockchain RPC**: http://localhost:8545
 - **Database**: localhost:5432
 - **Cache**: localhost:6379
 
-### ⛓️ Blockchain
-- **Anvil RPC**: http://localhost:8545
-- **Chain ID**: 31337
-- **WebSocket**: ws://localhost:8080
+## 🛠️ Platform Management
+
+### 🎛️ Quick Commands
+```bash
+./destock.sh start     # Start platform
+./destock.sh stop      # Stop platform  
+./destock.sh status    # Check status
+./destock.sh restart   # Restart platform
+./destock.sh logs      # View logs
+./destock.sh clean     # Clean shutdown
+```
+
+### 🚨 Troubleshooting
+```bash
+# If services won't start
+./destock.sh clean
+docker-compose down -v
+./destock.sh start
+
+# Check what's running
+./destock.sh status
+docker ps
+netstat -an | grep ":8545\|:3000\|:80"
+```
+
+**📚 For complete management guide, troubleshooting, and advanced features, see [PLATFORM_MANAGEMENT.md](PLATFORM_MANAGEMENT.md)**
 
 ## 🧪 Testing & Verification
 
