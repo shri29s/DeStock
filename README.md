@@ -36,7 +36,7 @@
 DeStock is a **professional-grade decentralized trading platform** that enables trading of tokenized company shares using DSTK tokens. It combines automated market making (AMM), traditional order books, and liquidity provider rewards in a single platform.
 
 <div align="center">
-  <img src="./assets/destockimage.png" alt="DeStock Platform" style="border-radius: 10px; margin: 20px 0;"/>
+  <img src="./assets/destockimag.png" alt="DeStock Platform" style="border-radius: 10px; margin: 20px 0;"/>
 </div>
 
 ---
