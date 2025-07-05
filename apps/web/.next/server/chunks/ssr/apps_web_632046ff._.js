@@ -640,15 +640,16 @@ function useDeStock() {
         functionName: "nextCompanyId"
     });
     const { writeContractAsync: registerCompany, isPending, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useWriteContract$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWriteContract"])();
-    const handleRegisterCompany = async (name, totalSupply, initialLiquidity)=>{
+    const handleRegisterCompany = async (name, initialLiquidity, totalSupply, ipfsMetadataUri)=>{
         await registerCompany({
             abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
             address: destockAddress,
             functionName: "registerCompany",
             args: [
                 name,
+                BigInt(totalSupply),
                 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$parseEther$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["parseEther"])(initialLiquidity),
-                BigInt(totalSupply)
+                ipfsMetadataUri
             ]
         });
         refetchNextCompanyId();
@@ -811,6 +812,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$mo
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/lib/hooks/useDeStock.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDSTK$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/lib/hooks/useDSTK.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/wagmi/dist/esm/hooks/useAccount.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$usePublicClient$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/wagmi/dist/esm/hooks/usePublicClient.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/wagmi/dist/esm/hooks/useReadContract.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useWriteContract$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/wagmi/dist/esm/hooks/useWriteContract.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCartIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shopping-cart.js [app-ssr] (ecmascript) <export default as ShoppingCartIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSignIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/dollar-sign.js [app-ssr] (ecmascript) <export default as DollarSignIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUpIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trending-up.js [app-ssr] (ecmascript) <export default as TrendingUpIcon>");
@@ -821,7 +825,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/apps/web/lib/contracts.ts [app-ssr] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/apps/web/lib/contracts.ts [app-ssr] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/lib/abi/DeStock.ts [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStockToken$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/lib/abi/DeStockToken.ts [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$formatUnits$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/viem/_esm/utils/unit/formatUnits.js [app-ssr] (ecmascript)");
 "use client";
+;
 ;
 ;
 ;
@@ -840,7 +847,7 @@ const schema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$z
     amount: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v3$2f$external$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(1, "Amount is required")
 });
 function TradeView() {
-    const { isConnected } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAccount"])();
+    const { address, chainId, isConnected } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAccount"])();
     const { buyShares, sellShares, getSharePrice, getShareBalance, nextCompanyId, isPending, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDeStock"])();
     const { balance } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDSTK$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDSTK"])();
     const [companies, setCompanies] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
@@ -849,6 +856,7 @@ function TradeView() {
     const [userShares, setUserShares] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("0");
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const publicClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$usePublicClient$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["usePublicClient"])();
     // Fix hydration by ensuring client-side rendering only after mount
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         setMounted(true);
@@ -858,51 +866,144 @@ function TradeView() {
     });
     const watchedCompanyId = watch("companyId");
     const watchedAmount = watch("amount");
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (isConnected && nextCompanyId > 0) {
-            loadCompanies();
-        }
-    }, [
-        isConnected,
-        nextCompanyId
-    ]);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (watchedCompanyId) {
-            const company = companies.find((c)=>c.id.toString() === watchedCompanyId);
-            if (company) {
-                setSelectedCompany(company);
-                loadUserShares(company.id);
-            }
-        }
-    }, [
-        watchedCompanyId,
-        companies
-    ]);
-    const loadCompanies = async ()=>{
+    // Fetch companies from contract (safe, not using hooks in a loop)
+    const loadCompanies = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
         try {
-            // Placeholder implementation - would need real contract calls
+            if (!publicClient) return setCompanies([]);
             const companiesData = [];
             for(let i = 0; i < nextCompanyId; i++){
+                // Fetch company struct
+                const companyData = await publicClient.readContract({
+                    abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
+                    address: (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getContractAddress"])("DESTOCK", chainId ?? 31337),
+                    functionName: "companies",
+                    args: [
+                        BigInt(i)
+                    ]
+                });
+                let name = companyData?.[1] || "";
+                let owner = companyData?.[2] || "";
+                let totalSupply = companyData?.[3]?.toString() || "";
+                let ipfsMetadataUri = companyData?.[6] || "";
+                // Fetch price
+                let price = "0";
+                try {
+                    const priceData = await publicClient.readContract({
+                        abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
+                        address: (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getContractAddress"])("DESTOCK", chainId ?? 31337),
+                        functionName: "getSharePrice",
+                        args: [
+                            BigInt(i)
+                        ]
+                    });
+                    if (priceData) price = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$formatUnits$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["formatUnits"])(priceData, 18);
+                } catch  {}
                 companiesData.push({
                     id: i,
-                    name: `Company ${i + 1}`,
-                    price: "12.5"
+                    name,
+                    price,
+                    owner,
+                    totalSupply,
+                    ipfsMetadataUri
                 });
             }
             setCompanies(companiesData);
         } catch (error) {
             console.error("Failed to load companies:", error);
+            setCompanies([]);
         }
-    };
-    const loadUserShares = async (companyId)=>{
+    }, [
+        publicClient,
+        chainId,
+        nextCompanyId
+    ]);
+    // Fetch companies when connected or nextCompanyId changes
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (isConnected && nextCompanyId > 0) {
+            loadCompanies();
+        } else {
+            setCompanies([]);
+        }
+    }, [
+        isConnected,
+        nextCompanyId,
+        loadCompanies
+    ]);
+    // Fetch user share balance for selected company (use publicClient)
+    const loadUserShares = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async (companyId)=>{
         try {
-            // Placeholder implementation - would need real contract calls
-            setUserShares("100");
+            if (!address || !publicClient) return setUserShares("0");
+            const shareResult = await publicClient.readContract({
+                abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
+                address: (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getContractAddress"])("DESTOCK", chainId ?? 31337),
+                functionName: "balanceOf",
+                args: [
+                    address,
+                    BigInt(companyId)
+                ]
+            });
+            if (shareResult) {
+                setUserShares((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$formatUnits$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["formatUnits"])(shareResult, 0));
+            } else {
+                setUserShares("0");
+            }
         } catch (error) {
             console.error("Failed to load user shares:", error);
             setUserShares("0");
         }
-    };
+    }, [
+        address,
+        publicClient,
+        chainId
+    ]);
+    // Update selected company and user shares when companies or selection changes
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (watchedCompanyId && companies.length > 0) {
+            const company = companies.find((c)=>c.id.toString() === watchedCompanyId);
+            if (company) {
+                setSelectedCompany(company);
+                loadUserShares(company.id);
+            } else {
+                setSelectedCompany(null);
+                setUserShares("0");
+            }
+        } else {
+            setSelectedCompany(null);
+            setUserShares("0");
+        }
+    }, [
+        watchedCompanyId,
+        companies,
+        loadUserShares
+    ]);
+    // Dynamically update userShares ONLY when selectedCompany, address, or chainId changes
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (selectedCompany && address && publicClient) {
+            (async ()=>{
+                try {
+                    const shareResult = await publicClient.readContract({
+                        abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
+                        address: (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getContractAddress"])("DESTOCK", chainId ?? 31337),
+                        functionName: "balanceOf",
+                        args: [
+                            address,
+                            BigInt(selectedCompany.id)
+                        ]
+                    });
+                    setUserShares(shareResult ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$formatUnits$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["formatUnits"])(shareResult, 0) : "0");
+                } catch (error) {
+                    setUserShares("0");
+                }
+            })();
+        } else {
+            setUserShares("0");
+        }
+    }, [
+        selectedCompany,
+        address,
+        publicClient,
+        chainId
+    ]);
     const calculateCost = ()=>{
         if (!selectedCompany || !watchedAmount) return "0";
         return (parseFloat(selectedCompany.price) * parseFloat(watchedAmount)).toFixed(2);
@@ -951,6 +1052,69 @@ function TradeView() {
             return parseFloat(userShares) >= amount;
         }
     };
+    const dstkTokenAddress = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getContractAddress"])("DSTK_TOKEN", chainId ?? 31337);
+    // Fetch DSTK allowance
+    const { data: allowance, refetch: refetchAllowance } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useReadContract"])({
+        abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStockToken$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DSTK_TOKEN_ABI"],
+        address: dstkTokenAddress,
+        functionName: "allowance",
+        args: [
+            address,
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getContractAddress"])("DESTOCK", chainId ?? 31337)
+        ],
+        query: {
+            enabled: !!address
+        }
+    });
+    // Write contract for approve
+    const { writeContractAsync: approveDSTK, isPending: isApproving } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useWriteContract$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWriteContract"])();
+    // Helper: check if allowance is enough for buy
+    // Defensive: null checks for address, chainId, selectedCompany, watchedAmount
+    const safeAddress = address || "0x0000000000000000000000000000000000000000";
+    const safeChainId = chainId ?? 31337;
+    const safeSelectedCompany = selectedCompany || {
+        id: 0,
+        name: "",
+        price: "0"
+    };
+    const safeWatchedAmount = watchedAmount || "0";
+    const buyAmountDSTK = ("TURBOPACK compile-time truthy", 1) ? BigInt(Math.floor(Number(safeSelectedCompany.price) * Number(safeWatchedAmount) * 1e18)) : ("TURBOPACK unreachable", undefined);
+    const hasEnoughAllowance = allowance && buyAmountDSTK > BigInt(0) ? BigInt(allowance) >= buyAmountDSTK : false;
+    // Defensive: log errors in render if any
+    if (!isConnected) {
+        console.error("TradeView: Not connected");
+    }
+    if (!address) {
+        console.error("TradeView: address is undefined");
+    }
+    if (!chainId) {
+        console.error("TradeView: chainId is undefined");
+    }
+    if (!selectedCompany) {
+        console.error("TradeView: selectedCompany is undefined");
+    }
+    if (!watchedAmount) {
+        console.error("TradeView: watchedAmount is undefined");
+    }
+    // Approve handler
+    const handleApprove = async ()=>{
+        if (!address || !dstkTokenAddress) return;
+        try {
+            await approveDSTK({
+                abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStockToken$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DSTK_TOKEN_ABI"],
+                address: dstkTokenAddress,
+                functionName: "approve",
+                args: [
+                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$contracts$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getContractAddress"])("DESTOCK", chainId ?? 31337),
+                    buyAmountDSTK
+                ]
+            });
+            refetchAllowance();
+        } catch (err) {
+            alert("Approval failed. See console for details.");
+            console.error(err);
+        }
+    };
     if (!isConnected) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "trading-card text-center",
@@ -959,7 +1123,7 @@ function TradeView() {
                     className: "w-12 h-12 text-gray-400 mx-auto mb-4"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                    lineNumber: 171,
+                    lineNumber: 328,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -967,7 +1131,7 @@ function TradeView() {
                     children: "Connect Your Wallet"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                    lineNumber: 172,
+                    lineNumber: 329,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -975,13 +1139,13 @@ function TradeView() {
                     children: "Connect your wallet to start trading shares."
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                    lineNumber: 175,
+                    lineNumber: 332,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/apps/web/components/TradeView.tsx",
-            lineNumber: 170,
+            lineNumber: 327,
             columnNumber: 7
         }, this);
     }
@@ -994,7 +1158,7 @@ function TradeView() {
                     className: "w-12 h-12 text-gray-400 mx-auto mb-4"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                    lineNumber: 186,
+                    lineNumber: 343,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1002,7 +1166,7 @@ function TradeView() {
                     children: "Trade Shares"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                    lineNumber: 187,
+                    lineNumber: 344,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1010,13 +1174,13 @@ function TradeView() {
                     children: "Loading trading interface..."
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                    lineNumber: 190,
+                    lineNumber: 347,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/apps/web/components/TradeView.tsx",
-            lineNumber: 185,
+            lineNumber: 342,
             columnNumber: 7
         }, this);
     }
@@ -1054,7 +1218,7 @@ function TradeView() {
                         children: "Trade Shares"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 207,
+                        lineNumber: 364,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1084,25 +1248,25 @@ function TradeView() {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 233,
+                                            lineNumber: 390,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Buy"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 234,
+                                            lineNumber: 391,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 232,
+                                    lineNumber: 389,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 223,
+                                lineNumber: 380,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -1118,37 +1282,37 @@ function TradeView() {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 247,
+                                            lineNumber: 404,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Sell"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 248,
+                                            lineNumber: 405,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 246,
+                                    lineNumber: 403,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 237,
+                                lineNumber: 394,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 217,
+                        lineNumber: 374,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                lineNumber: 206,
+                lineNumber: 363,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].form, {
@@ -1185,7 +1349,7 @@ function TradeView() {
                                 children: "Select Company"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 267,
+                                lineNumber: 424,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1198,7 +1362,7 @@ function TradeView() {
                                         children: "Choose a company"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                                        lineNumber: 275,
+                                        lineNumber: 432,
                                         columnNumber: 13
                                     }, this),
                                     companies.map((company)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1211,13 +1375,13 @@ function TradeView() {
                                             ]
                                         }, company.id, true, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 277,
+                                            lineNumber: 434,
                                             columnNumber: 15
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 270,
+                                lineNumber: 427,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -1240,31 +1404,31 @@ function TradeView() {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 290,
+                                            lineNumber: 447,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: errors.companyId.message
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 291,
+                                            lineNumber: 448,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 284,
+                                    lineNumber: 441,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 282,
+                                lineNumber: 439,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 262,
+                        lineNumber: 419,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -1299,7 +1463,7 @@ function TradeView() {
                                             children: selectedCompany.name
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 308,
+                                            lineNumber: 465,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].span, {
@@ -1321,18 +1485,18 @@ function TradeView() {
                                                 decimals: 2
                                             }, void 0, false, {
                                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                                lineNumber: 318,
+                                                lineNumber: 475,
                                                 columnNumber: 19
                                             }, this)
                                         }, selectedCompany.price, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 311,
+                                            lineNumber: 468,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 307,
+                                    lineNumber: 464,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1342,7 +1506,7 @@ function TradeView() {
                                             children: "Your Holdings:"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 326,
+                                            lineNumber: 483,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$AnimatedCounter$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatedCounter"], {
@@ -1352,24 +1516,24 @@ function TradeView() {
                                             className: "font-medium"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 327,
+                                            lineNumber: 484,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 325,
+                                    lineNumber: 482,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                            lineNumber: 300,
+                            lineNumber: 457,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 298,
+                        lineNumber: 455,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1391,7 +1555,7 @@ function TradeView() {
                                 children: "Amount"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 344,
+                                lineNumber: 501,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1404,7 +1568,7 @@ function TradeView() {
                                 placeholder: "Number of shares"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 347,
+                                lineNumber: 504,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -1427,31 +1591,31 @@ function TradeView() {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 364,
+                                            lineNumber: 521,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: errors.amount.message
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 365,
+                                            lineNumber: 522,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 358,
+                                    lineNumber: 515,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 356,
+                                lineNumber: 513,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 339,
+                        lineNumber: 496,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -1482,20 +1646,20 @@ function TradeView() {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 382,
+                                            lineNumber: 540,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Transaction Summary"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 383,
+                                            lineNumber: 541,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 381,
+                                    lineNumber: 539,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1508,7 +1672,7 @@ function TradeView() {
                                                     children: "Shares:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                                    lineNumber: 387,
+                                                    lineNumber: 545,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1516,13 +1680,13 @@ function TradeView() {
                                                     children: watchedAmount
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                                    lineNumber: 388,
+                                                    lineNumber: 546,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 386,
+                                            lineNumber: 544,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1532,7 +1696,7 @@ function TradeView() {
                                                     children: "Price per share:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                                    lineNumber: 391,
+                                                    lineNumber: 549,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1543,13 +1707,13 @@ function TradeView() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                                    lineNumber: 392,
+                                                    lineNumber: 550,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 390,
+                                            lineNumber: 548,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1563,7 +1727,7 @@ function TradeView() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                                    lineNumber: 397,
+                                                    lineNumber: 555,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$AnimatedCounter$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatedCounter"], {
@@ -1573,19 +1737,19 @@ function TradeView() {
                                                     className: tradeType === "buy" ? "text-danger" : "text-success"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                                    lineNumber: 400,
+                                                    lineNumber: 558,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 396,
+                                            lineNumber: 554,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 385,
+                                    lineNumber: 543,
                                     columnNumber: 15
                                 }, this),
                                 tradeType === "buy" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1595,7 +1759,7 @@ function TradeView() {
                                             children: "Your DSTK Balance:"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 412,
+                                            lineNumber: 570,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$AnimatedCounter$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatedCounter"], {
@@ -1605,78 +1769,55 @@ function TradeView() {
                                             className: "font-medium"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                                            lineNumber: 413,
+                                            lineNumber: 571,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradeView.tsx",
-                                    lineNumber: 411,
+                                    lineNumber: 569,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradeView.tsx",
-                            lineNumber: 374,
+                            lineNumber: 532,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 372,
+                        lineNumber: 530,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
-                        children: error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
-                            className: "glass-card p-4 border border-danger/30 bg-danger/10",
-                            initial: {
-                                opacity: 0,
-                                scale: 0.95
-                            },
-                            animate: {
-                                opacity: 1,
-                                scale: 1
-                            },
-                            exit: {
-                                opacity: 0,
-                                scale: 0.95
-                            },
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-sm text-danger flex items-center space-x-2",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$alert$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircleIcon$3e$__["AlertCircleIcon"], {
-                                        className: "w-4 h-4"
-                                    }, void 0, false, {
-                                        fileName: "[project]/apps/web/components/TradeView.tsx",
-                                        lineNumber: 435,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        children: [
-                                            "Transaction failed: ",
-                                            error.message
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/apps/web/components/TradeView.tsx",
-                                        lineNumber: 436,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 434,
-                                columnNumber: 15
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/apps/web/components/TradeView.tsx",
-                            lineNumber: 428,
-                            columnNumber: 13
-                        }, this)
+                    tradeType === "buy" && !hasEnoughAllowance && selectedCompany && watchedAmount && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].button, {
+                        type: "button",
+                        onClick: handleApprove,
+                        disabled: isApproving || buyAmountDSTK <= 0n,
+                        className: "w-full destock-button-secondary disabled:opacity-50 disabled:cursor-not-allowed mt-4",
+                        whileHover: {
+                            scale: 1.02
+                        },
+                        whileTap: {
+                            scale: 0.98
+                        },
+                        initial: {
+                            opacity: 0,
+                            y: 20
+                        },
+                        animate: {
+                            opacity: 1,
+                            y: 0
+                        },
+                        transition: {
+                            delay: 0.5
+                        },
+                        children: isApproving ? "Approving..." : "Approve DSTK"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 426,
-                        columnNumber: 9
+                        lineNumber: 587,
+                        columnNumber: 13
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].button, {
+                    (!selectedCompany || !watchedAmount || tradeType !== "buy" || hasEnoughAllowance) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].button, {
                         type: "submit",
                         disabled: !canTrade() || isPending || loading,
                         className: `w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-md font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${tradeType === "buy" ? "bg-success hover:bg-success/80 text-white shadow-lg" : "bg-danger hover:bg-danger/80 text-white shadow-lg"}`,
@@ -1702,95 +1843,44 @@ function TradeView() {
                                 size: "small"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 458,
-                                columnNumber: 13
+                                lineNumber: 621,
+                                columnNumber: 15
                             }, this) : tradeType === "buy" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUpIcon$3e$__["TrendingUpIcon"], {
                                 className: "w-5 h-5"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 460,
-                                columnNumber: 13
+                                lineNumber: 623,
+                                columnNumber: 15
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingDownIcon$3e$__["TrendingDownIcon"], {
                                 className: "w-5 h-5"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 462,
-                                columnNumber: 13
+                                lineNumber: 625,
+                                columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: isPending || loading ? "Processing..." : !canTrade() ? tradeType === "buy" ? "Insufficient Balance" : "Insufficient Shares" : `${tradeType === "buy" ? "Buy" : "Sell"} Shares`
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 464,
-                                columnNumber: 11
+                                lineNumber: 627,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 443,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
-                        children: error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
-                            className: "glass-card p-4 border border-danger/30 bg-danger/10",
-                            initial: {
-                                opacity: 0,
-                                scale: 0.95
-                            },
-                            animate: {
-                                opacity: 1,
-                                scale: 1
-                            },
-                            exit: {
-                                opacity: 0,
-                                scale: 0.95
-                            },
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-sm text-danger flex items-center space-x-2",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$alert$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircleIcon$3e$__["AlertCircleIcon"], {
-                                        className: "w-4 h-4"
-                                    }, void 0, false, {
-                                        fileName: "[project]/apps/web/components/TradeView.tsx",
-                                        lineNumber: 485,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        children: [
-                                            "Transaction failed: ",
-                                            error.message
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/apps/web/components/TradeView.tsx",
-                                        lineNumber: 486,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/apps/web/components/TradeView.tsx",
-                                lineNumber: 484,
-                                columnNumber: 15
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/apps/web/components/TradeView.tsx",
-                            lineNumber: 478,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/apps/web/components/TradeView.tsx",
-                        lineNumber: 476,
-                        columnNumber: 9
+                        lineNumber: 606,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/TradeView.tsx",
-                lineNumber: 254,
+                lineNumber: 411,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/components/TradeView.tsx",
-        lineNumber: 198,
+        lineNumber: 355,
         columnNumber: 5
     }, this);
 }

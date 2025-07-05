@@ -1,8 +1,8 @@
-import { Address } from 'viem';
+import { Address } from "viem";
 
 // Import ABIs
-import { DESTOCK_ABI } from './abi/DeStock';
-import { DSTK_TOKEN_ABI } from './abi/DeStockToken';
+import { DESTOCK_ABI } from "./abi/DeStock";
+import { DSTK_TOKEN_ABI } from "./abi/DeStockToken";
 
 // Export ABIs
 export { DESTOCK_ABI, DSTK_TOKEN_ABI };
@@ -10,23 +10,23 @@ export { DESTOCK_ABI, DSTK_TOKEN_ABI };
 // Contract addresses for different environments
 export const CONTRACT_ADDRESSES = {
   localhost: {
-    DESTOCK: '0x0000000000000000000000000000000000000000' as Address,
-    DSTK_TOKEN: '0x0000000000000000000000000000000000000000' as Address,
+    DESTOCK: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512" as Address,
+    DSTK_TOKEN: "0x5FbDB2315678afecb367f032d93F642f64180aa3" as Address,
   },
   sepolia: {
-    DESTOCK: '0x0000000000000000000000000000000000000000' as Address,
-    DSTK_TOKEN: '0x0000000000000000000000000000000000000000' as Address,
+    DESTOCK: "0x0000000000000000000000000000000000000000" as Address,
+    DSTK_TOKEN: "0x0000000000000000000000000000000000000000" as Address,
   },
   mainnet: {
-    DESTOCK: '0x0000000000000000000000000000000000000000' as Address,
-    DSTK_TOKEN: '0x0000000000000000000000000000000000000000' as Address,
+    DESTOCK: "0x0000000000000000000000000000000000000000" as Address,
+    DSTK_TOKEN: "0x0000000000000000000000000000000000000000" as Address,
   },
 } as const;
 
 export type SupportedChain = keyof typeof CONTRACT_ADDRESSES;
 
 export function getContractAddress(
-  contract: 'DESTOCK' | 'DSTK_TOKEN',
+  contract: "DESTOCK" | "DSTK_TOKEN",
   chainId: number
 ): Address {
   const chainName = getChainName(chainId);
@@ -36,16 +36,26 @@ export function getContractAddress(
 export function getChainName(chainId: number): SupportedChain {
   switch (chainId) {
     case 1:
-      return 'mainnet';
+      return "mainnet";
     case 11155111:
-      return 'sepolia';
+      return "sepolia";
     case 31337:
-      return 'localhost';
+      return "localhost";
     default:
-      return 'localhost';
+      return "localhost";
   }
 }
 
 // Contract constants
-export const REGISTRATION_FEE = BigInt('100000000000000000000'); // 100 DSTK
+export const REGISTRATION_FEE = BigInt("100000000000000000000"); // 100 DSTK
 export const DSTK_DECIMALS = 18;
+
+export interface Company {
+  id: bigint;
+  name: string;
+  owner: Address;
+  totalSupply: bigint;
+  tokenReserve: bigint;
+  shareReserve: bigint;
+  ipfsMetadataUri: string;
+}

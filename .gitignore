@@ -14,6 +14,9 @@ docs/
 .env
 frontend/.env
 backend/.env
+apps/web/.env
+apps/web/.env.local
+apps/web/.env.example
 
 # frontend
 frontend/node_modules

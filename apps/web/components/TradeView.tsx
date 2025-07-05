@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDeStock } from "@/lib/hooks/useDeStock";
 import { useDSTK } from "@/lib/hooks/useDSTK";
-import { useAccount } from "wagmi";
+import {
+  useAccount,
+  usePublicClient,
+  useReadContract,
+  useWriteContract,
+} from "wagmi";
 import {
   ShoppingCartIcon,
   DollarSignIcon,
@@ -17,7 +22,13 @@ import {
 } from "lucide-react";
 import { AnimatedCounter } from "./AnimatedCounter";
 import { LoadingSpinner } from "./LoadingSpinner";
-import { getContractAddress, DESTOCK_ABI } from "@/lib/contracts";
+import {
+  getContractAddress,
+  DESTOCK_ABI,
+  DSTK_TOKEN_ABI,
+} from "@/lib/contracts";
+import { formatUnits } from "viem";
+import { fetchShareholderBalance } from "@/lib/api";
 
 const schema = z.object({
   companyId: z.string().min(1, "Please select a company"),
@@ -30,10 +41,13 @@ interface Company {
   id: number;
   name: string;
   price: string;
+  owner?: string;
+  totalSupply?: string;
+  ipfsMetadataUri?: string;
 }
 
 export function TradeView() {
-  const { isConnected } = useAccount();
+  const { address, chainId, isConnected } = useAccount();
   const {
     buyShares,
     sellShares,
@@ -50,6 +64,7 @@ export function TradeView() {
   const [userShares, setUserShares] = useState<string>("0");
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const publicClient = usePublicClient();
 
   // Fix hydration by ensuring client-side rendering only after mount
   useEffect(() => {
@@ -70,50 +85,120 @@ export function TradeView() {
   const watchedCompanyId = watch("companyId");
   const watchedAmount = watch("amount");
 
+  // Fetch companies from contract (safe, not using hooks in a loop)
+  const loadCompanies = useCallback(async () => {
+    try {
+      if (!publicClient) return setCompanies([]);
+      const companiesData: Company[] = [];
+      for (let i = 0; i < nextCompanyId; i++) {
+        // Fetch company struct
+        const companyData: any = await publicClient.readContract({
+          abi: DESTOCK_ABI,
+          address: getContractAddress("DESTOCK", chainId ?? 31337),
+          functionName: "companies",
+          args: [BigInt(i)],
+        });
+        let name = companyData?.[1] || "";
+        let owner = companyData?.[2] || "";
+        let totalSupply = companyData?.[3]?.toString() || "";
+        let ipfsMetadataUri = companyData?.[6] || "";
+        // Fetch price
+        let price = "0";
+        try {
+          const priceData: any = await publicClient.readContract({
+            abi: DESTOCK_ABI,
+            address: getContractAddress("DESTOCK", chainId ?? 31337),
+            functionName: "getSharePrice",
+            args: [BigInt(i)],
+          });
+          if (priceData) price = formatUnits(priceData, 18);
+        } catch {}
+        companiesData.push({
+          id: i,
+          name,
+          price,
+          owner,
+          totalSupply,
+          ipfsMetadataUri,
+        });
+      }
+      setCompanies(companiesData);
+    } catch (error) {
+      console.error("Failed to load companies:", error);
+      setCompanies([]);
+    }
+  }, [publicClient, chainId, nextCompanyId]);
+
+  // Fetch companies when connected or nextCompanyId changes
   useEffect(() => {
     if (isConnected && nextCompanyId > 0) {
       loadCompanies();
+    } else {
+      setCompanies([]);
     }
-  }, [isConnected, nextCompanyId]);
+  }, [isConnected, nextCompanyId, loadCompanies]);
 
+  // Fetch user share balance for selected company (use publicClient)
+  const loadUserShares = useCallback(
+    async (companyId: number) => {
+      try {
+        if (!address || !publicClient) return setUserShares("0");
+        const shareResult = await publicClient.readContract({
+          abi: DESTOCK_ABI,
+          address: getContractAddress("DESTOCK", chainId ?? 31337),
+          functionName: "balanceOf",
+          args: [address, BigInt(companyId)],
+        });
+        if (shareResult) {
+          setUserShares(formatUnits(shareResult, 0));
+        } else {
+          setUserShares("0");
+        }
+      } catch (error) {
+        console.error("Failed to load user shares:", error);
+        setUserShares("0");
+      }
+    },
+    [address, publicClient, chainId]
+  );
+
+  // Update selected company and user shares when companies or selection changes
   useEffect(() => {
-    if (watchedCompanyId) {
+    if (watchedCompanyId && companies.length > 0) {
       const company = companies.find(
         (c) => c.id.toString() === watchedCompanyId
       );
       if (company) {
         setSelectedCompany(company);
         loadUserShares(company.id);
+      } else {
+        setSelectedCompany(null);
+        setUserShares("0");
       }
-    }
-  }, [watchedCompanyId, companies]);
-
-  const loadCompanies = async () => {
-    try {
-      // Placeholder implementation - would need real contract calls
-      const companiesData: Company[] = [];
-      for (let i = 0; i < nextCompanyId; i++) {
-        companiesData.push({
-          id: i,
-          name: `Company ${i + 1}`,
-          price: "12.5",
-        });
-      }
-      setCompanies(companiesData);
-    } catch (error) {
-      console.error("Failed to load companies:", error);
-    }
-  };
-
-  const loadUserShares = async (companyId: number) => {
-    try {
-      // Placeholder implementation - would need real contract calls
-      setUserShares("100");
-    } catch (error) {
-      console.error("Failed to load user shares:", error);
+    } else {
+      setSelectedCompany(null);
       setUserShares("0");
     }
-  };
+  }, [watchedCompanyId, companies, loadUserShares]);
+
+  // Dynamically update userShares ONLY when selectedCompany, address, or chainId changes (from backend)
+  useEffect(() => {
+    if (selectedCompany && address) {
+      (async () => {
+        try {
+          const balance = await fetchShareholderBalance(
+            selectedCompany.id,
+            address
+          );
+          setUserShares(balance.toString());
+        } catch (error) {
+          setUserShares("0");
+        }
+      })();
+    } else {
+      setUserShares("0");
+    }
+  }, [selectedCompany, address, chainId]);
 
   const calculateCost = () => {
     if (!selectedCompany || !watchedAmount) return "0";
@@ -127,7 +212,7 @@ export function TradeView() {
 
     setLoading(true);
     try {
-      const destockAddress = getContractAddress("DESTOCK", 31337); // or use chainId if available
+      const destockAddress = getContractAddress("DESTOCK", chainId ?? 31337);
       if (tradeType === "buy") {
         await buyShares({
           abi: DESTOCK_ABI,
@@ -165,6 +250,74 @@ export function TradeView() {
     }
   };
 
+  const dstkTokenAddress = getContractAddress("DSTK_TOKEN", chainId ?? 31337);
+  // Fetch DSTK allowance
+  const { data: allowance, refetch: refetchAllowance } = useReadContract({
+    abi: DSTK_TOKEN_ABI,
+    address: dstkTokenAddress,
+    functionName: "allowance",
+    args: [address!, getContractAddress("DESTOCK", chainId ?? 31337)],
+    query: { enabled: !!address },
+  });
+  // Write contract for approve
+  const { writeContractAsync: approveDSTK, isPending: isApproving } =
+    useWriteContract();
+
+  // Helper: check if allowance is enough for buy
+  const safeAddress = address || "0x0000000000000000000000000000000000000000";
+  const safeChainId = chainId ?? 31337;
+  const safeSelectedCompany = selectedCompany || {
+    id: 0,
+    name: "",
+    price: "0",
+  };
+  const safeWatchedAmount = watchedAmount || "0";
+
+  const buyAmountDSTK =
+    safeSelectedCompany && safeWatchedAmount
+      ? BigInt(
+          Math.floor(
+            Number(safeSelectedCompany.price) * Number(safeWatchedAmount) * 1e18
+          )
+        )
+      : BigInt(0);
+  const hasEnoughAllowance =
+    allowance && buyAmountDSTK > BigInt(0)
+      ? BigInt(allowance) >= buyAmountDSTK
+      : false;
+
+  // Approve handler
+  const handleApprove = async () => {
+    if (!address || !dstkTokenAddress) return;
+    try {
+      await approveDSTK({
+        abi: DSTK_TOKEN_ABI,
+        address: dstkTokenAddress,
+        functionName: "approve",
+        args: [getContractAddress("DESTOCK", chainId ?? 31337), buyAmountDSTK],
+      });
+      refetchAllowance();
+    } catch (err) {
+      alert("Approval failed. See console for details.");
+      console.error(err);
+    }
+  };
+
+  // Debug logging
+  console.log("TradeView Debug:", {
+    tradeType,
+    canTrade: canTrade(),
+    hasEnoughAllowance,
+    selectedCompany: !!selectedCompany,
+    watchedAmount,
+    isPending,
+    loading,
+    buyAmountDSTK: buyAmountDSTK.toString(),
+    allowance: allowance?.toString(),
+    balance,
+    userShares,
+  });
+
   if (!isConnected) {
     return (
       <div className="trading-card text-center">
@@ -196,7 +349,7 @@ export function TradeView() {
 
   return (
     <motion.div
-      className="glass-card p-6"
+      className="glass-card p-8"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
@@ -422,72 +575,72 @@ export function TradeView() {
           )}
         </AnimatePresence>
 
-        {/* Error Display */}
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              className="glass-card p-4 border border-danger/30 bg-danger/10"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-            >
-              <p className="text-sm text-danger flex items-center space-x-2">
-                <AlertCircleIcon className="w-4 h-4" />
-                <span>Transaction failed: {error.message}</span>
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* FIXED: Approve/Submit Button Area */}
+        <div className="flex flex-col gap-3 mt-6">
+          {/* Approve Button - Only show when needed for buy trades */}
+          {tradeType === "buy" &&
+            selectedCompany &&
+            watchedAmount &&
+            !hasEnoughAllowance &&
+            buyAmountDSTK > 0n && (
+              <motion.button
+                type="button"
+                onClick={handleApprove}
+                disabled={isApproving}
+                className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                {isApproving && <LoadingSpinner size="small" />}
+                <span>{isApproving ? "Approving..." : "Approve DSTK"}</span>
+              </motion.button>
+            )}
 
-        {/* Submit Button */}
-        <motion.button
-          type="submit"
-          disabled={!canTrade() || isPending || loading}
-          className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-md font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
-            tradeType === "buy"
-              ? "bg-success hover:bg-success/80 text-white shadow-lg"
-              : "bg-danger hover:bg-danger/80 text-white shadow-lg"
-          }`}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          {isPending || loading ? (
-            <LoadingSpinner size="small" />
-          ) : tradeType === "buy" ? (
-            <TrendingUpIcon className="w-5 h-5" />
-          ) : (
-            <TrendingDownIcon className="w-5 h-5" />
-          )}
-          <span>
-            {isPending || loading
-              ? "Processing..."
-              : !canTrade()
-                ? tradeType === "buy"
-                  ? "Insufficient Balance"
-                  : "Insufficient Shares"
-                : `${tradeType === "buy" ? "Buy" : "Sell"} Shares`}
-          </span>
-        </motion.button>
-
-        {/* Success Display */}
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              className="glass-card p-4 border border-danger/30 bg-danger/10"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+          {/* Main Trade Button - Always visible when there's a selected company */}
+          {selectedCompany && (
+            <motion.button
+              type="submit"
+              disabled={
+                !canTrade() ||
+                isPending ||
+                loading ||
+                (tradeType === "buy" && !hasEnoughAllowance)
+              }
+              className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-md font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+                tradeType === "buy"
+                  ? "bg-green-600 hover:bg-green-700 text-white shadow-lg"
+                  : "bg-red-600 hover:bg-red-700 text-white shadow-lg"
+              }`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
             >
-              <p className="text-sm text-danger flex items-center space-x-2">
-                <AlertCircleIcon className="w-4 h-4" />
-                <span>Transaction failed: {error.message}</span>
-              </p>
-            </motion.div>
+              {isPending || loading ? (
+                <LoadingSpinner size="small" />
+              ) : tradeType === "buy" ? (
+                <TrendingUpIcon className="w-5 h-5" />
+              ) : (
+                <TrendingDownIcon className="w-5 h-5" />
+              )}
+              <span>
+                {isPending || loading
+                  ? "Processing..."
+                  : !canTrade()
+                    ? tradeType === "buy"
+                      ? "Insufficient Balance"
+                      : "Insufficient Shares"
+                    : tradeType === "buy" && !hasEnoughAllowance
+                      ? "Need Approval First"
+                      : `${tradeType === "buy" ? "Buy" : "Sell"} Shares`}
+              </span>
+            </motion.button>
           )}
-        </AnimatePresence>
+        </div>
       </motion.form>
     </motion.div>
   );

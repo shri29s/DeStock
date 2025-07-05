@@ -21,14 +21,20 @@ export function useDeStock() {
 
   const handleRegisterCompany = async (
     name: string,
+    initialLiquidity: string,
     totalSupply: string,
-    initialLiquidity: string
+    ipfsMetadataUri: string
   ) => {
     await registerCompany({
       abi: DESTOCK_ABI,
       address: destockAddress,
       functionName: "registerCompany",
-      args: [name, parseEther(initialLiquidity), BigInt(totalSupply)],
+      args: [
+        name,
+        BigInt(totalSupply),
+        parseEther(initialLiquidity),
+        ipfsMetadataUri,
+      ],
     });
     refetchNextCompanyId();
   };
