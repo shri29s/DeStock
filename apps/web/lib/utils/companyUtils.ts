@@ -1,12 +1,36 @@
 import companiesData from '../constants/companies.json';
 import logosData from '../constants/logos.json';
-import tokensData from '../constants/tokens.json';
-import { Company, CompanyData, LogoMapping, CompanyList, FilterOptions } from '../types/company';
+import { Company, LogoMapping, CompanyList, FilterOptions } from '../types/company';
 
 // Get all companies as an array
 export const getAllCompanies = (): CompanyList => {
   const companies = companiesData.companies as { [key: string]: Company };
   return Object.values(companies);
+};
+
+// Get all company IDs as an array (for consistent ordering)
+export const getAllCompanyIds = (): string[] => {
+  const companies = companiesData.companies as { [key: string]: Company };
+  return Object.keys(companies);
+};
+
+// Convert string company ID to numeric ID for blockchain operations
+export const getNumericCompanyId = (stringId: string): number => {
+  const companyIds = getAllCompanyIds();
+  const index = companyIds.indexOf(stringId);
+  return index === -1 ? -1 : index;
+};
+
+// Convert numeric company ID back to string ID
+export const getStringCompanyId = (numericId: number): string | undefined => {
+  const companyIds = getAllCompanyIds();
+  return companyIds[numericId];
+};
+
+// Get company by numeric ID (for blockchain operations)
+export const getCompanyByNumericId = (numericId: number): Company | undefined => {
+  const stringId = getStringCompanyId(numericId);
+  return stringId ? getCompanyById(stringId) : undefined;
 };
 
 // Get company by ID

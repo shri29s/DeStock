@@ -123,11 +123,92 @@ if echo "$DEPLOY_OUTPUT" | grep -q "ONCHAIN EXECUTION COMPLETE"; then
                 cp .env .env.bak
                 grep -v "DESTOCK_CONTRACT_ADDRESS=" .env.bak > .env.tmp
                 echo "DESTOCK_CONTRACT_ADDRESS=$DESTOCK_ADDRESS" >> .env.tmp
-                mv .env.tmp .env
+                
+                # Add NEXT_PUBLIC variables for frontend access
+                grep -v "NEXT_PUBLIC_DESTOCK_CONTRACT_ADDRESS=" .env.tmp > .env.tmp2
+                echo "NEXT_PUBLIC_DESTOCK_CONTRACT_ADDRESS=$DESTOCK_ADDRESS" >> .env.tmp2
+                mv .env.tmp2 .env
+                rm .env.tmp
             else
                 sed -i "s|DESTOCK_CONTRACT_ADDRESS=.*|DESTOCK_CONTRACT_ADDRESS=$DESTOCK_ADDRESS|" .env
+                sed -i "s|NEXT_PUBLIC_DESTOCK_CONTRACT_ADDRESS=.*|NEXT_PUBLIC_DESTOCK_CONTRACT_ADDRESS=$DESTOCK_ADDRESS|" .env
             fi
             echo "✅ Updated .env with new contract addresses"
+        fi
+        
+        # Update frontend .env.local file with contract addresses
+        if [ -f "apps/web/.env.local" ]; then
+            echo "🔄 Updating frontend environment file..."
+            
+            if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+                # Windows-style updates
+                cp apps/web/.env.local apps/web/.env.local.bak
+                grep -v "NEXT_PUBLIC_DESTOCK_CONTRACT_ADDRESS=" apps/web/.env.local.bak > apps/web/.env.local.tmp
+                echo "NEXT_PUBLIC_DESTOCK_CONTRACT_ADDRESS=$DESTOCK_ADDRESS" >> apps/web/.env.local.tmp
+                
+                grep -v "NEXT_PUBLIC_DSTK_TOKEN_ADDRESS=" apps/web/.env.local.tmp > apps/web/.env.local.tmp2
+                echo "NEXT_PUBLIC_DSTK_TOKEN_ADDRESS=$TOKEN_ADDRESS" >> apps/web/.env.local.tmp2
+                
+                # Ensure other required variables are present
+                if ! grep -q "NEXT_PUBLIC_WS_URL=" apps/web/.env.local.tmp2; then
+                    echo "NEXT_PUBLIC_WS_URL=ws://localhost:8080" >> apps/web/.env.local.tmp2
+                fi
+                if ! grep -q "NEXT_PUBLIC_BACKEND_URL=" apps/web/.env.local.tmp2; then
+                    echo "NEXT_PUBLIC_BACKEND_URL=http://localhost:3001" >> apps/web/.env.local.tmp2
+                fi
+                if ! grep -q "NEXT_PUBLIC_TRADE_ENGINE_URL=" apps/web/.env.local.tmp2; then
+                    echo "NEXT_PUBLIC_TRADE_ENGINE_URL=http://localhost:3002" >> apps/web/.env.local.tmp2
+                fi
+                
+                mv apps/web/.env.local.tmp2 apps/web/.env.local
+                rm apps/web/.env.local.tmp
+            else
+                # Unix-style updates
+                sed -i "s|NEXT_PUBLIC_DESTOCK_CONTRACT_ADDRESS=.*|NEXT_PUBLIC_DESTOCK_CONTRACT_ADDRESS=$DESTOCK_ADDRESS|" apps/web/.env.local
+                sed -i "s|NEXT_PUBLIC_DSTK_TOKEN_ADDRESS=.*|NEXT_PUBLIC_DSTK_TOKEN_ADDRESS=$TOKEN_ADDRESS|" apps/web/.env.local
+                
+                # Ensure other required variables are present
+                if ! grep -q "NEXT_PUBLIC_WS_URL=" apps/web/.env.local; then
+                    echo "NEXT_PUBLIC_WS_URL=ws://localhost:8080" >> apps/web/.env.local
+                fi
+                if ! grep -q "NEXT_PUBLIC_BACKEND_URL=" apps/web/.env.local; then
+                    echo "NEXT_PUBLIC_BACKEND_URL=http://localhost:3001" >> apps/web/.env.local
+                fi
+                if ! grep -q "NEXT_PUBLIC_TRADE_ENGINE_URL=" apps/web/.env.local; then
+                    echo "NEXT_PUBLIC_TRADE_ENGINE_URL=http://localhost:3002" >> apps/web/.env.local
+                fi
+            fi
+            echo "✅ Updated frontend .env.local with contract addresses"
+        fi
+        
+        # Verify frontend environment configuration
+        echo "🔍 Verifying frontend environment configuration..."
+        if [ -f "apps/web/.env.local" ]; then
+            if grep -q "$DESTOCK_ADDRESS" apps/web/.env.local && grep -q "$TOKEN_ADDRESS" apps/web/.env.local; then
+                echo "✅ Frontend environment properly configured with contract addresses"
+            else
+                echo "⚠️  Warning: Frontend environment may not have correct contract addresses"
+            fi
+        fi
+        
+        # Pre-register tokens for immediate trading
+        echo "🏢 Pre-registering ALL tokens for immediate trading..."
+        echo "⏳ Running complete token bootstrap..."
+        if command -v npx &> /dev/null; then
+            if npx ts-node scripts/quickBootstrap.ts; then
+                echo "✅ ALL tokens pre-registered - users can trade immediately!"
+            else
+                echo "⚠️  Quick bootstrap completed with some warnings"
+                echo "ℹ️  Trying full bootstrap as fallback..."
+                if npx ts-node scripts/bootstrapCompanies.ts; then
+                    echo "✅ Tokens pre-registered via full bootstrap!"
+                else
+                    echo "⚠️  Bootstrap completed with warnings (this is normal)"
+                fi
+            fi
+        else
+            echo "⚠️  npx not found, skipping token pre-registration"
+            echo "ℹ️  Users will need to register tokens manually"
         fi
     fi
 else

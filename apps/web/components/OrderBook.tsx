@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useWebSocket } from '../lib/providers/WebSocketProvider';
-import { useDeStock } from '../lib/hooks/useDeStock';
-
-interface OrderBookEntry {
-  price: number;
-  amount: number;
-  total: number;
-}
+import { AlertTriangle, RefreshCw, Wifi, WifiOff } from 'lucide-react';
 
 interface OrderBookProps {
   companyId: number;
@@ -16,17 +10,35 @@ interface OrderBookProps {
 }
 
 export default function OrderBook({ companyId, height = 400 }: OrderBookProps) {
-  const { orderBooks, subscribe, unsubscribe, isConnected } = useWebSocket();
-  const { getSharePrice } = useDeStock();
+  const { orderBooks, subscribe, unsubscribe, connectionStatus, error, reconnect } = useWebSocket();
   const [spread, setSpread] = useState<number>(0);
   const [spreadPercentage, setSpreadPercentage] = useState<number>(0);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
 
   const orderBookData = orderBooks.get(companyId);
 
   useEffect(() => {
-    subscribe(companyId);
+    if (connectionStatus !== 'disabled') {
+      subscribe(companyId);
+    }
     return () => unsubscribe(companyId);
-  }, [companyId, subscribe, unsubscribe]);
+  }, [companyId, subscribe, unsubscribe, connectionStatus]);
+
+  // Set loading timeout
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoadingTimeout(true);
+    }, 5000); // 5 second timeout
+    
+    return () => clearTimeout(timeout);
+  }, []);
+
+  // Reset timeout when data loads
+  useEffect(() => {
+    if (orderBookData) {
+      setLoadingTimeout(false);
+    }
+  }, [orderBookData]);
 
   useEffect(() => {
     if (orderBookData?.asks.length && orderBookData?.bids.length) {
@@ -43,21 +55,134 @@ export default function OrderBook({ companyId, height = 400 }: OrderBookProps) {
   const formatPrice = (price: number) => price.toFixed(4);
   const formatAmount = (amount: number) => amount.toLocaleString();
 
-  if (!isConnected) {
+  // Helper function to get connection status indicator
+  const getConnectionStatusIndicator = () => {
+    const statusColors = {
+      connected: 'bg-green-500',
+      connecting: 'bg-yellow-500 animate-pulse',
+      disconnected: 'bg-gray-500',
+      error: 'bg-red-500',
+      disabled: 'bg-gray-400'
+    };
+    
+    const statusLabels = {
+      connected: 'Live',
+      connecting: 'Connecting',
+      disconnected: 'Disconnected',
+      error: 'Error',
+      disabled: 'Disabled'
+    };
+    
+    return {
+      color: statusColors[connectionStatus] || 'bg-gray-400',
+      label: statusLabels[connectionStatus] || 'Unknown'
+    };
+  };
+
+  // Error state
+  if (connectionStatus === 'error' || (loadingTimeout && !orderBookData)) {
     return (
-      <div className="h-96 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Connecting to market data...</p>
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Order Book</h3>
+        </div>
+        <div className="flex items-center justify-center" style={{ height: height - 60 }}>
+          <div className="text-center max-w-sm">
+            <AlertTriangle className="w-12 h-12 text-orange-500 mx-auto mb-4" />
+            <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              Order Book Unavailable
+            </h4>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+              {error || 'Unable to connect to real-time market data. Trading services may be offline.'}
+            </p>
+            <button
+              onClick={reconnect}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              <RefreshCw className="w-4 h-4 inline mr-2" />
+              Retry Connection
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
+  // Disabled state
+  if (connectionStatus === 'disabled') {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Order Book</h3>
+        </div>
+        <div className="flex items-center justify-center" style={{ height: height - 60 }}>
+          <div className="text-center">
+            <WifiOff className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              Real-time Data Disabled
+            </h4>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Order book requires WebSocket connection to display live data
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Loading state
+  if (connectionStatus === 'connecting' || (!orderBookData && !loadingTimeout)) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Order Book</h3>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="inline-flex items-center">
+                <div className="w-2 h-2 rounded-full mr-2 bg-yellow-500 animate-pulse"></div>
+                Connecting
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-center" style={{ height: height - 60 }}>
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-400">Loading order book...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // No data state (connected but no order book data)
   if (!orderBookData) {
     return (
-      <div className="h-96 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center">
-        <p className="text-gray-600 dark:text-gray-400">Loading order book...</p>
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Order Book</h3>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="inline-flex items-center">
+                <div className="w-2 h-2 rounded-full mr-2 bg-green-500"></div>
+                Connected
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-center" style={{ height: height - 60 }}>
+          <div className="text-center">
+            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Wifi className="w-6 h-6 text-gray-400" />
+            </div>
+            <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              No Orders Available
+            </h4>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Waiting for order book data for this company
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -74,8 +199,8 @@ export default function OrderBook({ companyId, height = 400 }: OrderBookProps) {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Order Book</h3>
           <div className="text-sm text-gray-600 dark:text-gray-400">
             <span className="inline-flex items-center">
-              <div className={`w-2 h-2 rounded-full mr-2 ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
-              {isConnected ? 'Live' : 'Disconnected'}
+              <div className={`w-2 h-2 rounded-full mr-2 ${getConnectionStatusIndicator().color}`}></div>
+              {getConnectionStatusIndicator().label}
             </span>
           </div>
         </div>
@@ -111,7 +236,7 @@ export default function OrderBook({ companyId, height = 400 }: OrderBookProps) {
                   <div
                     className="absolute inset-0 bg-red-50 dark:bg-red-900/20"
                     style={{
-                      width: `${(ask.total / maxTotal) * 100}%`,
+                      width: `${maxTotal > 0 ? (ask.total / maxTotal) * 100 : 0}%`,
                       right: 0,
                     }}
                   ></div>
@@ -149,7 +274,7 @@ export default function OrderBook({ companyId, height = 400 }: OrderBookProps) {
                   <div
                     className="absolute inset-0 bg-green-50 dark:bg-green-900/20"
                     style={{
-                      width: `${(bid.total / maxTotal) * 100}%`,
+                      width: `${maxTotal > 0 ? (bid.total / maxTotal) * 100 : 0}%`,
                       right: 0,
                     }}
                   ></div>

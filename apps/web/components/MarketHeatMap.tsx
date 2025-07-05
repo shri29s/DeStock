@@ -20,8 +20,10 @@ interface MarketHeatMapProps {
 export function MarketHeatMap({ className }: MarketHeatMapProps) {
   const [heatMapData, setHeatMapData] = useState<HeatMapData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     loadHeatMapData();
   }, []);
 
@@ -32,22 +34,41 @@ export function MarketHeatMap({ className }: MarketHeatMapProps) {
       setHeatMapData(result.heatmap || []);
     } catch (error) {
       console.error('Failed to load heatmap data:', error);
-      // Fallback to real token data
-      const companies = getAllCompanies().slice(0, 12);
-      const fallbackData = companies.map((company) => {
-        const marketCapValue = parseFloat(company.marketCap.replace(/[$BM]/g, ''));
-        const marketCapInNumber = company.marketCap.includes('B') ? marketCapValue * 1000000000 : marketCapValue * 1000000;
-        
-        return {
-          id: company.id,
-          name: company.name,
-          symbol: company.symbol,
-          value: parseFloat(company.price.replace('$', '')),
-          change: (Math.random() - 0.5) * 20, // Random change for demo
-          size: Math.min(Math.max((marketCapInNumber / 1000000000) * 50 + 40, 40), 120)
-        };
-      });
-      setHeatMapData(fallbackData);
+      // Fallback to real token data with client-side random values
+      if (mounted) {
+        const companies = getAllCompanies().slice(0, 12);
+        const fallbackData = companies.map((company) => {
+          const marketCapValue = parseFloat(company.marketCap.replace(/[$BM]/g, ''));
+          const marketCapInNumber = company.marketCap.includes('B') ? marketCapValue * 1000000000 : marketCapValue * 1000000;
+          
+          return {
+            id: company.id,
+            name: company.name,
+            symbol: company.symbol,
+            value: parseFloat(company.price.replace('$', '')),
+            change: (Math.random() - 0.5) * 20, // Random change for demo - only on client
+            size: Math.min(Math.max((marketCapInNumber / 1000000000) * 50 + 40, 40), 120)
+          };
+        });
+        setHeatMapData(fallbackData);
+      } else {
+        // Static fallback for SSR
+        const companies = getAllCompanies().slice(0, 12);
+        const staticFallbackData = companies.map((company) => {
+          const marketCapValue = parseFloat(company.marketCap.replace(/[$BM]/g, ''));
+          const marketCapInNumber = company.marketCap.includes('B') ? marketCapValue * 1000000000 : marketCapValue * 1000000;
+          
+          return {
+            id: company.id,
+            name: company.name,
+            symbol: company.symbol,
+            value: parseFloat(company.price.replace('$', '')),
+            change: 0, // Static value for SSR
+            size: Math.min(Math.max((marketCapInNumber / 1000000000) * 50 + 40, 40), 120)
+          };
+        });
+        setHeatMapData(staticFallbackData);
+      }
     } finally {
       setLoading(false);
     }
@@ -108,10 +129,10 @@ export function MarketHeatMap({ className }: MarketHeatMapProps) {
             `}
             style={{
               minHeight: `${Math.max(item.size, 60)}px`,
-              opacity: 0.8 + (Math.abs(item.change) / 20) * 0.2
+              opacity: mounted ? 0.8 + (Math.abs(item.change) / 20) * 0.2 : 0.8
             }}
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.8 + (Math.abs(item.change) / 20) * 0.2, scale: 1 }}
+            animate={{ opacity: mounted ? 0.8 + (Math.abs(item.change) / 20) * 0.2 : 0.8, scale: 1 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
             whileHover={{ 
               scale: 1.05,

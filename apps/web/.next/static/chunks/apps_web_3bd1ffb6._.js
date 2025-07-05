@@ -423,13 +423,17 @@ __turbopack_context__.s({
     "formatPrice": (()=>formatPrice),
     "getAllCategories": (()=>getAllCategories),
     "getAllCompanies": (()=>getAllCompanies),
+    "getAllCompanyIds": (()=>getAllCompanyIds),
     "getAllSectors": (()=>getAllSectors),
     "getCompaniesByCategory": (()=>getCompaniesByCategory),
     "getCompaniesBySector": (()=>getCompaniesBySector),
     "getCompanyById": (()=>getCompanyById),
+    "getCompanyByNumericId": (()=>getCompanyByNumericId),
     "getCompanyLogo": (()=>getCompanyLogo),
     "getCompanyStats": (()=>getCompanyStats),
+    "getNumericCompanyId": (()=>getNumericCompanyId),
     "getRandomCompanies": (()=>getRandomCompanies),
+    "getStringCompanyId": (()=>getStringCompanyId),
     "getTopCompaniesByMarketCap": (()=>getTopCompaniesByMarketCap),
     "getTrendingCompanies": (()=>getTrendingCompanies),
     "searchCompanies": (()=>searchCompanies)
@@ -441,6 +445,23 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$consta
 const getAllCompanies = ()=>{
     const companies = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$constants$2f$companies$2e$json__$28$json$29$__["default"].companies;
     return Object.values(companies);
+};
+const getAllCompanyIds = ()=>{
+    const companies = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$constants$2f$companies$2e$json__$28$json$29$__["default"].companies;
+    return Object.keys(companies);
+};
+const getNumericCompanyId = (stringId)=>{
+    const companyIds = getAllCompanyIds();
+    const index = companyIds.indexOf(stringId);
+    return index === -1 ? -1 : index;
+};
+const getStringCompanyId = (numericId)=>{
+    const companyIds = getAllCompanyIds();
+    return companyIds[numericId];
+};
+const getCompanyByNumericId = (numericId)=>{
+    const stringId = getStringCompanyId(numericId);
+    return stringId ? getCompanyById(stringId) : undefined;
 };
 const getCompanyById = (id)=>{
     const companies = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$constants$2f$companies$2e$json__$28$json$29$__["default"].companies;
@@ -628,7 +649,7 @@ function TokensPage() {
         sortDirection
     ]);
     const handleCompanyClick = (companyId)=>{
-        router.push(`/company/${companyId}`);
+        router.push(`/trading/${companyId}`);
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900",

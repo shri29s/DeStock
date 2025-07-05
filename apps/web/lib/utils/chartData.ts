@@ -212,7 +212,7 @@ export function generateCompanyData(count: number = 20) {
 
 // Generate portfolio data
 export function generatePortfolioData() {
-  const holdings = generateCompanyData(8).map((company, index) => {
+  const holdings = generateCompanyData(8).map((company) => {
     const shares = Math.floor(Math.random() * 100) + 10;
     const avgCost = company.price * (0.8 + Math.random() * 0.4); // ±20% from current price
     const totalValue = shares * company.price;

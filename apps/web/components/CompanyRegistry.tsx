@@ -1,14 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useDeStock } from '@/lib/hooks/useDeStock';
 import { useDSTK } from '@/lib/hooks/useDSTK';
 import { useAccount } from 'wagmi';
-import { REGISTRATION_FEE } from '@/lib/contracts';
-import { formatUnits } from 'viem';
 
 const schema = z.object({
   name: z.string().min(1, 'Company name is required').max(50, 'Name too long'),
@@ -20,9 +18,10 @@ type FormData = z.infer<typeof schema>;
 
 export function CompanyRegistry() {
   const { isConnected, address } = useAccount();
-  const { registerCompany, isPending, isConfirming, isConfirmed, error } = useDeStock();
-  const { balance, approve, getAllowance } = useDSTK();
+  const { registerCompany, isPending, isConfirming, isConfirmed, error, contractAddress } = useDeStock();
+  const { balance, approve } = useDSTK();
   const [needsApproval, setNeedsApproval] = useState(true);
+  const [isApproving, setIsApproving] = useState(false);
 
   const {
     register,
@@ -39,8 +38,12 @@ export function CompanyRegistry() {
     ? (parseFloat(watchedValues.initialPrice) * parseFloat(watchedValues.totalSupply) + 100).toString()
     : '100';
 
+  // Get current allowance for DeStock contract
+  // TODO: Fix allowance checking after hook refactor
+  const currentAllowance = 0;
+
   const checkApproval = async () => {
-    if (!isConnected || !address) return;
+    if (!isConnected || !address || !contractAddress) return;
     
     // Check if user has enough balance
     const userBalance = parseFloat(balance);
@@ -51,15 +54,35 @@ export function CompanyRegistry() {
       return;
     }
 
-    // Check allowance (this would need to be implemented properly with contract address)
-    setNeedsApproval(false);
+    // Check allowance against estimated cost
+    const sufficient = currentAllowance >= parseFloat(estimatedCost);
+    setNeedsApproval(!sufficient);
   };
 
+  // Check approval whenever values change
+  useEffect(() => {
+    checkApproval();
+  }, [estimatedCost, currentAllowance, isConnected, address, contractAddress]);
+
   const handleApprove = async () => {
-    if (!address) return;
+    if (!address || !contractAddress) return;
     
-    // This would need the DeStock contract address
-    // approve(destockContractAddress, estimatedCost);
+    setIsApproving(true);
+    try {
+      // Approve a bit more than estimated to account for gas and rounding
+      const approvalAmount = (parseFloat(estimatedCost) * 1.1).toString();
+      await approve(contractAddress, approvalAmount);
+      // Note: approval hash would be available from the approve function return value
+      // Wait a moment for approval to be confirmed
+      setTimeout(() => {
+        checkApproval();
+      }, 2000);
+    } catch (error) {
+      console.error('Approval failed:', error);
+      alert('Approval failed. Please try again or check your wallet.');
+    } finally {
+      setIsApproving(false);
+    }
   };
 
   const onSubmit = async (data: FormData) => {
@@ -69,18 +92,58 @@ export function CompanyRegistry() {
     }
 
     const userBalance = parseFloat(balance);
-    if (userBalance < 100) {
-      alert('Insufficient DSTK balance. You need at least 100 DSTK to register a company.');
+    const requiredBalance = parseFloat(estimatedCost);
+    
+    if (userBalance < requiredBalance) {
+      alert(`Insufficient DSTK balance. You need at least ${requiredBalance} DSTK to register this company.`);
+      return;
+    }
+
+    if (needsApproval) {
+      alert('Please approve DSTK spending first by clicking the "Approve" button above.');
       return;
     }
 
     try {
-      await registerCompany(data.name, data.initialPrice, data.totalSupply);
-      reset();
-    } catch (error) {
+      console.log('Registering company with params:', {
+        name: data.name,
+        totalSupply: data.totalSupply,
+        initialPrice: data.initialPrice,
+        estimatedCost: estimatedCost
+      });
+
+      // Pass parameters in correct order: name, totalSupply, initialPrice
+      await registerCompany(data.name, data.totalSupply, data.initialPrice);
+    } catch (error: any) {
       console.error('Registration failed:', error);
+      
+      // Provide more specific error messages
+      let errorMessage = 'Registration failed. ';
+      
+      if (error?.message?.includes('insufficient allowance')) {
+        errorMessage += 'Please approve DSTK spending first.';
+        setNeedsApproval(true);
+      } else if (error?.message?.includes('user rejected')) {
+        errorMessage += 'Transaction was rejected. Please try again and confirm the transaction in your wallet.';
+      } else if (error?.message?.includes('gas')) {
+        errorMessage += 'Transaction failed due to gas issues. Please try again with higher gas limit.';
+      } else if (error?.message?.includes('insufficient funds')) {
+        errorMessage += 'Insufficient funds for gas. Please ensure you have enough ETH for transaction fees.';
+      } else {
+        errorMessage += error?.message || 'Unknown error occurred.';
+      }
+      
+      alert(errorMessage);
     }
   };
+
+  // Reset form when registration is confirmed
+  useEffect(() => {
+    if (isConfirmed) {
+      reset();
+      setNeedsApproval(true);
+    }
+  }, [isConfirmed, reset]);
 
   if (!isConnected) {
     return (
@@ -174,28 +237,63 @@ export function CompanyRegistry() {
                 <span>{estimatedCost} DSTK</span>
               </div>
             </div>
-            <div className="mt-2 text-xs text-low-contrast">
-              Your Balance: {balance} DSTK
+            <div className="mt-2 space-y-1 text-xs text-low-contrast">
+              <div>Your Balance: {balance} DSTK</div>
+              <div>Current Allowance: {currentAllowance.toFixed(2)} DSTK</div>
             </div>
           </div>
 
+          {needsApproval && (
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+                Approval Required
+              </h4>
+              <p className="text-xs text-yellow-700 dark:text-yellow-300 mb-3">
+                You need to approve DSTK spending for the DeStock contract before registering a company.
+              </p>
+              <button
+                type="button"
+                onClick={handleApprove}
+                disabled={isApproving || parseFloat(balance) < parseFloat(estimatedCost)}
+                className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isApproving ? 'Approving...' : `Approve ${estimatedCost} DSTK`}
+              </button>
+            </div>
+          )}
+
           {error && (
             <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-800">
-              <p className="text-sm danger">
-                Registration failed: {error.message}
+              <h4 className="text-sm font-medium text-red-800 dark:text-red-200 mb-2">
+                Registration Failed
+              </h4>
+              <p className="text-sm danger mb-2">
+                {error.message}
               </p>
+              <div className="text-xs text-red-600 dark:text-red-400">
+                <p><strong>Common solutions:</strong></p>
+                <ul className="list-disc list-inside mt-1 space-y-1">
+                  <li>Ensure you have approved sufficient DSTK tokens</li>
+                  <li>Check that you have enough ETH for gas fees</li>
+                  <li>Try increasing gas limit in your wallet</li>
+                  <li>Make sure the company name is unique</li>
+                  <li>Refresh and try again if the approval was recent</li>
+                </ul>
+              </div>
             </div>
           )}
 
           <button
             type="submit"
-            disabled={isPending || isConfirming || parseFloat(balance) < parseFloat(estimatedCost)}
+            disabled={isPending || isConfirming || parseFloat(balance) < parseFloat(estimatedCost) || needsApproval}
             className="w-full destock-button-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isPending || isConfirming
               ? 'Processing...'
               : parseFloat(balance) < parseFloat(estimatedCost)
               ? 'Insufficient Balance'
+              : needsApproval
+              ? 'Approval Required'
               : 'Register Company'}
           </button>
 

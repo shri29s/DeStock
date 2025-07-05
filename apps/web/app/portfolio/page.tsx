@@ -3,12 +3,15 @@
 import { useAccount } from 'wagmi';
 import { useDSTK } from '@/lib/hooks/useDSTK';
 import { useDeStock } from '@/lib/hooks/useDeStock';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { WalletIcon, TrendingUpIcon, TrendingDownIcon, PieChartIcon, DollarSignIcon, BarChart3Icon, Activity, Eye, EyeOff } from 'lucide-react';
+import { WalletIcon, TrendingUpIcon, TrendingDownIcon, DollarSignIcon, Activity, Eye, EyeOff, RefreshCwIcon } from 'lucide-react';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { TradingChart } from '@/components/TradingChart';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { useQueryClient } from '@tanstack/react-query';
+import { useWebSocket } from '@/lib/providers/WebSocketProvider';
+import toast from 'react-hot-toast';
 
 interface HoldingItem {
   companyId: number;
@@ -36,12 +39,16 @@ interface PortfolioStats {
 }
 
 export default function PortfolioPage() {
-  const { isConnected, address } = useAccount();
+  const { isConnected } = useAccount();
   const { balance } = useDSTK();
-  const { getShareBalance, nextCompanyId } = useDeStock();
+  const { nextCompanyId } = useDeStock();
+  const queryClient = useQueryClient();
+  const { connectionStatus, recentTrades } = useWebSocket();
   const [holdings, setHoldings] = useState<HoldingItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
   const [stats, setStats] = useState<PortfolioStats>({
     totalValue: 0,
     totalPnL: 0,
@@ -58,7 +65,8 @@ export default function PortfolioPage() {
   useEffect(() => {
     if (isConnected) {
       loadPortfolio();
-      const interval = setInterval(loadPortfolio, 30000); // Update every 30 seconds
+      // Reduce polling interval for more frequent updates
+      const interval = setInterval(loadPortfolio, 15000); // Update every 15 seconds
       return () => clearInterval(interval);
     }
   }, [isConnected, nextCompanyId]);
@@ -68,10 +76,71 @@ export default function PortfolioPage() {
     setMounted(true);
   }, []);
 
-  const loadPortfolio = async () => {
-    setLoading(true);
+  // Listen for WebSocket trade events to refresh portfolio
+  useEffect(() => {
+    if (connectionStatus === 'connected' && isConnected) {
+      // Check for recent trades that might affect this user's portfolio
+      const userTrades = Array.from(recentTrades.values()).flat().filter(() => 
+        // This would need to be enhanced to check if the trade affects the user
+        true // For now, refresh on any trade
+      );
+      
+      if (userTrades.length > 0) {
+        // Debounce refreshes - only refresh once per 5 seconds
+        const timeSinceLastRefresh = lastRefresh ? Date.now() - lastRefresh.getTime() : Infinity;
+        if (timeSinceLastRefresh > 5000) {
+          refreshPortfolio();
+        }
+      }
+    }
+  }, [recentTrades, connectionStatus, isConnected, lastRefresh]);
+
+  // Manually refresh portfolio
+  const refreshPortfolio = useCallback(async () => {
+    if (refreshing) return;
+    
+    setRefreshing(true);
+    setLastRefresh(new Date());
+    
     try {
-      const response = await fetch('/api/portfolio');
+      await loadPortfolio();
+      // Also invalidate portfolio queries to refresh cached data
+      queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+      queryClient.invalidateQueries({ queryKey: ['holdings'] });
+      toast.success('Portfolio refreshed successfully!');
+    } catch (error) {
+      console.error('Failed to refresh portfolio:', error);
+      toast.error('Failed to refresh portfolio');
+    } finally {
+      setRefreshing(false);
+    }
+  }, [refreshing, queryClient]);
+
+  // Expose refresh function globally for use after trades
+  useEffect(() => {
+    // Store refresh function in a way it can be called from other components
+    (window as any).refreshPortfolio = refreshPortfolio;
+    
+    return () => {
+      delete (window as any).refreshPortfolio;
+    };
+  }, [refreshPortfolio]);
+
+  const loadPortfolio = async (retryCount = 0) => {
+    const maxRetries = 3;
+    setLoading(!refreshing); // Don't show loading spinner if we're refreshing
+    
+    try {
+      const response = await fetch('/api/portfolio', {
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const result = await response.json();
       
       if (result.portfolio) {
@@ -156,6 +225,20 @@ export default function PortfolioPage() {
       }
     } catch (error) {
       console.error('Failed to load portfolio:', error);
+      
+      // Retry logic with exponential backoff
+      if (retryCount < maxRetries) {
+        const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
+        setTimeout(() => {
+          loadPortfolio(retryCount + 1);
+        }, delay);
+        
+        if (!refreshing) {
+          toast.error(`Failed to load portfolio. Retrying in ${delay / 1000}s...`);
+        }
+      } else {
+        toast.error('Failed to load portfolio after multiple attempts');
+      }
     } finally {
       setLoading(false);
     }
@@ -232,6 +315,15 @@ export default function PortfolioPage() {
         
         <div className="flex items-center space-x-4">
           <button
+            onClick={refreshPortfolio}
+            disabled={refreshing}
+            className="glass-card p-3 hover:bg-gray-700/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Refresh Portfolio"
+          >
+            <RefreshCwIcon className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+          </button>
+          
+          <button
             onClick={() => setShowValues(!showValues)}
             className="glass-card p-3 hover:bg-gray-700/30 transition-all duration-200"
           >
@@ -249,6 +341,12 @@ export default function PortfolioPage() {
             <option value="3M">3 Months</option>
             <option value="1Y">1 Year</option>
           </select>
+          
+          {lastRefresh && (
+            <div className="text-xs text-gray-400">
+              Last updated: {lastRefresh.toLocaleTimeString()}
+            </div>
+          )}
         </div>
       </motion.div>
 

@@ -27,7 +27,7 @@ interface Company {
 
 export function TradeView() {
   const { isConnected } = useAccount();
-  const { buyShares, sellShares, getSharePrice, getShareBalance, nextCompanyId, isPending, isConfirming, isConfirmed, error } = useDeStock();
+  const { buyShares, sellShares, nextCompanyId, isPending, isConfirming, isConfirmed, error } = useDeStock();
   const { balance } = useDSTK();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
@@ -46,7 +46,6 @@ export function TradeView() {
     handleSubmit,
     formState: { errors },
     watch,
-    setValue,
     reset,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -66,7 +65,7 @@ export function TradeView() {
       const company = companies.find(c => c.id.toString() === watchedCompanyId);
       if (company) {
         setSelectedCompany(company);
-        loadUserShares(company.id);
+        loadUserShares();
       }
     }
   }, [watchedCompanyId, companies]);
@@ -88,8 +87,9 @@ export function TradeView() {
     }
   };
 
-  const loadUserShares = async (companyId: number) => {
+  const loadUserShares = async () => {
     try {
+      // TODO: Implement actual contract call using companyId
       // Placeholder implementation - would need real contract calls
       setUserShares('100');
     } catch (error) {

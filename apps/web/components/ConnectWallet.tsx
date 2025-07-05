@@ -4,17 +4,19 @@ import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 import { metaMask } from 'wagmi/connectors';
 import { useDSTK } from '@/lib/hooks/useDSTK';
 import { useState, useEffect } from 'react';
-import { ChevronDownIcon, WalletIcon } from 'lucide-react';
-import { ClientOnly } from './ClientOnly';
+import { ChevronDownIcon, WalletIcon, GiftIcon } from 'lucide-react';
+import { handleFaucetRequest, type FaucetRequestOptions } from '@/lib/utils/faucetUtils';
+import { successPulse } from '@/lib/utils/animations';
 
 export function ConnectWallet() {
   const { address, isConnected, chain } = useAccount();
   const { connect, isPending: isConnecting } = useConnect();
   const { disconnect } = useDisconnect();
   const { switchChain } = useSwitchChain();
-  const { balance } = useDSTK();
+  const { balance, refetchBalance } = useDSTK();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isFaucetLoading, setIsFaucetLoading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -30,12 +32,47 @@ export function ConnectWallet() {
   };
 
   const handleSwitchChain = (chainId: number) => {
-    switchChain({ chainId: chainId as any });
+    switchChain({ chainId: chainId as 1 | 31337 | 11155111 });
     setIsDropdownOpen(false);
   };
 
   const formatAddress = (addr: string) => {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+  };
+
+  const handleFaucetClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!address || !chain?.id) return;
+    
+    const buttonElement = event.currentTarget;
+    
+    const requestOptions: FaucetRequestOptions = {
+      address,
+      chainId: chain.id,
+      onLoading: setIsFaucetLoading,
+      onSuccess: async (response) => {
+        try {
+          // Add success pulse animation to the button
+          successPulse(buttonElement);
+          
+          // Wait a moment for the celebration animation to complete
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          
+          // Refetch balance and close dropdown
+          await refetchBalance();
+          setIsDropdownOpen(false);
+          
+          console.log('Faucet success:', response);
+        } catch (error) {
+          console.error('Error in success callback:', error);
+        }
+      },
+      onError: (error) => {
+        console.error('Faucet request failed:', error);
+        // Error handling is already done in handleFaucetRequest with toast
+      }
+    };
+    
+    await handleFaucetRequest(requestOptions);
   };
 
   // Show loading placeholder until mounted
@@ -91,6 +128,30 @@ export function ConnectWallet() {
                 Network: {chain.name}
               </div>
             )}
+            
+            {/* Enhanced faucet button - always show if on testnet */}
+            {chain && (chain.id === 31337 || chain.id === 11155111) && (
+              <button
+                onClick={handleFaucetClick}
+                disabled={isFaucetLoading}
+                className="mt-3 w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 active:scale-95"
+              >
+                <GiftIcon className={`w-4 h-4 ${isFaucetLoading ? 'animate-pulse' : ''}`} />
+                <span>
+                  {isFaucetLoading ? 'Getting Tokens...' : 
+                   parseFloat(balance) === 0 ? 'Get Test Tokens' : 'Get More Tokens'}
+                </span>
+              </button>
+            )}
+
+            {/* Show helpful message for mainnet */}
+            {chain && chain.id === 1 && (
+              <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-xs text-yellow-800">
+                  Faucet not available on mainnet. Switch to a testnet to get test tokens.
+                </p>
+              </div>
+            )}
           </div>
           
           <div className="p-2">
@@ -99,22 +160,32 @@ export function ConnectWallet() {
             </div>
             <button
               onClick={() => handleSwitchChain(31337)}
-              className="w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded"
+              className={`w-full text-left px-2 py-2 text-sm rounded transition-colors ${
+                chain?.id === 31337 
+                  ? 'bg-blue-50 text-blue-700 font-medium' 
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
             >
-              Localhost
+              Localhost (31337)
+              {chain?.id === 31337 && <span className="ml-2 text-xs">✓</span>}
             </button>
             <button
               onClick={() => handleSwitchChain(11155111)}
-              className="w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded"
+              className={`w-full text-left px-2 py-2 text-sm rounded transition-colors ${
+                chain?.id === 11155111 
+                  ? 'bg-blue-50 text-blue-700 font-medium' 
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
             >
               Sepolia Testnet
+              {chain?.id === 11155111 && <span className="ml-2 text-xs">✓</span>}
             </button>
           </div>
 
           <div className="p-2 border-t border-gray-200">
             <button
               onClick={handleDisconnect}
-              className="w-full text-left px-2 py-2 text-sm text-red-600 hover:bg-red-50 rounded"
+              className="w-full text-left px-2 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition-colors"
             >
               Disconnect Wallet
             </button>

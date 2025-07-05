@@ -18,13 +18,16 @@
     "contracts:deploy": "npm --prefix packages/contracts run deploy",
     "web:dev": "npm --prefix apps/web run dev",
     "web:build": "npm --prefix apps/web run build",
-    "web:start": "npm --prefix apps/web run start"
+    "web:start": "npm --prefix apps/web run start",
+    "bootstrap": "ts-node scripts/bootstrapCompanies.ts"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
+    "@types/node": "^20.19.4",
     "eslint": "^8.55.0",
+    "ethers": "^6.15.0",
     "prettier": "^3.1.0",
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": ">=18.0.0",
@@ -33,7 +36,6 @@
   "packageManager": "pnpm@8.12.1",
   "dependencies": {
     "@lighthouse-web3/sdk": "^0.4.0",
-    "dotenv": "^17.0.1",
-    "ethers": "^6.15.0"
+    "dotenv": "^17.0.1"
   }
 }

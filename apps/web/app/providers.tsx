@@ -7,10 +7,23 @@ import { LazyMotion, domAnimation } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import { config } from '@/lib/wagmi';
 import { WebSocketProvider } from '@/lib/providers/WebSocketProvider';
+import { getWebSocketUrl } from '@/lib/constants/shared';
 import { useState } from 'react';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
+  
+  // Get WebSocket configuration from shared constants
+  const webSocketUrl = getWebSocketUrl();
+  
+  // Enable WebSocket if URL is properly configured
+  const webSocketEnabled = !!webSocketUrl && webSocketUrl !== '';
+
+  console.log('WebSocket configuration:', {
+    url: webSocketUrl,
+    enabled: webSocketEnabled,
+    env: process.env.NODE_ENV
+  });
 
   return (
     <ThemeProvider 
@@ -22,7 +35,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <LazyMotion features={domAnimation}>
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>
-            <WebSocketProvider url="ws://localhost:8080" enabled={process.env.NODE_ENV === 'development'}>
+            <WebSocketProvider url={webSocketUrl} enabled={webSocketEnabled}>
               {children}
               <Toaster 
                 position="top-right"

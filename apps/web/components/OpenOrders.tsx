@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 
 interface MockOrder {
@@ -14,24 +14,32 @@ interface MockOrder {
 
 export default function OpenOrders() {
   const { address } = useAccount();
-  const [orders] = useState<MockOrder[]>([
-    {
-      id: 1,
-      companyId: 1,
-      type: 'buy',
-      amount: 100,
-      price: 0.0025,
-      timestamp: new Date(Date.now() - 300000), // 5 minutes ago
-    },
-    {
-      id: 2,
-      companyId: 3,
-      type: 'sell',
-      amount: 50,
-      price: 0.0034,
-      timestamp: new Date(Date.now() - 600000), // 10 minutes ago
-    },
-  ]);
+  const [mounted, setMounted] = useState(false);
+  const [orders, setOrders] = useState<MockOrder[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+    // Initialize orders only on client to avoid hydration mismatch
+    const mockOrders: MockOrder[] = [
+      {
+        id: 1,
+        companyId: 1,
+        type: 'buy',
+        amount: 100,
+        price: 0.0025,
+        timestamp: new Date(Date.now() - 300000), // 5 minutes ago
+      },
+      {
+        id: 2,
+        companyId: 3,
+        type: 'sell',
+        amount: 50,
+        price: 0.0034,
+        timestamp: new Date(Date.now() - 600000), // 10 minutes ago
+      },
+    ];
+    setOrders(mockOrders);
+  }, []);
 
   const handleCancelOrder = (orderId: number) => {
     console.log('Cancel order:', orderId);
@@ -48,6 +56,20 @@ export default function OpenOrders() {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Open Orders</h3>
         <div className="text-center py-8">
           <p className="text-gray-600 dark:text-gray-400">Connect your wallet to view open orders</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading state until mounted
+  if (!mounted) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Open Orders</h3>
+        <div className="text-center py-8">
+          <div className="animate-pulse">
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-32 mx-auto"></div>
+          </div>
         </div>
       </div>
     );

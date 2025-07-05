@@ -31,6 +31,11 @@ export function PriceTicker({
   const [tickerData, setTickerData] = useState<TickerItem[]>([]);
   const [isPaused, setIsPaused] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchTickerData = async () => {
@@ -40,17 +45,30 @@ export function PriceTicker({
         setTickerData(result.ticker || []);
       } catch (error) {
         console.error('Failed to fetch ticker data:', error);
-        // Fallback to real token data
+        // Fallback to real token data with client-side random values
         const companies = getAllCompanies().slice(0, 10);
-        const fallbackData = companies.map(company => ({
-          symbol: company.symbol,
-          name: company.name,
-          price: parseFloat(company.price.replace('$', '')),
-          change: (Math.random() - 0.5) * 10,
-          changePercent: (Math.random() - 0.5) * 15,
-          volume: Math.floor(Math.random() * 1000000),
-        }));
-        setTickerData(fallbackData);
+        if (mounted) {
+          const fallbackData = companies.map(company => ({
+            symbol: company.symbol,
+            name: company.name,
+            price: parseFloat(company.price.replace('$', '')),
+            change: (Math.random() - 0.5) * 10, // Only on client
+            changePercent: (Math.random() - 0.5) * 15, // Only on client
+            volume: Math.floor(Math.random() * 1000000), // Only on client
+          }));
+          setTickerData(fallbackData);
+        } else {
+          // Static fallback for SSR
+          const staticFallbackData = companies.map(company => ({
+            symbol: company.symbol,
+            name: company.name,
+            price: parseFloat(company.price.replace('$', '')),
+            change: 0, // Static value for SSR
+            changePercent: 0, // Static value for SSR
+            volume: 500000, // Static value for SSR
+          }));
+          setTickerData(staticFallbackData);
+        }
       } finally {
         setLoading(false);
       }
@@ -61,11 +79,11 @@ export function PriceTicker({
     // Update ticker data every 30 seconds
     const interval = setInterval(fetchTickerData, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [mounted]);
 
-  // Real-time price updates simulation
+  // Real-time price updates simulation - only on client
   useEffect(() => {
-    if (tickerData.length === 0) return;
+    if (tickerData.length === 0 || !mounted) return;
 
     const interval = setInterval(() => {
       setTickerData(prev => prev.map(item => {
@@ -83,7 +101,7 @@ export function PriceTicker({
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [tickerData.length]);
+  }, [tickerData.length, mounted]);
 
   if (loading) {
     return (

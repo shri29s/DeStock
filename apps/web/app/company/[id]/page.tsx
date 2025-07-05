@@ -2,10 +2,9 @@
 
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useDeStock } from '@/lib/hooks/useDeStock';
 import { useAccount } from 'wagmi';
 import { TradeView } from '@/components/TradeView';
-import { BuildingIcon, TrendingUpIcon, TrendingDownIcon, UsersIcon } from 'lucide-react';
+import { BuildingIcon, TrendingUpIcon, TrendingDownIcon } from 'lucide-react';
 
 interface CompanyData {
   id: number;
@@ -22,7 +21,6 @@ export default function CompanyPage() {
   const params = useParams();
   const companyId = params?.id as string;
   const { isConnected } = useAccount();
-  const { getCompany, getSharePrice } = useDeStock();
   const [company, setCompany] = useState<CompanyData | null>(null);
   const [loading, setLoading] = useState(true);
 

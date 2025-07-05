@@ -1,7 +1,7 @@
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { DESTOCK_ABI, getContractAddress } from '../contracts';
 import { useCallback, useMemo } from 'react';
-import { Address, parseEther, formatEther } from 'viem';
+import { Address, parseEther } from 'viem';
 
 export function useDeStock() {
   const { address, chainId } = useAccount();
@@ -23,109 +23,116 @@ export function useDeStock() {
     functionName: 'nextCompanyId',
   });
 
+  // Note: These functions return hook configurations, not hook calls
+  // They should be used in components that call the actual hooks
   const getCompany = useCallback((companyId: number) => {
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'companies',
+      functionName: 'companies' as const,
       args: [BigInt(companyId)],
-    });
+    };
   }, [contractAddress]);
 
   const getSharePrice = useCallback((companyId: number) => {
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'getSharePrice',
+      functionName: 'getSharePrice' as const,
       args: [BigInt(companyId)],
-    });
+    };
   }, [contractAddress]);
 
   const getShareBalance = useCallback((companyId: number, userAddress?: Address) => {
     const targetAddress = userAddress || address;
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'balanceOf',
+      functionName: 'balanceOf' as const,
       args: targetAddress ? [targetAddress, BigInt(companyId)] : undefined,
       query: {
         enabled: !!targetAddress,
       },
-    });
+    };
   }, [contractAddress, address]);
 
   const getLPTokenBalance = useCallback((companyId: number, userAddress?: Address) => {
     const targetAddress = userAddress || address;
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'getLPTokenBalance',
+      functionName: 'getLPTokenBalance' as const,
       args: targetAddress ? [targetAddress, BigInt(companyId)] : undefined,
       query: {
         enabled: !!targetAddress,
       },
-    });
+    };
   }, [contractAddress, address]);
 
   const getUserOrders = useCallback((userAddress?: Address) => {
     const targetAddress = userAddress || address;
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'getUserOrders',
+      functionName: 'getUserOrders' as const,
       args: targetAddress ? [targetAddress] : undefined,
       query: {
         enabled: !!targetAddress,
       },
-    });
+    };
   }, [contractAddress, address]);
 
   const getOrderDetails = useCallback((orderId: number) => {
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'getOrderDetails',
+      functionName: 'getOrderDetails' as const,
       args: [BigInt(orderId)],
-    });
+    };
   }, [contractAddress]);
 
   const getBuyPrice = useCallback((companyId: number, amount: string) => {
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'getBuyPrice',
+      functionName: 'getBuyPrice' as const,
       args: [BigInt(companyId), BigInt(amount)],
-    });
+    };
   }, [contractAddress]);
 
   const getSellPrice = useCallback((companyId: number, amount: string) => {
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'getSellPrice',
+      functionName: 'getSellPrice' as const,
       args: [BigInt(companyId), BigInt(amount)],
-    });
+    };
   }, [contractAddress]);
 
   const getTradingVolume = useCallback((companyId: number) => {
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DESTOCK_ABI,
-      functionName: 'getTradingVolume',
+      functionName: 'getTradingVolume' as const,
       args: [BigInt(companyId)],
-    });
+    };
   }, [contractAddress]);
 
   // Write functions
   const registerCompany = useCallback(
-    (name: string, initialPrice: string, totalSupply: string) => {
+    (name: string, totalSupply: string, initialPrice: string) => {
       if (!contractAddress) return;
+      
+      // Calculate initial liquidity as totalSupply * initialPrice
+      const totalSupplyBigInt = BigInt(totalSupply);
+      const initialPriceBigInt = parseEther(initialPrice);
+      const initialLiquidity = totalSupplyBigInt * initialPriceBigInt;
       
       writeContract({
         address: contractAddress,
         abi: DESTOCK_ABI,
         functionName: 'registerCompany',
-        args: [name, parseEther(initialPrice), BigInt(totalSupply)],
+        args: [name, totalSupplyBigInt, initialLiquidity],
       });
     },
     [contractAddress, writeContract]

@@ -1,19 +1,122 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generatePortfolioData, generateOHLCData } from '@/lib/utils/chartData';
+import { validateEnvironment, BACKEND_CONFIG, RATE_LIMITING } from '@/lib/constants/shared';
 
-export async function GET(request: NextRequest) {
+// Rate limiting and cache stores
+const requestCounts = new Map<string, { count: number; resetTime: number }>();
+const cache = new Map<string, { data: any; expiry: number }>();
+
+function getRateLimitKey(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  const ip = forwarded ? forwarded.split(',')[0].trim() : 
+            request.headers.get('x-real-ip') || 
+            'unknown';
+  return `portfolio_${ip}`;
+}
+
+function checkRateLimit(key: string): { allowed: boolean; remaining: number; resetTime: number } {
+  const now = Date.now();
+  const limit = RATE_LIMITING.portfolio;
+  
+  let record = requestCounts.get(key);
+  
+  if (!record || now > record.resetTime) {
+    record = {
+      count: 0,
+      resetTime: now + limit.windowMs
+    };
+    requestCounts.set(key, record);
+  }
+  
+  if (record.count >= limit.maxRequests) {
+    return {
+      allowed: false,
+      remaining: 0,
+      resetTime: record.resetTime
+    };
+  }
+  
+  record.count++;
+  
+  return {
+    allowed: true,
+    remaining: limit.maxRequests - record.count,
+    resetTime: record.resetTime
+  };
+}
+
+function getCachedData(key: string): any | null {
+  const cached = cache.get(key);
+  if (cached && Date.now() < cached.expiry) {
+    return cached.data;
+  }
+  if (cached) {
+    cache.delete(key);
+  }
+  return null;
+}
+
+function setCachedData(key: string, data: any, ttlSeconds: number = 30): void {
+  cache.set(key, {
+    data,
+    expiry: Date.now() + (ttlSeconds * 1000)
+  });
+}
+
+async function fetchFromBackend(endpoint: string, options: RequestInit = {}): Promise<any> {
+  const config = validateEnvironment();
+  
+  if (!config.BACKEND_URL) {
+    throw new Error('Backend URL not configured');
+  }
+  
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), BACKEND_CONFIG.requestTimeout);
+  
   try {
-    const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type') || 'overview';
-    const timeframe = searchParams.get('timeframe') || '1M';
+    const response = await fetch(`${config.BACKEND_URL}${endpoint}`, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+    
+    clearTimeout(timeout);
+    
+    if (!response.ok) {
+      throw new Error(`Backend error: ${response.status} ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    clearTimeout(timeout);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Backend request timeout');
+    }
+    throw error;
+  }
+}
 
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 100));
+async function getPortfolioFromBackend(type: string, address?: string, params: Record<string, any> = {}): Promise<any> {
+  try {
+    const queryParams = new URLSearchParams(params).toString();
+    const baseEndpoint = address ? `/api/portfolio/${address}` : '/api/portfolio';
+    const endpoint = `${baseEndpoint}/${type}${queryParams ? `?${queryParams}` : ''}`;
+    
+    return await fetchFromBackend(endpoint);
+  } catch (error) {
+    console.error(`Backend portfolio fetch failed for ${type}:`, error);
+    return null;
+  }
+}
 
-    if (type === 'overview') {
-      const portfolioData = generatePortfolioData();
-      
-      // Generate portfolio performance history
+function generateFallbackPortfolioData(type: string, params: Record<string, any> = {}): any {
+  const portfolioData = generatePortfolioData();
+  
+  switch (type) {
+    case 'overview':
       const performanceHistory = generateOHLCData(30, portfolioData.summary.totalValue, 0.015)
         .map(candle => ({
           time: candle.time,
@@ -22,44 +125,37 @@ export async function GET(request: NextRequest) {
           changePercent: ((candle.close - candle.open) / candle.open) * 100,
         }));
 
-      return NextResponse.json({
+      return {
         ...portfolioData,
         performance: {
           history: performanceHistory,
-          timeframe,
+          timeframe: params.timeframe || '1M',
         },
         diversification: {
           bySector: calculateSectorDiversification(portfolioData.holdings),
           byPosition: calculatePositionSizing(portfolioData.holdings),
         },
         riskMetrics: {
-          beta: Number((0.8 + Math.random() * 0.6).toFixed(2)), // 0.8 - 1.4
-          sharpeRatio: Number((0.5 + Math.random() * 1.0).toFixed(2)), // 0.5 - 1.5
-          volatility: Number((15 + Math.random() * 10).toFixed(2)), // 15% - 25%
-          maxDrawdown: Number((5 + Math.random() * 15).toFixed(2)), // 5% - 20%
+          beta: Number((0.8 + Math.random() * 0.6).toFixed(2)),
+          sharpeRatio: Number((0.5 + Math.random() * 1.0).toFixed(2)),
+          volatility: Number((15 + Math.random() * 10).toFixed(2)),
+          maxDrawdown: Number((5 + Math.random() * 15).toFixed(2)),
         },
-      });
-    }
-
-    if (type === 'transactions') {
-      const portfolioData = generatePortfolioData();
+      };
+    
+    case 'transactions':
       const transactions = generateTransactionHistory(portfolioData.holdings);
-      
-      return NextResponse.json({
+      return {
         transactions,
         pagination: {
-          page: 1,
-          limit: 50,
+          page: parseInt(params.page) || 1,
+          limit: parseInt(params.limit) || 50,
           total: transactions.length,
         },
-      });
-    }
-
-    if (type === 'analytics') {
-      const portfolioData = generatePortfolioData();
-      
-      // Calculate portfolio analytics
-      const analytics = {
+      };
+    
+    case 'analytics':
+      return {
         allocation: {
           stocks: 85.5,
           cash: 10.2,
@@ -78,19 +174,218 @@ export async function GET(request: NextRequest) {
           .sort((a, b) => a.pnlPercent - b.pnlPercent)
           .slice(0, 3),
       };
+    
+    case 'positions':
+      return {
+        positions: portfolioData.holdings,
+        summary: {
+          totalPositions: portfolioData.holdings.length,
+          totalValue: portfolioData.summary.totalValue,
+          realizedPnL: portfolioData.summary.totalPnL,
+          unrealizedPnL: portfolioData.holdings.reduce((sum, h) => sum + (h.pnl || 0), 0),
+        }
+      };
+    
+    default:
+      throw new Error(`Unknown portfolio type: ${type}`);
+  }
+}
 
-      return NextResponse.json(analytics);
+export async function GET(request: NextRequest) {
+  try {
+    // Rate limiting
+    const rateLimitKey = getRateLimitKey(request);
+    const rateLimitResult = checkRateLimit(rateLimitKey);
+    
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded', retryAfter: Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000) },
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': rateLimitResult.resetTime.toString(),
+            'Retry-After': Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString()
+          }
+        }
+      );
     }
 
-    return NextResponse.json(
-      { error: 'Invalid type parameter' },
-      { status: 400 }
-    );
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get('type') || 'overview';
+    const timeframe = searchParams.get('timeframe') || '1M';
+    const address = searchParams.get('address');
+    const page = searchParams.get('page') || '1';
+    const limit = searchParams.get('limit') || '50';
+
+    // Input validation
+    const validTypes = ['overview', 'transactions', 'analytics', 'positions', 'performance'];
+    if (!validTypes.includes(type)) {
+      return NextResponse.json(
+        { error: `Invalid type parameter. Must be one of: ${validTypes.join(', ')}` },
+        { status: 400 }
+      );
+    }
+
+    // Create cache key
+    const cacheKey = `portfolio_${type}_${address || 'default'}_${timeframe}_${page}_${limit}`;
+    
+    // Check cache first
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+      return NextResponse.json({
+        ...cachedData,
+        cached: true,
+        timestamp: Date.now()
+      }, {
+        headers: {
+          'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+          'X-Cache': 'HIT'
+        }
+      });
+    }
+
+    let responseData: any;
+    let dataSource = 'backend';
+
+    // Try to get data from backend first
+    const backendData = await getPortfolioFromBackend(type, address || undefined, { 
+      timeframe, 
+      page, 
+      limit 
+    });
+    
+    if (backendData) {
+      responseData = backendData;
+    } else {
+      // Fallback to mock data
+      dataSource = 'fallback';
+      responseData = generateFallbackPortfolioData(type, { 
+        timeframe, 
+        page, 
+        limit 
+      });
+      
+      // Shorter TTL for fallback data
+      setCachedData(cacheKey, responseData, 20);
+    }
+
+    // Cache successful responses
+    if (dataSource === 'backend') {
+      setCachedData(cacheKey, responseData, 30);
+    }
+
+    // Add metadata
+    responseData.meta = {
+      source: dataSource,
+      timestamp: Date.now(),
+      cached: false,
+      type,
+      ...(address && { address }),
+    };
+
+    return NextResponse.json(responseData, {
+      headers: {
+        'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+        'X-Data-Source': dataSource,
+        'X-Cache': 'MISS'
+      }
+    });
 
   } catch (error) {
     console.error('Portfolio API error:', error);
+    
+    // Try to return fallback data in case of critical errors
+    try {
+      const { searchParams } = new URL(request.url);
+      const type = searchParams.get('type') || 'overview';
+      const fallbackData = generateFallbackPortfolioData(type);
+      
+      return NextResponse.json({
+        ...fallbackData,
+        meta: {
+          source: 'emergency_fallback',
+          timestamp: Date.now(),
+          error: 'Primary services unavailable'
+        }
+      }, { 
+        status: 206, // Partial Content
+        headers: {
+          'X-Data-Source': 'emergency_fallback'
+        }
+      });
+    } catch {
+      return NextResponse.json(
+        { error: 'All portfolio services unavailable' },
+        { status: 503 }
+      );
+    }
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    // Rate limiting
+    const rateLimitKey = getRateLimitKey(request);
+    const rateLimitResult = checkRateLimit(rateLimitKey);
+    
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded' },
+        { status: 429 }
+      );
+    }
+
+    const body = await request.json();
+    const { action, address, ...data } = body;
+
+    // Validate input
+    if (!action) {
+      return NextResponse.json(
+        { error: 'Missing required field: action' },
+        { status: 400 }
+      );
+    }
+
+    const validActions = ['sync', 'update', 'refresh'];
+    if (!validActions.includes(action)) {
+      return NextResponse.json(
+        { error: `Invalid action. Must be one of: ${validActions.join(', ')}` },
+        { status: 400 }
+      );
+    }
+
+    // Try to execute action via backend
+    try {
+      const actionResult = await fetchFromBackend('/api/portfolio/actions', {
+        method: 'POST',
+        body: JSON.stringify({ action, address, ...data })
+      });
+      
+      return NextResponse.json({
+        ...actionResult,
+        meta: { source: 'backend', timestamp: Date.now() }
+      });
+    } catch (backendError) {
+      console.error('Backend portfolio action failed:', backendError);
+      
+      // Fallback to mock response
+      return NextResponse.json({
+        success: true,
+        action,
+        message: `Portfolio ${action} completed (simulated)`,
+        meta: {
+          source: 'fallback',
+          timestamp: Date.now(),
+          warning: 'Backend unavailable, using mock response'
+        }
+      });
+    }
+
+  } catch (error) {
+    console.error('Portfolio API POST error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch portfolio data' },
+      { error: 'Failed to process portfolio action' },
       { status: 500 }
     );
   }

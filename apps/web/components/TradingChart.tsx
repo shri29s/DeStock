@@ -36,7 +36,6 @@ export function TradingChart({
   data = EMPTY_DATA,
   height = 400,
   showTimeframes = true,
-  showIndicators = true,
   className = '',
 }: TradingChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);

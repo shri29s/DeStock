@@ -667,7 +667,6 @@ var _s = __turbopack_context__.k.signature();
 ;
 function useDeStock() {
     _s();
-    var _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature(), _s7 = __turbopack_context__.k.signature(), _s8 = __turbopack_context__.k.signature(), _s9 = __turbopack_context__.k.signature();
     const { address, chainId } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
     const contractAddress = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "useDeStock.useMemo[contractAddress]": ()=>{
@@ -687,53 +686,40 @@ function useDeStock() {
         abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
         functionName: 'nextCompanyId'
     });
-    const getCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s1({
+    // Note: These functions return hook configurations, not hook calls
+    // They should be used in components that call the actual hooks
+    const getCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getCompany]": (companyId)=>{
-            _s1();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'companies',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getCompany]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getCompany]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getCompany]"]), [
+    }["useDeStock.useCallback[getCompany]"], [
         contractAddress
     ]);
-    const getSharePrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s2({
+    const getSharePrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getSharePrice]": (companyId)=>{
-            _s2();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getSharePrice',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getSharePrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getSharePrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getSharePrice]"]), [
+    }["useDeStock.useCallback[getSharePrice]"], [
         contractAddress
     ]);
-    const getShareBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s3({
+    const getShareBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getShareBalance]": (companyId, userAddress)=>{
-            _s3();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'balanceOf',
@@ -744,23 +730,16 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getShareBalance]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getShareBalance]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getShareBalance]"]), [
+    }["useDeStock.useCallback[getShareBalance]"], [
         contractAddress,
         address
     ]);
-    const getLPTokenBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s4({
+    const getLPTokenBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getLPTokenBalance]": (companyId, userAddress)=>{
-            _s4();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getLPTokenBalance',
@@ -771,23 +750,16 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getLPTokenBalance]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getLPTokenBalance]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getLPTokenBalance]"]), [
+    }["useDeStock.useCallback[getLPTokenBalance]"], [
         contractAddress,
         address
     ]);
-    const getUserOrders = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s5({
+    const getUserOrders = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getUserOrders]": (userAddress)=>{
-            _s5();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getUserOrders',
@@ -797,43 +769,29 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getUserOrders]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getUserOrders]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getUserOrders]"]), [
+    }["useDeStock.useCallback[getUserOrders]"], [
         contractAddress,
         address
     ]);
-    const getOrderDetails = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s6({
+    const getOrderDetails = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getOrderDetails]": (orderId)=>{
-            _s6();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getOrderDetails',
                 args: [
                     BigInt(orderId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getOrderDetails]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getOrderDetails]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getOrderDetails]"]), [
+    }["useDeStock.useCallback[getOrderDetails]"], [
         contractAddress
     ]);
-    const getBuyPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s7({
+    const getBuyPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getBuyPrice]": (companyId, amount)=>{
-            _s7();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getBuyPrice',
@@ -841,21 +799,14 @@ function useDeStock() {
                     BigInt(companyId),
                     BigInt(amount)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getBuyPrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getBuyPrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getBuyPrice]"]), [
+    }["useDeStock.useCallback[getBuyPrice]"], [
         contractAddress
     ]);
-    const getSellPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s8({
+    const getSellPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getSellPrice]": (companyId, amount)=>{
-            _s8();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getSellPrice',
@@ -863,50 +814,41 @@ function useDeStock() {
                     BigInt(companyId),
                     BigInt(amount)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getSellPrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getSellPrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getSellPrice]"]), [
+    }["useDeStock.useCallback[getSellPrice]"], [
         contractAddress
     ]);
-    const getTradingVolume = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s9({
+    const getTradingVolume = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getTradingVolume]": (companyId)=>{
-            _s9();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getTradingVolume',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getTradingVolume]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getTradingVolume]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getTradingVolume]"]), [
+    }["useDeStock.useCallback[getTradingVolume]"], [
         contractAddress
     ]);
     // Write functions
     const registerCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
-        "useDeStock.useCallback[registerCompany]": (name, initialPrice, totalSupply)=>{
+        "useDeStock.useCallback[registerCompany]": (name, totalSupply, initialPrice)=>{
             if (!contractAddress) return;
+            // Calculate initial liquidity as totalSupply * initialPrice
+            const totalSupplyBigInt = BigInt(totalSupply);
+            const initialPriceBigInt = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$parseEther$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["parseEther"])(initialPrice);
+            const initialLiquidity = totalSupplyBigInt * initialPriceBigInt;
             writeContract({
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'registerCompany',
                 args: [
                     name,
-                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$parseEther$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["parseEther"])(initialPrice),
-                    BigInt(totalSupply)
+                    totalSupplyBigInt,
+                    initialLiquidity
                 ]
             });
         }
@@ -1226,7 +1168,7 @@ const schema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$z
 function TradeView() {
     _s();
     const { isConnected } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
-    const { buyShares, sellShares, getSharePrice, getShareBalance, nextCompanyId, isPending, isConfirming, isConfirmed, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"])();
+    const { buyShares, sellShares, nextCompanyId, isPending, isConfirming, isConfirmed, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"])();
     const { balance } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDSTK$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDSTK"])();
     const [companies, setCompanies] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [selectedCompany, setSelectedCompany] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
@@ -1240,7 +1182,7 @@ function TradeView() {
             setMounted(true);
         }
     }["TradeView.useEffect"], []);
-    const { register, handleSubmit, formState: { errors }, watch, setValue, reset } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"])({
+    const { register, handleSubmit, formState: { errors }, watch, reset } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"])({
         resolver: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$hookform$2f$resolvers$2f$zod$2f$dist$2f$zod$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["zodResolver"])(schema)
     });
     const watchedCompanyId = watch('companyId');
@@ -1263,7 +1205,7 @@ function TradeView() {
                 }["TradeView.useEffect.company"]);
                 if (company) {
                     setSelectedCompany(company);
-                    loadUserShares(company.id);
+                    loadUserShares();
                 }
             }
         }
@@ -1287,8 +1229,9 @@ function TradeView() {
             console.error('Failed to load companies:', error);
         }
     };
-    const loadUserShares = async (companyId)=>{
+    const loadUserShares = async ()=>{
         try {
+            // TODO: Implement actual contract call using companyId
             // Placeholder implementation - would need real contract calls
             setUserShares('100');
         } catch (error) {
@@ -2180,7 +2123,7 @@ function TradeView() {
         columnNumber: 5
     }, this);
 }
-_s(TradeView, "0rsJ+wYNYzXCLxBnjOQq00RbXjs=", false, function() {
+_s(TradeView, "1HzKz5MgGIl7gWosx4fE6IkjJ7g=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"],
@@ -2216,13 +2159,17 @@ __turbopack_context__.s({
     "formatPrice": (()=>formatPrice),
     "getAllCategories": (()=>getAllCategories),
     "getAllCompanies": (()=>getAllCompanies),
+    "getAllCompanyIds": (()=>getAllCompanyIds),
     "getAllSectors": (()=>getAllSectors),
     "getCompaniesByCategory": (()=>getCompaniesByCategory),
     "getCompaniesBySector": (()=>getCompaniesBySector),
     "getCompanyById": (()=>getCompanyById),
+    "getCompanyByNumericId": (()=>getCompanyByNumericId),
     "getCompanyLogo": (()=>getCompanyLogo),
     "getCompanyStats": (()=>getCompanyStats),
+    "getNumericCompanyId": (()=>getNumericCompanyId),
     "getRandomCompanies": (()=>getRandomCompanies),
+    "getStringCompanyId": (()=>getStringCompanyId),
     "getTopCompaniesByMarketCap": (()=>getTopCompaniesByMarketCap),
     "getTrendingCompanies": (()=>getTrendingCompanies),
     "searchCompanies": (()=>searchCompanies)
@@ -2234,6 +2181,23 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$consta
 const getAllCompanies = ()=>{
     const companies = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$constants$2f$companies$2e$json__$28$json$29$__["default"].companies;
     return Object.values(companies);
+};
+const getAllCompanyIds = ()=>{
+    const companies = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$constants$2f$companies$2e$json__$28$json$29$__["default"].companies;
+    return Object.keys(companies);
+};
+const getNumericCompanyId = (stringId)=>{
+    const companyIds = getAllCompanyIds();
+    const index = companyIds.indexOf(stringId);
+    return index === -1 ? -1 : index;
+};
+const getStringCompanyId = (numericId)=>{
+    const companyIds = getAllCompanyIds();
+    return companyIds[numericId];
+};
+const getCompanyByNumericId = (numericId)=>{
+    const stringId = getStringCompanyId(numericId);
+    return stringId ? getCompanyById(stringId) : undefined;
 };
 const getCompanyById = (id)=>{
     const companies = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$constants$2f$companies$2e$json__$28$json$29$__["default"].companies;
@@ -2399,7 +2363,7 @@ var _s = __turbopack_context__.k.signature();
 function CompanyList() {
     _s();
     const { isConnected } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
-    const { nextCompanyId, getCompany, getSharePrice } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"])();
+    const { nextCompanyId } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const [companies, setCompanies] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -2407,8 +2371,10 @@ function CompanyList() {
     const [sortField, setSortField] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('marketCap');
     const [sortDirection, setSortDirection] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('desc');
     const [selectedSector, setSelectedSector] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
+    const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "CompanyList.useEffect": ()=>{
+            setMounted(true);
             loadCompanies();
         }
     }["CompanyList.useEffect"], []);
@@ -2421,25 +2387,46 @@ function CompanyList() {
                 const result = await response.json();
                 setCompanies(result.companies || []);
             } else {
-                // Fallback to token data
+                // Fallback to token data with client-side random values
                 const tokenCompanies = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$utils$2f$companyUtils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAllCompanies"])();
-                const transformedCompanies = tokenCompanies.map((company, index)=>({
-                        id: index,
-                        name: company.name,
-                        symbol: company.symbol,
-                        owner: '0x' + Math.random().toString(16).substr(2, 40),
-                        initialPrice: company.price.replace('$', ''),
-                        totalSupply: '1000000',
-                        currentPrice: company.price.replace('$', ''),
-                        change: (Math.random() - 0.5) * 20,
-                        changePercent: (Math.random() - 0.5) * 20,
-                        volume: Math.floor(Math.random() * 1000000),
-                        marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
-                        sector: company.sector,
-                        logo: company.logo,
-                        tokenData: company // Store the full token data
-                    }));
-                setCompanies(transformedCompanies);
+                if (mounted) {
+                    const transformedCompanies = tokenCompanies.map((company, index)=>({
+                            id: index,
+                            name: company.name,
+                            symbol: company.symbol,
+                            owner: '0x' + Math.random().toString(16).substr(2, 40),
+                            initialPrice: company.price.replace('$', ''),
+                            totalSupply: '1000000',
+                            currentPrice: company.price.replace('$', ''),
+                            change: (Math.random() - 0.5) * 20,
+                            changePercent: (Math.random() - 0.5) * 20,
+                            volume: Math.floor(Math.random() * 1000000),
+                            marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
+                            sector: company.sector,
+                            logo: company.logo,
+                            tokenData: company // Store the full token data
+                        }));
+                    setCompanies(transformedCompanies);
+                } else {
+                    // Static fallback for SSR
+                    const staticFallbackCompanies = tokenCompanies.map((company, index)=>({
+                            id: index,
+                            name: company.name,
+                            symbol: company.symbol,
+                            owner: `0x${'0'.repeat(40)}`,
+                            initialPrice: company.price.replace('$', ''),
+                            totalSupply: '1000000',
+                            currentPrice: company.price.replace('$', ''),
+                            change: 0,
+                            changePercent: 0,
+                            volume: 500000,
+                            marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
+                            sector: company.sector,
+                            logo: company.logo,
+                            tokenData: company // Store the full token data
+                        }));
+                    setCompanies(staticFallbackCompanies);
+                }
             }
         } catch (error) {
             console.error('Failed to load companies:', error);
@@ -2539,7 +2526,7 @@ function CompanyList() {
                     className: "w-12 h-12 text-gray-400 mx-auto mb-4"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 191,
+                    lineNumber: 211,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2547,7 +2534,7 @@ function CompanyList() {
                     children: "Connect Your Wallet"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 192,
+                    lineNumber: 212,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2555,13 +2542,13 @@ function CompanyList() {
                     children: "Connect your wallet to view listed companies."
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 195,
+                    lineNumber: 215,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/apps/web/components/CompanyList.tsx",
-            lineNumber: 190,
+            lineNumber: 210,
             columnNumber: 7
         }, this);
     }
@@ -2579,37 +2566,37 @@ function CompanyList() {
                                 className: "h-4 bg-gray-200 rounded w-3/4 mb-2"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                lineNumber: 208,
+                                lineNumber: 228,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-200 rounded w-1/2 mb-2"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                lineNumber: 209,
+                                lineNumber: 229,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-200 rounded w-1/4"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                lineNumber: 210,
+                                lineNumber: 230,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                        lineNumber: 207,
+                        lineNumber: 227,
                         columnNumber: 13
                     }, this)
                 }, i, false, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 206,
+                    lineNumber: 226,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/apps/web/components/CompanyList.tsx",
-            lineNumber: 204,
+            lineNumber: 224,
             columnNumber: 7
         }, this);
     }
@@ -2621,7 +2608,7 @@ function CompanyList() {
                     className: "w-12 h-12 text-gray-400 mx-auto mb-4"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 221,
+                    lineNumber: 241,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2629,7 +2616,7 @@ function CompanyList() {
                     children: "No Companies Listed"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 222,
+                    lineNumber: 242,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2637,7 +2624,7 @@ function CompanyList() {
                     children: "Be the first to register your company on DeStock!"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 225,
+                    lineNumber: 245,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2646,13 +2633,13 @@ function CompanyList() {
                     children: "Register Company"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 228,
+                    lineNumber: 248,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/apps/web/components/CompanyList.tsx",
-            lineNumber: 220,
+            lineNumber: 240,
             columnNumber: 7
         }, this);
     }
@@ -2676,7 +2663,7 @@ function CompanyList() {
                 children: "Market Overview"
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                lineNumber: 245,
+                lineNumber: 265,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2704,7 +2691,7 @@ function CompanyList() {
                                     className: "w-full p-3 pl-10 rounded-xl bg-gray-800/50 border border-gray-700/50    text-white placeholder-gray-400 focus:outline-none focus:ring-2    focus:ring-blue-500/50 transition-all duration-200"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                    lineNumber: 258,
+                                    lineNumber: 278,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -2719,18 +2706,18 @@ function CompanyList() {
                                         d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                        lineNumber: 273,
+                                        lineNumber: 293,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                    lineNumber: 267,
+                                    lineNumber: 287,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                            lineNumber: 257,
+                            lineNumber: 277,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2743,7 +2730,7 @@ function CompanyList() {
                                     children: "All Sectors"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                    lineNumber: 283,
+                                    lineNumber: 303,
                                     columnNumber: 13
                                 }, this),
                                 uniqueSectors.map((sector)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2751,24 +2738,24 @@ function CompanyList() {
                                         children: sector
                                     }, sector, false, {
                                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                        lineNumber: 285,
+                                        lineNumber: 305,
                                         columnNumber: 15
                                     }, this))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                            lineNumber: 277,
+                            lineNumber: 297,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 256,
+                    lineNumber: 276,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                lineNumber: 250,
+                lineNumber: 270,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2820,7 +2807,7 @@ function CompanyList() {
                                                         children: label
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                        lineNumber: 315,
+                                                        lineNumber: 335,
                                                         columnNumber: 21
                                                     }, this),
                                                     sortField === key && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -2835,23 +2822,23 @@ function CompanyList() {
                                                             d: "M5 15l7-7 7 7"
                                                         }, void 0, false, {
                                                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                            lineNumber: 325,
+                                                            lineNumber: 345,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                        lineNumber: 317,
+                                                        lineNumber: 337,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                lineNumber: 314,
+                                                lineNumber: 334,
                                                 columnNumber: 19
                                             }, this)
                                         }, key, false, {
                                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                            lineNumber: 308,
+                                            lineNumber: 328,
                                             columnNumber: 17
                                         }, this)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -2859,18 +2846,18 @@ function CompanyList() {
                                         children: "Actions"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                        lineNumber: 331,
+                                        lineNumber: 351,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                lineNumber: 300,
+                                lineNumber: 320,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                            lineNumber: 299,
+                            lineNumber: 319,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -2915,7 +2902,7 @@ function CompanyList() {
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                                lineNumber: 353,
+                                                                lineNumber: 373,
                                                                 columnNumber: 27
                                                             }, this) : null,
                                                             !company.logo && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2923,7 +2910,7 @@ function CompanyList() {
                                                                 children: company.symbol ? company.symbol.charAt(0) : company.name.charAt(0)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                                lineNumber: 366,
+                                                                lineNumber: 386,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2931,13 +2918,13 @@ function CompanyList() {
                                                                 children: company.symbol ? company.symbol.charAt(0) : company.name.charAt(0)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                                lineNumber: 371,
+                                                                lineNumber: 391,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                        lineNumber: 350,
+                                                        lineNumber: 370,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2948,12 +2935,12 @@ function CompanyList() {
                                                                     children: company.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                                    lineNumber: 377,
+                                                                    lineNumber: 397,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                                lineNumber: 376,
+                                                                lineNumber: 396,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2962,29 +2949,29 @@ function CompanyList() {
                                                                     children: company.symbol || formatAddress(company.id.toString())
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                                    lineNumber: 380,
+                                                                    lineNumber: 400,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                                lineNumber: 379,
+                                                                lineNumber: 399,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                        lineNumber: 375,
+                                                        lineNumber: 395,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                lineNumber: 349,
+                                                lineNumber: 369,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                            lineNumber: 348,
+                                            lineNumber: 368,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2997,12 +2984,12 @@ function CompanyList() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                lineNumber: 386,
+                                                lineNumber: 406,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                            lineNumber: 385,
+                                            lineNumber: 405,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3014,7 +3001,7 @@ function CompanyList() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                            lineNumber: 390,
+                                            lineNumber: 410,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3022,7 +3009,7 @@ function CompanyList() {
                                             children: formatNumber(company.volume || 0)
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                            lineNumber: 393,
+                                            lineNumber: 413,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3033,7 +3020,7 @@ function CompanyList() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                            lineNumber: 396,
+                                            lineNumber: 416,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3050,35 +3037,35 @@ function CompanyList() {
                                                 children: "Trade"
                                             }, void 0, false, {
                                                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                                lineNumber: 400,
+                                                lineNumber: 420,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                            lineNumber: 399,
+                                            lineNumber: 419,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, company.id, true, {
                                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                                    lineNumber: 340,
+                                    lineNumber: 360,
                                     columnNumber: 17
                                 }, this);
                             })
                         }, void 0, false, {
                             fileName: "[project]/apps/web/components/CompanyList.tsx",
-                            lineNumber: 334,
+                            lineNumber: 354,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/apps/web/components/CompanyList.tsx",
-                    lineNumber: 298,
+                    lineNumber: 318,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                lineNumber: 292,
+                lineNumber: 312,
                 columnNumber: 7
             }, this),
             sortedAndFilteredCompanies.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3095,7 +3082,7 @@ function CompanyList() {
                         children: "No companies found"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                        lineNumber: 424,
+                        lineNumber: 444,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3103,23 +3090,23 @@ function CompanyList() {
                         children: searchTerm ? `No results for "${searchTerm}"` : 'No companies available'
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/CompanyList.tsx",
-                        lineNumber: 425,
+                        lineNumber: 445,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/CompanyList.tsx",
-                lineNumber: 419,
+                lineNumber: 439,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/components/CompanyList.tsx",
-        lineNumber: 239,
+        lineNumber: 259,
         columnNumber: 5
     }, this);
 }
-_s(CompanyList, "bVaFU1GQbb1/nu5ME0wUN4vWV10=", false, function() {
+_s(CompanyList, "cp+cqD4IlJiZfoYTQq5Un0+rEfc=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"],
@@ -3162,7 +3149,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 // Stable empty array reference to prevent unnecessary re-renders
 const EMPTY_DATA = [];
-function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTimeframes = true, showIndicators = true, className = '' }) {
+function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTimeframes = true, className = '' }) {
     _s();
     const chartContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const chartRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
@@ -3383,7 +3370,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                         children: symbol
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 230,
+                                        lineNumber: 229,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3397,7 +3384,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                lineNumber: 236,
+                                                lineNumber: 235,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3407,13 +3394,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 241,
+                                                        lineNumber: 240,
                                                         columnNumber: 19
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingDownIcon$3e$__["TrendingDownIcon"], {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 243,
+                                                        lineNumber: 242,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3427,25 +3414,25 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 245,
+                                                        lineNumber: 244,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                lineNumber: 239,
+                                                lineNumber: 238,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 235,
+                                        lineNumber: 234,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 229,
+                                lineNumber: 228,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3461,12 +3448,12 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                            lineNumber: 263,
+                                            lineNumber: 262,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 254,
+                                        lineNumber: 253,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -3479,24 +3466,24 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                            lineNumber: 274,
+                                            lineNumber: 273,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 265,
+                                        lineNumber: 264,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 253,
+                                lineNumber: 252,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 228,
+                        lineNumber: 227,
                         columnNumber: 9
                     }, this),
                     showTimeframes && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3510,18 +3497,18 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                 children: timeframe
                             }, timeframe, false, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 283,
+                                lineNumber: 282,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 281,
+                        lineNumber: 280,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 227,
+                lineNumber: 226,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3531,12 +3518,12 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                         className: "absolute inset-0 flex items-center justify-center z-10",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$LoadingSpinner$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["LoadingSpinner"], {}, void 0, false, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 304,
+                            lineNumber: 303,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 303,
+                        lineNumber: 302,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3558,13 +3545,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                         }
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 308,
+                        lineNumber: 307,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 301,
+                lineNumber: 300,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3579,7 +3566,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: "Open"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 322,
+                                    lineNumber: 321,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3590,13 +3577,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 323,
+                                    lineNumber: 322,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 321,
+                            lineNumber: 320,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3606,7 +3593,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: "High"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 328,
+                                    lineNumber: 327,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3617,13 +3604,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 329,
+                                    lineNumber: 328,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 327,
+                            lineNumber: 326,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3633,7 +3620,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: "Low"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 334,
+                                    lineNumber: 333,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3644,13 +3631,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 335,
+                                    lineNumber: 334,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 333,
+                            lineNumber: 332,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3660,7 +3647,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: "Volume"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 340,
+                                    lineNumber: 339,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3668,30 +3655,30 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: chartData.length > 0 ? (chartData[chartData.length - 1].volume || 0).toLocaleString() : '0'
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 341,
+                                    lineNumber: 340,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 339,
+                            lineNumber: 338,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                    lineNumber: 320,
+                    lineNumber: 319,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 319,
+                lineNumber: 318,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/components/TradingChart.tsx",
-        lineNumber: 225,
+        lineNumber: 224,
         columnNumber: 5
     }, this);
 }
@@ -3729,8 +3716,10 @@ function MarketHeatMap({ className }) {
     _s();
     const [heatMapData, setHeatMapData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "MarketHeatMap.useEffect": ()=>{
+            setMounted(true);
             loadHeatMapData();
         }
     }["MarketHeatMap.useEffect"], []);
@@ -3741,21 +3730,39 @@ function MarketHeatMap({ className }) {
             setHeatMapData(result.heatmap || []);
         } catch (error) {
             console.error('Failed to load heatmap data:', error);
-            // Fallback to real token data
-            const companies = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$utils$2f$companyUtils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAllCompanies"])().slice(0, 12);
-            const fallbackData = companies.map((company)=>{
-                const marketCapValue = parseFloat(company.marketCap.replace(/[$BM]/g, ''));
-                const marketCapInNumber = company.marketCap.includes('B') ? marketCapValue * 1000000000 : marketCapValue * 1000000;
-                return {
-                    id: company.id,
-                    name: company.name,
-                    symbol: company.symbol,
-                    value: parseFloat(company.price.replace('$', '')),
-                    change: (Math.random() - 0.5) * 20,
-                    size: Math.min(Math.max(marketCapInNumber / 1000000000 * 50 + 40, 40), 120)
-                };
-            });
-            setHeatMapData(fallbackData);
+            // Fallback to real token data with client-side random values
+            if (mounted) {
+                const companies = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$utils$2f$companyUtils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAllCompanies"])().slice(0, 12);
+                const fallbackData = companies.map((company)=>{
+                    const marketCapValue = parseFloat(company.marketCap.replace(/[$BM]/g, ''));
+                    const marketCapInNumber = company.marketCap.includes('B') ? marketCapValue * 1000000000 : marketCapValue * 1000000;
+                    return {
+                        id: company.id,
+                        name: company.name,
+                        symbol: company.symbol,
+                        value: parseFloat(company.price.replace('$', '')),
+                        change: (Math.random() - 0.5) * 20,
+                        size: Math.min(Math.max(marketCapInNumber / 1000000000 * 50 + 40, 40), 120)
+                    };
+                });
+                setHeatMapData(fallbackData);
+            } else {
+                // Static fallback for SSR
+                const companies = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$utils$2f$companyUtils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAllCompanies"])().slice(0, 12);
+                const staticFallbackData = companies.map((company)=>{
+                    const marketCapValue = parseFloat(company.marketCap.replace(/[$BM]/g, ''));
+                    const marketCapInNumber = company.marketCap.includes('B') ? marketCapValue * 1000000000 : marketCapValue * 1000000;
+                    return {
+                        id: company.id,
+                        name: company.name,
+                        symbol: company.symbol,
+                        value: parseFloat(company.price.replace('$', '')),
+                        change: 0,
+                        size: Math.min(Math.max(marketCapInNumber / 1000000000 * 50 + 40, 40), 120)
+                    };
+                });
+                setHeatMapData(staticFallbackData);
+            }
         } finally{
             setLoading(false);
         }
@@ -3780,7 +3787,7 @@ function MarketHeatMap({ className }) {
                     children: "Market Heat Map"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                    lineNumber: 72,
+                    lineNumber: 93,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3791,18 +3798,18 @@ function MarketHeatMap({ className }) {
                             className: "aspect-square rounded-lg bg-gray-700/30 animate-pulse"
                         }, i, false, {
                             fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                            lineNumber: 77,
+                            lineNumber: 98,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                    lineNumber: 75,
+                    lineNumber: 96,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-            lineNumber: 71,
+            lineNumber: 92,
             columnNumber: 7
         }, this);
     }
@@ -3826,7 +3833,7 @@ function MarketHeatMap({ className }) {
                 children: "Market Heat Map"
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                lineNumber: 94,
+                lineNumber: 115,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3841,14 +3848,14 @@ function MarketHeatMap({ className }) {
             `,
                         style: {
                             minHeight: `${Math.max(item.size, 60)}px`,
-                            opacity: 0.8 + Math.abs(item.change) / 20 * 0.2
+                            opacity: mounted ? 0.8 + Math.abs(item.change) / 20 * 0.2 : 0.8
                         },
                         initial: {
                             opacity: 0,
                             scale: 0.8
                         },
                         animate: {
-                            opacity: 0.8 + Math.abs(item.change) / 20 * 0.2,
+                            opacity: mounted ? 0.8 + Math.abs(item.change) / 20 * 0.2 : 0.8,
                             scale: 1
                         },
                         transition: {
@@ -3869,7 +3876,7 @@ function MarketHeatMap({ className }) {
                                 children: item.symbol
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                                lineNumber: 123,
+                                lineNumber: 144,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3881,18 +3888,18 @@ function MarketHeatMap({ className }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                                lineNumber: 126,
+                                lineNumber: 147,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, item.id, true, {
                         fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                        lineNumber: 100,
+                        lineNumber: 121,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                lineNumber: 98,
+                lineNumber: 119,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3908,20 +3915,20 @@ function MarketHeatMap({ className }) {
                                         className: "w-3 h-3 rounded bg-gradient-to-r from-green-400 to-green-500"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                                        lineNumber: 136,
+                                        lineNumber: 157,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: "Positive"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                                        lineNumber: 137,
+                                        lineNumber: 158,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                                lineNumber: 135,
+                                lineNumber: 156,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3931,26 +3938,26 @@ function MarketHeatMap({ className }) {
                                         className: "w-3 h-3 rounded bg-gradient-to-r from-red-400 to-red-500"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                                        lineNumber: 140,
+                                        lineNumber: 161,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: "Negative"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                                        lineNumber: 141,
+                                        lineNumber: 162,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                                lineNumber: 139,
+                                lineNumber: 160,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                        lineNumber: 134,
+                        lineNumber: 155,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3958,23 +3965,23 @@ function MarketHeatMap({ className }) {
                         children: "Size = Market Cap | Color = 24h Change"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                        lineNumber: 144,
+                        lineNumber: 165,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-                lineNumber: 133,
+                lineNumber: 154,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/components/MarketHeatMap.tsx",
-        lineNumber: 88,
+        lineNumber: 109,
         columnNumber: 5
     }, this);
 }
-_s(MarketHeatMap, "JJClNPmKIumRt2So/VtLLhQa/Ts=");
+_s(MarketHeatMap, "SjWavrqCsz4RTliB7zcpI9BZL4Q=");
 _c = MarketHeatMap;
 var _c;
 __turbopack_context__.k.register(_c, "MarketHeatMap");
@@ -4010,6 +4017,12 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
     const [tickerData, setTickerData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [isPaused, setIsPaused] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "PriceTicker.useEffect": ()=>{
+            setMounted(true);
+        }
+    }["PriceTicker.useEffect"], []);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "PriceTicker.useEffect": ()=>{
             const fetchTickerData = {
@@ -4020,19 +4033,34 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                         setTickerData(result.ticker || []);
                     } catch (error) {
                         console.error('Failed to fetch ticker data:', error);
-                        // Fallback to real token data
+                        // Fallback to real token data with client-side random values
                         const companies = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$utils$2f$companyUtils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAllCompanies"])().slice(0, 10);
-                        const fallbackData = companies.map({
-                            "PriceTicker.useEffect.fetchTickerData.fallbackData": (company)=>({
-                                    symbol: company.symbol,
-                                    name: company.name,
-                                    price: parseFloat(company.price.replace('$', '')),
-                                    change: (Math.random() - 0.5) * 10,
-                                    changePercent: (Math.random() - 0.5) * 15,
-                                    volume: Math.floor(Math.random() * 1000000)
-                                })
-                        }["PriceTicker.useEffect.fetchTickerData.fallbackData"]);
-                        setTickerData(fallbackData);
+                        if (mounted) {
+                            const fallbackData = companies.map({
+                                "PriceTicker.useEffect.fetchTickerData.fallbackData": (company)=>({
+                                        symbol: company.symbol,
+                                        name: company.name,
+                                        price: parseFloat(company.price.replace('$', '')),
+                                        change: (Math.random() - 0.5) * 10,
+                                        changePercent: (Math.random() - 0.5) * 15,
+                                        volume: Math.floor(Math.random() * 1000000)
+                                    })
+                            }["PriceTicker.useEffect.fetchTickerData.fallbackData"]);
+                            setTickerData(fallbackData);
+                        } else {
+                            // Static fallback for SSR
+                            const staticFallbackData = companies.map({
+                                "PriceTicker.useEffect.fetchTickerData.staticFallbackData": (company)=>({
+                                        symbol: company.symbol,
+                                        name: company.name,
+                                        price: parseFloat(company.price.replace('$', '')),
+                                        change: 0,
+                                        changePercent: 0,
+                                        volume: 500000
+                                    })
+                            }["PriceTicker.useEffect.fetchTickerData.staticFallbackData"]);
+                            setTickerData(staticFallbackData);
+                        }
                     } finally{
                         setLoading(false);
                     }
@@ -4045,11 +4073,13 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                 "PriceTicker.useEffect": ()=>clearInterval(interval)
             })["PriceTicker.useEffect"];
         }
-    }["PriceTicker.useEffect"], []);
-    // Real-time price updates simulation
+    }["PriceTicker.useEffect"], [
+        mounted
+    ]);
+    // Real-time price updates simulation - only on client
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "PriceTicker.useEffect": ()=>{
-            if (tickerData.length === 0) return;
+            if (tickerData.length === 0 || !mounted) return;
             const interval = setInterval({
                 "PriceTicker.useEffect.interval": ()=>{
                     setTickerData({
@@ -4074,7 +4104,8 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
             })["PriceTicker.useEffect"];
         }
     }["PriceTicker.useEffect"], [
-        tickerData.length
+        tickerData.length,
+        mounted
     ]);
     if (loading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4090,37 +4121,37 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                                 className: "w-12 h-4 bg-gray-300 dark:bg-gray-600 rounded"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                lineNumber: 94,
+                                lineNumber: 112,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "w-16 h-4 bg-gray-300 dark:bg-gray-600 rounded"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                lineNumber: 95,
+                                lineNumber: 113,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "w-12 h-4 bg-gray-300 dark:bg-gray-600 rounded"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                lineNumber: 96,
+                                lineNumber: 114,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, i, true, {
                         fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                        lineNumber: 93,
+                        lineNumber: 111,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                lineNumber: 91,
+                lineNumber: 109,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/apps/web/components/PriceTicker.tsx",
-            lineNumber: 90,
+            lineNumber: 108,
             columnNumber: 7
         }, this);
     }
@@ -4158,7 +4189,7 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                                     children: item.symbol
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 150,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$AnimatedCounter$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatedCounter"], {
@@ -4168,7 +4199,7 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                                     className: "font-medium text-gray-900 dark:text-gray-100"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                    lineNumber: 136,
+                                    lineNumber: 154,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4178,13 +4209,13 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                                             className: "w-3 h-3"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                            lineNumber: 147,
+                                            lineNumber: 165,
                                             columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingDownIcon$3e$__["TrendingDownIcon"], {
                                             className: "w-3 h-3"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                            lineNumber: 149,
+                                            lineNumber: 167,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4195,7 +4226,7 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                            lineNumber: 151,
+                                            lineNumber: 169,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4208,13 +4239,13 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                            lineNumber: 154,
+                                            lineNumber: 172,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                    lineNumber: 143,
+                                    lineNumber: 161,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4226,47 +4257,47 @@ function PriceTicker({ speed = 50, direction = 'left', className = '', pauseOnHo
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                                    lineNumber: 159,
+                                    lineNumber: 177,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, `${item.symbol}-${index}`, true, {
                             fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                            lineNumber: 127,
+                            lineNumber: 145,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                    lineNumber: 111,
+                    lineNumber: 129,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                lineNumber: 110,
+                lineNumber: 128,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute left-0 top-0 w-12 h-full bg-gradient-to-r from-white/80 dark:from-gray-900/80 to-transparent pointer-events-none"
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                lineNumber: 168,
+                lineNumber: 186,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute right-0 top-0 w-12 h-full bg-gradient-to-l from-white/80 dark:from-gray-900/80 to-transparent pointer-events-none"
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/PriceTicker.tsx",
-                lineNumber: 169,
+                lineNumber: 187,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/components/PriceTicker.tsx",
-        lineNumber: 105,
+        lineNumber: 123,
         columnNumber: 5
     }, this);
 }
-_s(PriceTicker, "VlLJ8OtN31vBO/6U0cyCS7tJydQ=");
+_s(PriceTicker, "yML/7CO4uXvIa5JubDXy+/efNZc=");
 _c = PriceTicker;
 var _c;
 __turbopack_context__.k.register(_c, "PriceTicker");

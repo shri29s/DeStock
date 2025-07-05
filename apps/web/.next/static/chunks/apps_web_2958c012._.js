@@ -24,7 +24,6 @@ var _s = __turbopack_context__.k.signature();
 ;
 function useDeStock() {
     _s();
-    var _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature(), _s7 = __turbopack_context__.k.signature(), _s8 = __turbopack_context__.k.signature(), _s9 = __turbopack_context__.k.signature();
     const { address, chainId } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
     const contractAddress = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "useDeStock.useMemo[contractAddress]": ()=>{
@@ -44,53 +43,40 @@ function useDeStock() {
         abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
         functionName: 'nextCompanyId'
     });
-    const getCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s1({
+    // Note: These functions return hook configurations, not hook calls
+    // They should be used in components that call the actual hooks
+    const getCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getCompany]": (companyId)=>{
-            _s1();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'companies',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getCompany]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getCompany]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getCompany]"]), [
+    }["useDeStock.useCallback[getCompany]"], [
         contractAddress
     ]);
-    const getSharePrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s2({
+    const getSharePrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getSharePrice]": (companyId)=>{
-            _s2();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getSharePrice',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getSharePrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getSharePrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getSharePrice]"]), [
+    }["useDeStock.useCallback[getSharePrice]"], [
         contractAddress
     ]);
-    const getShareBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s3({
+    const getShareBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getShareBalance]": (companyId, userAddress)=>{
-            _s3();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'balanceOf',
@@ -101,23 +87,16 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getShareBalance]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getShareBalance]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getShareBalance]"]), [
+    }["useDeStock.useCallback[getShareBalance]"], [
         contractAddress,
         address
     ]);
-    const getLPTokenBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s4({
+    const getLPTokenBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getLPTokenBalance]": (companyId, userAddress)=>{
-            _s4();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getLPTokenBalance',
@@ -128,23 +107,16 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getLPTokenBalance]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getLPTokenBalance]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getLPTokenBalance]"]), [
+    }["useDeStock.useCallback[getLPTokenBalance]"], [
         contractAddress,
         address
     ]);
-    const getUserOrders = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s5({
+    const getUserOrders = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getUserOrders]": (userAddress)=>{
-            _s5();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getUserOrders',
@@ -154,43 +126,29 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getUserOrders]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getUserOrders]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getUserOrders]"]), [
+    }["useDeStock.useCallback[getUserOrders]"], [
         contractAddress,
         address
     ]);
-    const getOrderDetails = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s6({
+    const getOrderDetails = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getOrderDetails]": (orderId)=>{
-            _s6();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getOrderDetails',
                 args: [
                     BigInt(orderId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getOrderDetails]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getOrderDetails]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getOrderDetails]"]), [
+    }["useDeStock.useCallback[getOrderDetails]"], [
         contractAddress
     ]);
-    const getBuyPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s7({
+    const getBuyPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getBuyPrice]": (companyId, amount)=>{
-            _s7();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getBuyPrice',
@@ -198,21 +156,14 @@ function useDeStock() {
                     BigInt(companyId),
                     BigInt(amount)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getBuyPrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getBuyPrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getBuyPrice]"]), [
+    }["useDeStock.useCallback[getBuyPrice]"], [
         contractAddress
     ]);
-    const getSellPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s8({
+    const getSellPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getSellPrice]": (companyId, amount)=>{
-            _s8();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getSellPrice',
@@ -220,50 +171,41 @@ function useDeStock() {
                     BigInt(companyId),
                     BigInt(amount)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getSellPrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getSellPrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getSellPrice]"]), [
+    }["useDeStock.useCallback[getSellPrice]"], [
         contractAddress
     ]);
-    const getTradingVolume = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s9({
+    const getTradingVolume = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getTradingVolume]": (companyId)=>{
-            _s9();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getTradingVolume',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getTradingVolume]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getTradingVolume]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getTradingVolume]"]), [
+    }["useDeStock.useCallback[getTradingVolume]"], [
         contractAddress
     ]);
     // Write functions
     const registerCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
-        "useDeStock.useCallback[registerCompany]": (name, initialPrice, totalSupply)=>{
+        "useDeStock.useCallback[registerCompany]": (name, totalSupply, initialPrice)=>{
             if (!contractAddress) return;
+            // Calculate initial liquidity as totalSupply * initialPrice
+            const totalSupplyBigInt = BigInt(totalSupply);
+            const initialPriceBigInt = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$parseEther$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["parseEther"])(initialPrice);
+            const initialLiquidity = totalSupplyBigInt * initialPriceBigInt;
             writeContract({
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'registerCompany',
                 args: [
                     name,
-                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$parseEther$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["parseEther"])(initialPrice),
-                    BigInt(totalSupply)
+                    totalSupplyBigInt,
+                    initialLiquidity
                 ]
             });
         }
@@ -451,16 +393,20 @@ const schema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$z
 function CompanyRegistry() {
     _s();
     const { isConnected, address } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
-    const { registerCompany, isPending, isConfirming, isConfirmed, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"])();
-    const { balance, approve, getAllowance } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDSTK$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDSTK"])();
+    const { registerCompany, isPending, isConfirming, isConfirmed, error, contractAddress } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"])();
+    const { balance, approve } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDSTK$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDSTK"])();
     const [needsApproval, setNeedsApproval] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [isApproving, setIsApproving] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const { register, handleSubmit, formState: { errors }, reset, watch } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"])({
         resolver: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$hookform$2f$resolvers$2f$zod$2f$dist$2f$zod$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["zodResolver"])(schema)
     });
     const watchedValues = watch();
     const estimatedCost = watchedValues.initialPrice && watchedValues.totalSupply ? (parseFloat(watchedValues.initialPrice) * parseFloat(watchedValues.totalSupply) + 100).toString() : '100';
+    // Get current allowance for DeStock contract
+    // TODO: Fix allowance checking after hook refactor
+    const currentAllowance = 0;
     const checkApproval = async ()=>{
-        if (!isConnected || !address) return;
+        if (!isConnected || !address || !contractAddress) return;
         // Check if user has enough balance
         const userBalance = parseFloat(balance);
         const requiredBalance = parseFloat(estimatedCost);
@@ -468,13 +414,40 @@ function CompanyRegistry() {
             setNeedsApproval(true);
             return;
         }
-        // Check allowance (this would need to be implemented properly with contract address)
-        setNeedsApproval(false);
+        // Check allowance against estimated cost
+        const sufficient = currentAllowance >= parseFloat(estimatedCost);
+        setNeedsApproval(!sufficient);
     };
+    // Check approval whenever values change
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "CompanyRegistry.useEffect": ()=>{
+            checkApproval();
+        }
+    }["CompanyRegistry.useEffect"], [
+        estimatedCost,
+        currentAllowance,
+        isConnected,
+        address,
+        contractAddress
+    ]);
     const handleApprove = async ()=>{
-        if (!address) return;
-    // This would need the DeStock contract address
-    // approve(destockContractAddress, estimatedCost);
+        if (!address || !contractAddress) return;
+        setIsApproving(true);
+        try {
+            // Approve a bit more than estimated to account for gas and rounding
+            const approvalAmount = (parseFloat(estimatedCost) * 1.1).toString();
+            await approve(contractAddress, approvalAmount);
+            // Note: approval hash would be available from the approve function return value
+            // Wait a moment for approval to be confirmed
+            setTimeout(()=>{
+                checkApproval();
+            }, 2000);
+        } catch (error) {
+            console.error('Approval failed:', error);
+            alert('Approval failed. Please try again or check your wallet.');
+        } finally{
+            setIsApproving(false);
+        }
     };
     const onSubmit = async (data)=>{
         if (!isConnected) {
@@ -482,17 +455,55 @@ function CompanyRegistry() {
             return;
         }
         const userBalance = parseFloat(balance);
-        if (userBalance < 100) {
-            alert('Insufficient DSTK balance. You need at least 100 DSTK to register a company.');
+        const requiredBalance = parseFloat(estimatedCost);
+        if (userBalance < requiredBalance) {
+            alert(`Insufficient DSTK balance. You need at least ${requiredBalance} DSTK to register this company.`);
+            return;
+        }
+        if (needsApproval) {
+            alert('Please approve DSTK spending first by clicking the "Approve" button above.');
             return;
         }
         try {
-            await registerCompany(data.name, data.initialPrice, data.totalSupply);
-            reset();
+            console.log('Registering company with params:', {
+                name: data.name,
+                totalSupply: data.totalSupply,
+                initialPrice: data.initialPrice,
+                estimatedCost: estimatedCost
+            });
+            // Pass parameters in correct order: name, totalSupply, initialPrice
+            await registerCompany(data.name, data.totalSupply, data.initialPrice);
         } catch (error) {
             console.error('Registration failed:', error);
+            // Provide more specific error messages
+            let errorMessage = 'Registration failed. ';
+            if (error?.message?.includes('insufficient allowance')) {
+                errorMessage += 'Please approve DSTK spending first.';
+                setNeedsApproval(true);
+            } else if (error?.message?.includes('user rejected')) {
+                errorMessage += 'Transaction was rejected. Please try again and confirm the transaction in your wallet.';
+            } else if (error?.message?.includes('gas')) {
+                errorMessage += 'Transaction failed due to gas issues. Please try again with higher gas limit.';
+            } else if (error?.message?.includes('insufficient funds')) {
+                errorMessage += 'Insufficient funds for gas. Please ensure you have enough ETH for transaction fees.';
+            } else {
+                errorMessage += error?.message || 'Unknown error occurred.';
+            }
+            alert(errorMessage);
         }
     };
+    // Reset form when registration is confirmed
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "CompanyRegistry.useEffect": ()=>{
+            if (isConfirmed) {
+                reset();
+                setNeedsApproval(true);
+            }
+        }
+    }["CompanyRegistry.useEffect"], [
+        isConfirmed,
+        reset
+    ]);
     if (!isConnected) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "destock-card text-center py-8",
@@ -502,7 +513,7 @@ function CompanyRegistry() {
                     children: "Connect Your Wallet"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                    lineNumber: 88,
+                    lineNumber: 151,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -510,13 +521,13 @@ function CompanyRegistry() {
                     children: "Please connect your wallet to register a company."
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                    lineNumber: 91,
+                    lineNumber: 154,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-            lineNumber: 87,
+            lineNumber: 150,
             columnNumber: 7
         }, this);
     }
@@ -530,7 +541,7 @@ function CompanyRegistry() {
                     children: "Register Your Company"
                 }, void 0, false, {
                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                    lineNumber: 101,
+                    lineNumber: 164,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -545,7 +556,7 @@ function CompanyRegistry() {
                                     children: "Company Name"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 107,
+                                    lineNumber: 170,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -556,7 +567,7 @@ function CompanyRegistry() {
                                     placeholder: "Enter company name"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 110,
+                                    lineNumber: 173,
                                     columnNumber: 13
                                 }, this),
                                 errors.name && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -564,13 +575,13 @@ function CompanyRegistry() {
                                     children: errors.name.message
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 118,
+                                    lineNumber: 181,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                            lineNumber: 106,
+                            lineNumber: 169,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -581,7 +592,7 @@ function CompanyRegistry() {
                                     children: "Initial Share Price (DSTK)"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 123,
+                                    lineNumber: 186,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -594,7 +605,7 @@ function CompanyRegistry() {
                                     placeholder: "10.00"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 126,
+                                    lineNumber: 189,
                                     columnNumber: 13
                                 }, this),
                                 errors.initialPrice && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -602,13 +613,13 @@ function CompanyRegistry() {
                                     children: errors.initialPrice.message
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 136,
+                                    lineNumber: 199,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                            lineNumber: 122,
+                            lineNumber: 185,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -619,7 +630,7 @@ function CompanyRegistry() {
                                     children: "Total Share Supply"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 141,
+                                    lineNumber: 204,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -631,7 +642,7 @@ function CompanyRegistry() {
                                     placeholder: "1000"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 144,
+                                    lineNumber: 207,
                                     columnNumber: 13
                                 }, this),
                                 errors.totalSupply && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -639,13 +650,13 @@ function CompanyRegistry() {
                                     children: errors.totalSupply.message
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 153,
+                                    lineNumber: 216,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                            lineNumber: 140,
+                            lineNumber: 203,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -656,7 +667,7 @@ function CompanyRegistry() {
                                     children: "Cost Breakdown"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 158,
+                                    lineNumber: 221,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -669,20 +680,20 @@ function CompanyRegistry() {
                                                     children: "Registration Fee:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                                    lineNumber: 161,
+                                                    lineNumber: 224,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: "100 DSTK"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                                    lineNumber: 162,
+                                                    lineNumber: 225,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                            lineNumber: 160,
+                                            lineNumber: 223,
                                             columnNumber: 15
                                         }, this),
                                         watchedValues.initialPrice && watchedValues.totalSupply && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -692,7 +703,7 @@ function CompanyRegistry() {
                                                     children: "Initial Liquidity:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                                    lineNumber: 166,
+                                                    lineNumber: 229,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -702,13 +713,13 @@ function CompanyRegistry() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                                    lineNumber: 167,
+                                                    lineNumber: 230,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                            lineNumber: 165,
+                                            lineNumber: 228,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -718,7 +729,7 @@ function CompanyRegistry() {
                                                     children: "Total Cost:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                                    lineNumber: 173,
+                                                    lineNumber: 236,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -728,65 +739,193 @@ function CompanyRegistry() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                                    lineNumber: 174,
+                                                    lineNumber: 237,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                            lineNumber: 172,
+                                            lineNumber: 235,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 159,
+                                    lineNumber: 222,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "mt-2 text-xs text-low-contrast",
+                                    className: "mt-2 space-y-1 text-xs text-low-contrast",
                                     children: [
-                                        "Your Balance: ",
-                                        balance,
-                                        " DSTK"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            children: [
+                                                "Your Balance: ",
+                                                balance,
+                                                " DSTK"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                            lineNumber: 241,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            children: [
+                                                "Current Allowance: ",
+                                                currentAllowance.toFixed(2),
+                                                " DSTK"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                            lineNumber: 242,
+                                            columnNumber: 15
+                                        }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                    lineNumber: 177,
+                                    lineNumber: 240,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                            lineNumber: 157,
+                            lineNumber: 220,
                             columnNumber: 11
+                        }, this),
+                        needsApproval && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
+                                    className: "text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2",
+                                    children: "Approval Required"
+                                }, void 0, false, {
+                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                    lineNumber: 248,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs text-yellow-700 dark:text-yellow-300 mb-3",
+                                    children: "You need to approve DSTK spending for the DeStock contract before registering a company."
+                                }, void 0, false, {
+                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                    lineNumber: 251,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    type: "button",
+                                    onClick: handleApprove,
+                                    disabled: isApproving || parseFloat(balance) < parseFloat(estimatedCost),
+                                    className: "w-full bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed",
+                                    children: isApproving ? 'Approving...' : `Approve ${estimatedCost} DSTK`
+                                }, void 0, false, {
+                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                    lineNumber: 254,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                            lineNumber: 247,
+                            columnNumber: 13
                         }, this),
                         error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-800",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-sm danger",
-                                children: [
-                                    "Registration failed: ",
-                                    error.message
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                lineNumber: 184,
-                                columnNumber: 15
-                            }, this)
-                        }, void 0, false, {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
+                                    className: "text-sm font-medium text-red-800 dark:text-red-200 mb-2",
+                                    children: "Registration Failed"
+                                }, void 0, false, {
+                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                    lineNumber: 267,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-sm danger mb-2",
+                                    children: error.message
+                                }, void 0, false, {
+                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                    lineNumber: 270,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-xs text-red-600 dark:text-red-400",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                                children: "Common solutions:"
+                                            }, void 0, false, {
+                                                fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                                lineNumber: 274,
+                                                columnNumber: 20
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                            lineNumber: 274,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                                            className: "list-disc list-inside mt-1 space-y-1",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: "Ensure you have approved sufficient DSTK tokens"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                                    lineNumber: 276,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: "Check that you have enough ETH for gas fees"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                                    lineNumber: 277,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: "Try increasing gas limit in your wallet"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                                    lineNumber: 278,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: "Make sure the company name is unique"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                                    lineNumber: 279,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: "Refresh and try again if the approval was recent"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                                    lineNumber: 280,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                            lineNumber: 275,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
+                                    lineNumber: 273,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                            lineNumber: 183,
+                            lineNumber: 266,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             type: "submit",
-                            disabled: isPending || isConfirming || parseFloat(balance) < parseFloat(estimatedCost),
+                            disabled: isPending || isConfirming || parseFloat(balance) < parseFloat(estimatedCost) || needsApproval,
                             className: "w-full destock-button-primary disabled:opacity-50 disabled:cursor-not-allowed",
-                            children: isPending || isConfirming ? 'Processing...' : parseFloat(balance) < parseFloat(estimatedCost) ? 'Insufficient Balance' : 'Register Company'
+                            children: isPending || isConfirming ? 'Processing...' : parseFloat(balance) < parseFloat(estimatedCost) ? 'Insufficient Balance' : needsApproval ? 'Approval Required' : 'Register Company'
                         }, void 0, false, {
                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                            lineNumber: 190,
+                            lineNumber: 286,
                             columnNumber: 11
                         }, this),
                         isConfirmed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -796,33 +935,33 @@ function CompanyRegistry() {
                                 children: "Company registered successfully! 🎉"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                                lineNumber: 204,
+                                lineNumber: 302,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                            lineNumber: 203,
+                            lineNumber: 301,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-                    lineNumber: 105,
+                    lineNumber: 168,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-            lineNumber: 100,
+            lineNumber: 163,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/apps/web/components/CompanyRegistry.tsx",
-        lineNumber: 99,
+        lineNumber: 162,
         columnNumber: 5
     }, this);
 }
-_s(CompanyRegistry, "+DsqWpw/yb4NxKVZmjnp2AZ9ttU=", false, function() {
+_s(CompanyRegistry, "53+jivzzHHfjoLO2IB0ACHTjYsQ=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"],

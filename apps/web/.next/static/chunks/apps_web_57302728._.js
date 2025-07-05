@@ -24,7 +24,6 @@ var _s = __turbopack_context__.k.signature();
 ;
 function useDeStock() {
     _s();
-    var _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature(), _s5 = __turbopack_context__.k.signature(), _s6 = __turbopack_context__.k.signature(), _s7 = __turbopack_context__.k.signature(), _s8 = __turbopack_context__.k.signature(), _s9 = __turbopack_context__.k.signature();
     const { address, chainId } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
     const contractAddress = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "useDeStock.useMemo[contractAddress]": ()=>{
@@ -44,53 +43,40 @@ function useDeStock() {
         abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
         functionName: 'nextCompanyId'
     });
-    const getCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s1({
+    // Note: These functions return hook configurations, not hook calls
+    // They should be used in components that call the actual hooks
+    const getCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getCompany]": (companyId)=>{
-            _s1();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'companies',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getCompany]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getCompany]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getCompany]"]), [
+    }["useDeStock.useCallback[getCompany]"], [
         contractAddress
     ]);
-    const getSharePrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s2({
+    const getSharePrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getSharePrice]": (companyId)=>{
-            _s2();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getSharePrice',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getSharePrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getSharePrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getSharePrice]"]), [
+    }["useDeStock.useCallback[getSharePrice]"], [
         contractAddress
     ]);
-    const getShareBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s3({
+    const getShareBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getShareBalance]": (companyId, userAddress)=>{
-            _s3();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'balanceOf',
@@ -101,23 +87,16 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getShareBalance]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getShareBalance]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getShareBalance]"]), [
+    }["useDeStock.useCallback[getShareBalance]"], [
         contractAddress,
         address
     ]);
-    const getLPTokenBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s4({
+    const getLPTokenBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getLPTokenBalance]": (companyId, userAddress)=>{
-            _s4();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getLPTokenBalance',
@@ -128,23 +107,16 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getLPTokenBalance]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getLPTokenBalance]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getLPTokenBalance]"]), [
+    }["useDeStock.useCallback[getLPTokenBalance]"], [
         contractAddress,
         address
     ]);
-    const getUserOrders = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s5({
+    const getUserOrders = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getUserOrders]": (userAddress)=>{
-            _s5();
             const targetAddress = userAddress || address;
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getUserOrders',
@@ -154,43 +126,29 @@ function useDeStock() {
                 query: {
                     enabled: !!targetAddress
                 }
-            });
+            };
         }
-    }["useDeStock.useCallback[getUserOrders]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getUserOrders]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getUserOrders]"]), [
+    }["useDeStock.useCallback[getUserOrders]"], [
         contractAddress,
         address
     ]);
-    const getOrderDetails = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s6({
+    const getOrderDetails = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getOrderDetails]": (orderId)=>{
-            _s6();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getOrderDetails',
                 args: [
                     BigInt(orderId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getOrderDetails]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getOrderDetails]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getOrderDetails]"]), [
+    }["useDeStock.useCallback[getOrderDetails]"], [
         contractAddress
     ]);
-    const getBuyPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s7({
+    const getBuyPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getBuyPrice]": (companyId, amount)=>{
-            _s7();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getBuyPrice',
@@ -198,21 +156,14 @@ function useDeStock() {
                     BigInt(companyId),
                     BigInt(amount)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getBuyPrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getBuyPrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getBuyPrice]"]), [
+    }["useDeStock.useCallback[getBuyPrice]"], [
         contractAddress
     ]);
-    const getSellPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s8({
+    const getSellPrice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getSellPrice]": (companyId, amount)=>{
-            _s8();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getSellPrice',
@@ -220,50 +171,41 @@ function useDeStock() {
                     BigInt(companyId),
                     BigInt(amount)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getSellPrice]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getSellPrice]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getSellPrice]"]), [
+    }["useDeStock.useCallback[getSellPrice]"], [
         contractAddress
     ]);
-    const getTradingVolume = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])(_s9({
+    const getTradingVolume = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useDeStock.useCallback[getTradingVolume]": (companyId)=>{
-            _s9();
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"])({
+            return {
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'getTradingVolume',
                 args: [
                     BigInt(companyId)
                 ]
-            });
+            };
         }
-    }["useDeStock.useCallback[getTradingVolume]"], "nYQx3518H2XOstW/ZXNm7dsNRfg=", false, {
-        "useDeStock.useCallback[getTradingVolume]": function() {
-            return [
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useReadContract$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReadContract"]
-            ];
-        }
-    }["useDeStock.useCallback[getTradingVolume]"]), [
+    }["useDeStock.useCallback[getTradingVolume]"], [
         contractAddress
     ]);
     // Write functions
     const registerCompany = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
-        "useDeStock.useCallback[registerCompany]": (name, initialPrice, totalSupply)=>{
+        "useDeStock.useCallback[registerCompany]": (name, totalSupply, initialPrice)=>{
             if (!contractAddress) return;
+            // Calculate initial liquidity as totalSupply * initialPrice
+            const totalSupplyBigInt = BigInt(totalSupply);
+            const initialPriceBigInt = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$parseEther$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["parseEther"])(initialPrice);
+            const initialLiquidity = totalSupplyBigInt * initialPriceBigInt;
             writeContract({
                 address: contractAddress,
                 abi: __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$abi$2f$DeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DESTOCK_ABI"],
                 functionName: 'registerCompany',
                 args: [
                     name,
-                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$parseEther$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["parseEther"])(initialPrice),
-                    BigInt(totalSupply)
+                    totalSupplyBigInt,
+                    initialLiquidity
                 ]
             });
         }
@@ -693,7 +635,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 // Stable empty array reference to prevent unnecessary re-renders
 const EMPTY_DATA = [];
-function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTimeframes = true, showIndicators = true, className = '' }) {
+function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTimeframes = true, className = '' }) {
     _s();
     const chartContainerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const chartRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
@@ -914,7 +856,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                         children: symbol
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 230,
+                                        lineNumber: 229,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -928,7 +870,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                lineNumber: 236,
+                                                lineNumber: 235,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -938,13 +880,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 241,
+                                                        lineNumber: 240,
                                                         columnNumber: 19
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingDownIcon$3e$__["TrendingDownIcon"], {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 243,
+                                                        lineNumber: 242,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -958,25 +900,25 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                        lineNumber: 245,
+                                                        lineNumber: 244,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                                lineNumber: 239,
+                                                lineNumber: 238,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 235,
+                                        lineNumber: 234,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 229,
+                                lineNumber: 228,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -992,12 +934,12 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                            lineNumber: 263,
+                                            lineNumber: 262,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 254,
+                                        lineNumber: 253,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -1010,24 +952,24 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                            lineNumber: 274,
+                                            lineNumber: 273,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                        lineNumber: 265,
+                                        lineNumber: 264,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 253,
+                                lineNumber: 252,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 228,
+                        lineNumber: 227,
                         columnNumber: 9
                     }, this),
                     showTimeframes && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1041,18 +983,18 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                 children: timeframe
                             }, timeframe, false, {
                                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                lineNumber: 283,
+                                lineNumber: 282,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 281,
+                        lineNumber: 280,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 227,
+                lineNumber: 226,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1062,12 +1004,12 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                         className: "absolute inset-0 flex items-center justify-center z-10",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$LoadingSpinner$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["LoadingSpinner"], {}, void 0, false, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 304,
+                            lineNumber: 303,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 303,
+                        lineNumber: 302,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1089,13 +1031,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                         }
                     }, void 0, false, {
                         fileName: "[project]/apps/web/components/TradingChart.tsx",
-                        lineNumber: 308,
+                        lineNumber: 307,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 301,
+                lineNumber: 300,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1110,7 +1052,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: "Open"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 322,
+                                    lineNumber: 321,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1121,13 +1063,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 323,
+                                    lineNumber: 322,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 321,
+                            lineNumber: 320,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1137,7 +1079,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: "High"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 328,
+                                    lineNumber: 327,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1148,13 +1090,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 329,
+                                    lineNumber: 328,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 327,
+                            lineNumber: 326,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1164,7 +1106,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: "Low"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 334,
+                                    lineNumber: 333,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1175,13 +1117,13 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 335,
+                                    lineNumber: 334,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 333,
+                            lineNumber: 332,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1191,7 +1133,7 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: "Volume"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 340,
+                                    lineNumber: 339,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1199,30 +1141,30 @@ function TradingChart({ symbol = 'DEMO', data = EMPTY_DATA, height = 400, showTi
                                     children: chartData.length > 0 ? (chartData[chartData.length - 1].volume || 0).toLocaleString() : '0'
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                                    lineNumber: 341,
+                                    lineNumber: 340,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/components/TradingChart.tsx",
-                            lineNumber: 339,
+                            lineNumber: 338,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/apps/web/components/TradingChart.tsx",
-                    lineNumber: 320,
+                    lineNumber: 319,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/components/TradingChart.tsx",
-                lineNumber: 319,
+                lineNumber: 318,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/components/TradingChart.tsx",
-        lineNumber: 225,
+        lineNumber: 224,
         columnNumber: 5
     }, this);
 }
@@ -1260,9 +1202,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/activity.js [app-client] (ecmascript) <export default as Activity>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/eye.js [app-client] (ecmascript) <export default as Eye>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2d$off$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__EyeOff$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/eye-off.js [app-client] (ecmascript) <export default as EyeOff>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$refresh$2d$cw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RefreshCwIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/refresh-cw.js [app-client] (ecmascript) <export default as RefreshCwIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$AnimatedCounter$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/components/AnimatedCounter.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$TradingChart$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/components/TradingChart.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$components$2f$LoadingSpinner$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/components/LoadingSpinner.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$providers$2f$WebSocketProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/lib/providers/WebSocketProvider.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-hot-toast/dist/index.mjs [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
@@ -1275,14 +1221,21 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
+;
+;
 function PortfolioPage() {
     _s();
-    const { isConnected, address } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
+    const { isConnected } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"])();
     const { balance } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDSTK$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDSTK"])();
-    const { getShareBalance, nextCompanyId } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"])();
+    const { nextCompanyId } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"])();
+    const queryClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"])();
+    const { connectionStatus, recentTrades } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$providers$2f$WebSocketProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useWebSocket"])();
     const [holdings, setHoldings] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [refreshing, setRefreshing] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [lastRefresh, setLastRefresh] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [stats, setStats] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         totalValue: 0,
         totalPnL: 0,
@@ -1299,7 +1252,8 @@ function PortfolioPage() {
         "PortfolioPage.useEffect": ()=>{
             if (isConnected) {
                 loadPortfolio();
-                const interval = setInterval(loadPortfolio, 30000); // Update every 30 seconds
+                // Reduce polling interval for more frequent updates
+                const interval = setInterval(loadPortfolio, 15000); // Update every 15 seconds
                 return ({
                     "PortfolioPage.useEffect": ()=>clearInterval(interval)
                 })["PortfolioPage.useEffect"];
@@ -1315,10 +1269,87 @@ function PortfolioPage() {
             setMounted(true);
         }
     }["PortfolioPage.useEffect"], []);
-    const loadPortfolio = async ()=>{
-        setLoading(true);
+    // Listen for WebSocket trade events to refresh portfolio
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "PortfolioPage.useEffect": ()=>{
+            if (connectionStatus === 'connected' && isConnected) {
+                // Check for recent trades that might affect this user's portfolio
+                const userTrades = Array.from(recentTrades.values()).flat().filter({
+                    "PortfolioPage.useEffect.userTrades": ()=>// This would need to be enhanced to check if the trade affects the user
+                        true // For now, refresh on any trade
+                }["PortfolioPage.useEffect.userTrades"]);
+                if (userTrades.length > 0) {
+                    // Debounce refreshes - only refresh once per 5 seconds
+                    const timeSinceLastRefresh = lastRefresh ? Date.now() - lastRefresh.getTime() : Infinity;
+                    if (timeSinceLastRefresh > 5000) {
+                        refreshPortfolio();
+                    }
+                }
+            }
+        }
+    }["PortfolioPage.useEffect"], [
+        recentTrades,
+        connectionStatus,
+        isConnected,
+        lastRefresh
+    ]);
+    // Manually refresh portfolio
+    const refreshPortfolio = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
+        "PortfolioPage.useCallback[refreshPortfolio]": async ()=>{
+            if (refreshing) return;
+            setRefreshing(true);
+            setLastRefresh(new Date());
+            try {
+                await loadPortfolio();
+                // Also invalidate portfolio queries to refresh cached data
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'portfolio'
+                    ]
+                });
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        'holdings'
+                    ]
+                });
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].success('Portfolio refreshed successfully!');
+            } catch (error) {
+                console.error('Failed to refresh portfolio:', error);
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].error('Failed to refresh portfolio');
+            } finally{
+                setRefreshing(false);
+            }
+        }
+    }["PortfolioPage.useCallback[refreshPortfolio]"], [
+        refreshing,
+        queryClient
+    ]);
+    // Expose refresh function globally for use after trades
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "PortfolioPage.useEffect": ()=>{
+            // Store refresh function in a way it can be called from other components
+            window.refreshPortfolio = refreshPortfolio;
+            return ({
+                "PortfolioPage.useEffect": ()=>{
+                    delete window.refreshPortfolio;
+                }
+            })["PortfolioPage.useEffect"];
+        }
+    }["PortfolioPage.useEffect"], [
+        refreshPortfolio
+    ]);
+    const loadPortfolio = async (retryCount = 0)=>{
+        const maxRetries = 3;
+        setLoading(!refreshing); // Don't show loading spinner if we're refreshing
         try {
-            const response = await fetch('/api/portfolio');
+            const response = await fetch('/api/portfolio', {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const result = await response.json();
             if (result.portfolio) {
                 setHoldings(result.portfolio.holdings || []);
@@ -1399,6 +1430,18 @@ function PortfolioPage() {
             }
         } catch (error) {
             console.error('Failed to load portfolio:', error);
+            // Retry logic with exponential backoff
+            if (retryCount < maxRetries) {
+                const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
+                setTimeout(()=>{
+                    loadPortfolio(retryCount + 1);
+                }, delay);
+                if (!refreshing) {
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].error(`Failed to load portfolio. Retrying in ${delay / 1000}s...`);
+                }
+            } else {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].error('Failed to load portfolio after multiple attempts');
+            }
         } finally{
             setLoading(false);
         }
@@ -1427,7 +1470,7 @@ function PortfolioPage() {
                         className: "w-20 h-20 text-blue-400 mx-auto mb-6"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 181,
+                        lineNumber: 264,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -1435,7 +1478,7 @@ function PortfolioPage() {
                         children: "Connect Your Wallet"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 182,
+                        lineNumber: 265,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1443,18 +1486,18 @@ function PortfolioPage() {
                         children: "Connect your wallet to view your portfolio and track your investments."
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 185,
+                        lineNumber: 268,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                lineNumber: 180,
+                lineNumber: 263,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-            lineNumber: 179,
+            lineNumber: 262,
             columnNumber: 7
         }, this);
     }
@@ -1469,7 +1512,7 @@ function PortfolioPage() {
                         className: "w-20 h-20 text-blue-400 mx-auto mb-6"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 198,
+                        lineNumber: 281,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -1477,7 +1520,7 @@ function PortfolioPage() {
                         children: "Portfolio Analytics"
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 199,
+                        lineNumber: 282,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1485,18 +1528,18 @@ function PortfolioPage() {
                         children: "Loading your portfolio..."
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 202,
+                        lineNumber: 285,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                lineNumber: 197,
+                lineNumber: 280,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-            lineNumber: 196,
+            lineNumber: 279,
             columnNumber: 7
         }, this);
     }
@@ -1531,7 +1574,7 @@ function PortfolioPage() {
                                 children: "Portfolio Analytics"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 225,
+                                lineNumber: 308,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1539,18 +1582,35 @@ function PortfolioPage() {
                                 children: "Advanced portfolio tracking with real-time analytics and insights."
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 228,
+                                lineNumber: 311,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 224,
+                        lineNumber: 307,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center space-x-4",
                         children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: refreshPortfolio,
+                                disabled: refreshing,
+                                className: "glass-card p-3 hover:bg-gray-700/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
+                                title: "Refresh Portfolio",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$refresh$2d$cw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RefreshCwIcon$3e$__["RefreshCwIcon"], {
+                                    className: `w-5 h-5 ${refreshing ? 'animate-spin' : ''}`
+                                }, void 0, false, {
+                                    fileName: "[project]/apps/web/app/portfolio/page.tsx",
+                                    lineNumber: 323,
+                                    columnNumber: 13
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/apps/web/app/portfolio/page.tsx",
+                                lineNumber: 317,
+                                columnNumber: 11
+                            }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>setShowValues(!showValues),
                                 className: "glass-card p-3 hover:bg-gray-700/30 transition-all duration-200",
@@ -1558,18 +1618,18 @@ function PortfolioPage() {
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                    lineNumber: 238,
+                                    lineNumber: 330,
                                     columnNumber: 27
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2d$off$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__EyeOff$3e$__["EyeOff"], {
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                    lineNumber: 238,
+                                    lineNumber: 330,
                                     columnNumber: 57
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 234,
+                                lineNumber: 326,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1582,7 +1642,7 @@ function PortfolioPage() {
                                         children: "1 Day"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 246,
+                                        lineNumber: 338,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1590,7 +1650,7 @@ function PortfolioPage() {
                                         children: "1 Week"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 247,
+                                        lineNumber: 339,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1598,7 +1658,7 @@ function PortfolioPage() {
                                         children: "1 Month"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 248,
+                                        lineNumber: 340,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1606,7 +1666,7 @@ function PortfolioPage() {
                                         children: "3 Months"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 249,
+                                        lineNumber: 341,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1614,25 +1674,36 @@ function PortfolioPage() {
                                         children: "1 Year"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 250,
+                                        lineNumber: 342,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 241,
+                                lineNumber: 333,
                                 columnNumber: 11
+                            }, this),
+                            lastRefresh && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "text-xs text-gray-400",
+                                children: [
+                                    "Last updated: ",
+                                    lastRefresh.toLocaleTimeString()
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/apps/web/app/portfolio/page.tsx",
+                                lineNumber: 346,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 233,
+                        lineNumber: 316,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                lineNumber: 219,
+                lineNumber: 302,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1707,7 +1778,7 @@ function PortfolioPage() {
                                             children: card.title
                                         }, void 0, false, {
                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                            lineNumber: 306,
+                                            lineNumber: 404,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1719,43 +1790,43 @@ function PortfolioPage() {
                                                     duration: 1000
                                                 }, void 0, false, {
                                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                    lineNumber: 308,
+                                                    lineNumber: 406,
                                                     columnNumber: 19
                                                 }, this),
                                                 card.suffix
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                            lineNumber: 307,
+                                            lineNumber: 405,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                    lineNumber: 305,
+                                    lineNumber: 403,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(card.icon, {
                                     className: `w-8 h-8 ${card.color}`
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                    lineNumber: 316,
+                                    lineNumber: 414,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                            lineNumber: 304,
+                            lineNumber: 402,
                             columnNumber: 13
                         }, this)
                     }, card.title, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 296,
+                        lineNumber: 394,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                lineNumber: 256,
+                lineNumber: 354,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1775,12 +1846,12 @@ function PortfolioPage() {
                     height: 400
                 }, void 0, false, {
                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                    lineNumber: 328,
+                    lineNumber: 426,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                lineNumber: 323,
+                lineNumber: 421,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1805,7 +1876,7 @@ function PortfolioPage() {
                                 children: "Holdings Overview"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 339,
+                                lineNumber: 437,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1816,7 +1887,7 @@ function PortfolioPage() {
                                         children: "Sort by:"
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 344,
+                                        lineNumber: 442,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1829,7 +1900,7 @@ function PortfolioPage() {
                                                 children: "Value"
                                             }, void 0, false, {
                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                lineNumber: 350,
+                                                lineNumber: 448,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1837,7 +1908,7 @@ function PortfolioPage() {
                                                 children: "P&L"
                                             }, void 0, false, {
                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                lineNumber: 351,
+                                                lineNumber: 449,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1845,25 +1916,25 @@ function PortfolioPage() {
                                                 children: "Change"
                                             }, void 0, false, {
                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                lineNumber: 352,
+                                                lineNumber: 450,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 345,
+                                        lineNumber: 443,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 343,
+                                lineNumber: 441,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 338,
+                        lineNumber: 436,
                         columnNumber: 9
                     }, this),
                     loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1872,12 +1943,12 @@ function PortfolioPage() {
                             size: "large"
                         }, void 0, false, {
                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                            lineNumber: 359,
+                            lineNumber: 457,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 358,
+                        lineNumber: 456,
                         columnNumber: 11
                     }, this) : holdings.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                         initial: {
@@ -1892,7 +1963,7 @@ function PortfolioPage() {
                                 className: "w-16 h-16 text-gray-500 mx-auto mb-4"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 367,
+                                lineNumber: 465,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1900,7 +1971,7 @@ function PortfolioPage() {
                                 children: "No Holdings Yet"
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 368,
+                                lineNumber: 466,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1908,13 +1979,13 @@ function PortfolioPage() {
                                 children: "Start trading to build your portfolio and track your investments."
                             }, void 0, false, {
                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                lineNumber: 371,
+                                lineNumber: 469,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 362,
+                        lineNumber: 460,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "overflow-x-auto",
@@ -1937,17 +2008,17 @@ function PortfolioPage() {
                                                 children: header
                                             }, header, false, {
                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                lineNumber: 389,
+                                                lineNumber: 487,
                                                 columnNumber: 21
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 379,
+                                        lineNumber: 477,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                    lineNumber: 378,
+                                    lineNumber: 476,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1980,7 +2051,7 @@ function PortfolioPage() {
                                                                     children: holding.symbol.charAt(0)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                    lineNumber: 408,
+                                                                    lineNumber: 506,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1990,7 +2061,7 @@ function PortfolioPage() {
                                                                             children: holding.companyName
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                            lineNumber: 413,
+                                                                            lineNumber: 511,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1998,24 +2069,24 @@ function PortfolioPage() {
                                                                             children: holding.symbol
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                            lineNumber: 414,
+                                                                            lineNumber: 512,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                    lineNumber: 412,
+                                                                    lineNumber: 510,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                            lineNumber: 407,
+                                                            lineNumber: 505,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                        lineNumber: 406,
+                                                        lineNumber: 504,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2029,7 +2100,7 @@ function PortfolioPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                lineNumber: 419,
+                                                                lineNumber: 517,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2041,13 +2112,13 @@ function PortfolioPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                lineNumber: 420,
+                                                                lineNumber: 518,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                        lineNumber: 418,
+                                                        lineNumber: 516,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2060,12 +2131,12 @@ function PortfolioPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                            lineNumber: 425,
+                                                            lineNumber: 523,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                        lineNumber: 424,
+                                                        lineNumber: 522,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2078,12 +2149,12 @@ function PortfolioPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                            lineNumber: 430,
+                                                            lineNumber: 528,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                        lineNumber: 429,
+                                                        lineNumber: 527,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2097,7 +2168,7 @@ function PortfolioPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                lineNumber: 435,
+                                                                lineNumber: 533,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2110,13 +2181,13 @@ function PortfolioPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                lineNumber: 438,
+                                                                lineNumber: 536,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                        lineNumber: 434,
+                                                        lineNumber: 532,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2130,12 +2201,12 @@ function PortfolioPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                            lineNumber: 443,
+                                                            lineNumber: 541,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                        lineNumber: 442,
+                                                        lineNumber: 540,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2152,12 +2223,12 @@ function PortfolioPage() {
                                                                         }
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                        lineNumber: 450,
+                                                                        lineNumber: 548,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                    lineNumber: 449,
+                                                                    lineNumber: 547,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2168,65 +2239,67 @@ function PortfolioPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                                    lineNumber: 455,
+                                                                    lineNumber: 553,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                            lineNumber: 448,
+                                                            lineNumber: 546,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                        lineNumber: 447,
+                                                        lineNumber: 545,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, holding.companyId, true, {
                                                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                                lineNumber: 398,
+                                                lineNumber: 496,
                                                 columnNumber: 21
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                        lineNumber: 396,
+                                        lineNumber: 494,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                                    lineNumber: 395,
+                                    lineNumber: 493,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                            lineNumber: 377,
+                            lineNumber: 475,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                        lineNumber: 376,
+                        lineNumber: 474,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/apps/web/app/portfolio/page.tsx",
-                lineNumber: 332,
+                lineNumber: 430,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/apps/web/app/portfolio/page.tsx",
-        lineNumber: 211,
+        lineNumber: 294,
         columnNumber: 5
     }, this);
 }
-_s(PortfolioPage, "eg0gUwvjxBC3zMsAKA8/xBT9PUA=", false, function() {
+_s(PortfolioPage, "7P8zcGhq3njgqCam59TE57lM+qs=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$wagmi$2f$dist$2f$esm$2f$hooks$2f$useAccount$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAccount"],
         __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDSTK$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDSTK"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$hooks$2f$useDeStock$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDeStock"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$lib$2f$providers$2f$WebSocketProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useWebSocket"]
     ];
 });
 _c = PortfolioPage;

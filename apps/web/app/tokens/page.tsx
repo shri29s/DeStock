@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { SearchIcon, FilterIcon, TrendingUpIcon, DollarSignIcon } from 'lucide-react';
+import { SearchIcon, TrendingUpIcon } from 'lucide-react';
 import { TokenCard } from '@/components/TokenCard';
 import { getAllCompanies, getAllSectors, getAllCategories, filterAndSortCompanies, getCompanyStats, getTrendingCompanies } from '@/lib/utils/companyUtils';
 import { FilterOptions, SortField, SortDirection } from '@/lib/types/company';
@@ -36,7 +36,7 @@ export default function TokensPage() {
   );
 
   const handleCompanyClick = (companyId: string) => {
-    router.push(`/company/${companyId}`);
+    router.push(`/trading/${companyId}`);
   };
 
   return (

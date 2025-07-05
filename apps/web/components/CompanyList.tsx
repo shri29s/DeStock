@@ -1,17 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useDeStock } from '@/lib/hooks/useDeStock';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { TrendingUpIcon, TrendingDownIcon, BuildingIcon, SearchIcon, SortAscIcon, FilterIcon } from 'lucide-react';
-import { AnimatedCounter } from './AnimatedCounter';
-import { LoadingSpinner } from './LoadingSpinner';
-import { SkeletonLoader } from './SkeletonLoader';
-import { getAllCompanies, getCompanyLogo, getAllSectors } from '@/lib/utils/companyUtils';
+import { BuildingIcon } from 'lucide-react';
+import { getAllCompanies } from '@/lib/utils/companyUtils';
 import { Company as CompanyType } from '@/lib/types/company';
 
 interface Company {
@@ -36,7 +33,7 @@ type SortDirection = 'asc' | 'desc';
 
 export function CompanyList() {
   const { isConnected } = useAccount();
-  const { nextCompanyId, getCompany, getSharePrice } = useDeStock();
+  const { nextCompanyId } = useDeStock();
   const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(false);
@@ -44,8 +41,10 @@ export function CompanyList() {
   const [sortField, setSortField] = useState<SortField>('marketCap');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [selectedSector, setSelectedSector] = useState<string>('');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     loadCompanies();
   }, []);
 
@@ -58,25 +57,46 @@ export function CompanyList() {
         const result = await response.json();
         setCompanies(result.companies || []);
       } else {
-        // Fallback to token data
+        // Fallback to token data with client-side random values
         const tokenCompanies = getAllCompanies();
-        const transformedCompanies = tokenCompanies.map((company, index) => ({
-          id: index,
-          name: company.name,
-          symbol: company.symbol,
-          owner: '0x' + Math.random().toString(16).substr(2, 40), // Mock address
-          initialPrice: company.price.replace('$', ''),
-          totalSupply: '1000000',
-          currentPrice: company.price.replace('$', ''),
-          change: (Math.random() - 0.5) * 20, // Random change
-          changePercent: (Math.random() - 0.5) * 20,
-          volume: Math.floor(Math.random() * 1000000),
-          marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
-          sector: company.sector,
-          logo: company.logo,
-          tokenData: company // Store the full token data
-        }));
-        setCompanies(transformedCompanies);
+        if (mounted) {
+          const transformedCompanies = tokenCompanies.map((company, index) => ({
+            id: index,
+            name: company.name,
+            symbol: company.symbol,
+            owner: '0x' + Math.random().toString(16).substr(2, 40), // Mock address - only on client
+            initialPrice: company.price.replace('$', ''),
+            totalSupply: '1000000',
+            currentPrice: company.price.replace('$', ''),
+            change: (Math.random() - 0.5) * 20, // Random change - only on client
+            changePercent: (Math.random() - 0.5) * 20, // Only on client
+            volume: Math.floor(Math.random() * 1000000), // Only on client
+            marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
+            sector: company.sector,
+            logo: company.logo,
+            tokenData: company // Store the full token data
+          }));
+          setCompanies(transformedCompanies);
+        } else {
+          // Static fallback for SSR
+          const staticFallbackCompanies = tokenCompanies.map((company, index) => ({
+            id: index,
+            name: company.name,
+            symbol: company.symbol,
+            owner: `0x${'0'.repeat(40)}`, // Static mock address for SSR
+            initialPrice: company.price.replace('$', ''),
+            totalSupply: '1000000',
+            currentPrice: company.price.replace('$', ''),
+            change: 0, // Static value for SSR
+            changePercent: 0, // Static value for SSR
+            volume: 500000, // Static value for SSR
+            marketCap: parseFloat(company.marketCap.replace(/[$BM]/g, '')) * (company.marketCap.includes('B') ? 1000000000 : 1000000),
+            sector: company.sector,
+            logo: company.logo,
+            tokenData: company // Store the full token data
+          }));
+          setCompanies(staticFallbackCompanies);
+        }
       }
     } catch (error) {
       console.error('Failed to load companies:', error);

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { TrendingUpIcon, TrendingDownIcon, SparklesIcon } from 'lucide-react';
+import { TrendingUpIcon, SparklesIcon } from 'lucide-react';
 import { Company } from '@/lib/types/company';
 import { useState } from 'react';
 

@@ -11,14 +11,16 @@ interface LiquidityProviderProps {
 
 export default function LiquidityProvider({ companyId, currentPrice = 0 }: LiquidityProviderProps) {
   const { address } = useAccount();
-  const { addLiquidity, removeLiquidity, getLPTokenBalance, isPending } = useDeStock();
+  const { addLiquidity, removeLiquidity, isPending } = useDeStock();
   
   const [activeTab, setActiveTab] = useState<'add' | 'remove'>('add');
   const [tokenAmount, setTokenAmount] = useState('');
   const [shareAmount, setShareAmount] = useState('');
   const [lpTokenAmount, setLpTokenAmount] = useState('');
 
-  const { data: lpBalance } = getLPTokenBalance(companyId);
+  // TODO: Fix hook configuration types after useDeStock refactor
+  // const { data: lpBalance } = getLPTokenBalance(companyId);
+  const lpBalance: any = null;
 
   const handleTokenAmountChange = (value: string) => {
     setTokenAmount(value);

@@ -33,16 +33,18 @@ export function useDSTK() {
     functionName: 'totalSupply',
   });
 
+  // Note: This function returns hook configuration, not hook call
+  // It should be used in components that call the actual hook
   const getAllowance = useCallback((spender: Address) => {
-    return useReadContract({
+    return {
       address: contractAddress,
       abi: DSTK_TOKEN_ABI,
-      functionName: 'allowance',
+      functionName: 'allowance' as const,
       args: address && spender ? [address, spender] : undefined,
       query: {
         enabled: !!address && !!spender,
       },
-    });
+    };
   }, [contractAddress, address]);
 
   // Write functions
