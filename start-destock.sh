@@ -104,8 +104,8 @@ if echo "$DEPLOY_OUTPUT" | grep -q "ONCHAIN EXECUTION COMPLETE"; then
     echo "✅ Contracts deployed successfully"
     
     # Extract contract addresses if possible
-    TOKEN_ADDRESS=$(echo "$DEPLOY_OUTPUT" | grep "contract DeStockToken" | head -1 | grep -o "0x[a-fA-F0-9]\{40\}" | head -1 || echo "")
-    DESTOCK_ADDRESS=$(echo "$DEPLOY_OUTPUT" | grep "contract DeStock" | head -1 | grep -o "0x[a-fA-F0-9]\{40\}" | head -1 || echo "")
+    TOKEN_ADDRESS=$(echo "$DEPLOY_OUTPUT" | grep -A1 "DeStockToken" | grep -o "0x[a-fA-F0-9]\{40\}" | head -1 || echo "")
+    DESTOCK_ADDRESS=$(echo "$DEPLOY_OUTPUT" | grep -A1 "contract DeStock" | grep "0x" | grep -v "$TOKEN_ADDRESS" | grep -o "0x[a-fA-F0-9]\{40\}" | head -1 || echo "")
     
     if [ ! -z "$TOKEN_ADDRESS" ] && [ ! -z "$DESTOCK_ADDRESS" ]; then
         echo "📄 Token Contract: $TOKEN_ADDRESS"

@@ -62,7 +62,7 @@ Gas Limit
 Genesis Timestamp
 ==================
 
-1751649898
+1751683163
 
 Genesis Number
 ==================
@@ -70,3 +70,64 @@ Genesis Number
 0
 
 Listening on 0.0.0.0:8545
+eth_getTransactionCount
+eth_getCode
+eth_blockNumber
+eth_gasPrice
+eth_chainId
+eth_getBlockByNumber
+eth_blockNumber
+eth_gasPrice
+eth_chainId
+eth_getBlockByNumber
+eth_getCode
+eth_getTransactionCount
+eth_getBalance
+eth_getBalance
+eth_getCode
+eth_getTransactionCount
+eth_getBalance
+eth_getCode
+eth_getTransactionCount
+eth_getBalance
+eth_getCode
+eth_getTransactionCount
+eth_getBalance
+eth_getCode
+eth_getTransactionCount
+eth_getBalance
+eth_getCode
+eth_getTransactionCount
+eth_chainId
+eth_chainId
+eth_blockNumber
+eth_gasPrice
+eth_chainId
+eth_getBlockByNumber
+eth_chainId
+eth_feeHistory
+eth_feeHistory
+eth_sendRawTransaction
+eth_sendRawTransaction
+
+    Transaction: 0xab50070c025d68884739ab481ae58509813de47dc76707cc94ab39d405df0e1f
+    Contract created: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+    Gas used: 1435042
+
+    Block Number: 1
+    Block Hash: 0x82f9a2d78ddd73ef5376319b06097e46a1f8b9f7c0612faef38e8defe9d203aa
+    Block Time: "Sat, 5 Jul 2025 02:39:30 +0000"
+
+
+    Transaction: 0x3357d766d4e2c0bbec1a46d1289ddd650d001ec15ec14c5ef62eee21bff4e702
+    Contract created: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+    Gas used: 4866783
+
+    Block Number: 2
+    Block Hash: 0x8b730469017e9d02dd47f9f3cf84e2cfaa5785b6dce8b4616146b30262776bee
+    Block Time: "Sat, 5 Jul 2025 02:39:30 +0000"
+
+eth_getTransactionReceipt
+eth_getTransactionReceipt
+eth_getTransactionReceipt
+eth_getTransactionReceipt
